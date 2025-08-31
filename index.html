@@ -329,11 +329,15 @@
             font-weight: bold;
             width: 40px;
             height: 40px;
-            line-height: 35px;
-            text-align: center;
             border-radius: 50%;
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
+            /* UPDATED: Flexbox for perfect centering */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1; /* Reset line-height */
+            padding-bottom: 3px; /* Minor visual adjustment for the '×' character */
         }
         .close-button:hover,
         .close-button:focus {
@@ -716,7 +720,7 @@
     </main>
     
     <footer>
-        <p>&copy; 2025 Haokai Ding &middot; Last updated 2025-08-30</p>
+        <p>&copy; 2025 Haokai Ding &middot; Last updated 2025-08-31</p>
     </footer>
 
 </div>
