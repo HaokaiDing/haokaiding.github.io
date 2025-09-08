@@ -6,73 +6,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
   <meta name="color-scheme" content="light dark" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --brand:#0056b3;
-      --ei-color:#1976d2;
-      --sci-color:#2e7d32;
-      --jcrq1-color:#6f42c1;
-      --accepted-color:#607d8b;
-      --published-color:#455a64;
-      --author-color:#1565c0;
-      --corresp-color:#ef6c00;
+      --brand:#0b63c7;
+      --ei-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a; --published-color:#3f4954;
+      --author-color:#0d6efd; --corresp-color:#ff9800; /* 保留但不再使用 */
+      --first-color:#0d6efd;   /* 第一作者 */
+      --advisor-color:#ff9800; /* 导师 */
     }
     html{scroll-behavior:smooth;}
-    body{font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;}
+    body{
+      font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
+      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
     .container{max-width:900px;width:100%;margin:40px 20px;}
 
-    /* Nav anchors */
-    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:8px;margin-bottom:14px;display:flex;gap:12px;flex-wrap:wrap}
-    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
+    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
+    #theme-switcher,#download-pdf,#download-pdf-2col{background:none;border:none;cursor:pointer;font-size:1.4em;padding:0 5px;line-height:1}
+    #download-pdf:hover,#download-pdf-2col:hover{transform:scale(1.1)}
+    #lang-switcher a{color:#888;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .2s}
+    #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
+
+    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap}
+    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
     nav.site-nav a:hover{background:#e7f1ff}
 
-    /* Badges */
-    .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{display:inline-flex;align-items:center;justify-content:center;font-size:0.82em;font-weight:700;letter-spacing:.1px;border-radius:999px;padding:4px 9px;line-height:1.2;color:#fff;vertical-align:middle;white-space:nowrap}
-    .ei-badge{background:var(--ei-color)}
-    .sci-badge{background:var(--sci-color)}
-    .jcrq1-badge{background:var(--jcrq1-color)}
-    .accepted-badge{background:var(--accepted-color)}
-    .published-badge{background:var(--published-color)}
-    .author-badge{background:var(--author-color)}
-    .corresp-badge{background:var(--corresp-color)}
-    /* Hide accidental empty badges */
-    .author-badge:empty,.corresp-badge:empty{display:none}
-    /* Publication links layout */
-    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-    .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)}
+    header{display:flex;align-items:flex-start;margin-bottom:25px}
+    .header-info h1{font-family:'Lato',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
+    .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
+    .contact-info a{color:var(--brand);text-decoration:none}
+    .contact-info a:hover{text-decoration:underline}
+
+    .profile-container{position:relative;width:120px;height:120px;margin-right:30px;border-radius:10px;overflow:hidden;flex-shrink:0}
+    .profile-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;transition:opacity .4s ease}
+    .profile-image.default{opacity:1}.profile-image.hover{opacity:0}
+    .profile-container:hover .profile-image.default,.profile-container.toggled .profile-image.default{opacity:0}
+    .profile-container:hover .profile-image.hover,.profile-container.toggled .profile-image.hover{opacity:1}
+
+    section{margin-bottom:30px}
+    h2,h3,h4{font-family:'Lato',sans-serif;font-weight:700;color:#1a1a1a}
+    h2{font-size:1.6em;margin:0}
+    h3{font-size:1.2em;color:#333;margin:20px 0 15px}
+    h4{font-size:1.05em;color:#444;margin:20px 0 15px}
+    hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 18px}
+
+    .education-entry{margin-bottom:25px}
+    .entry-line-1{display:flex;align-items:center}
+    .entry-line-2{text-align:right;margin-top:4px}
+    .entry-role{font-family:'Lato',sans-serif;font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
+    .entry-logo{width:60px;height:60px;margin-right:15px;object-fit:contain}
+    .entry-details{font-size:1em}
+    .entry-details a{font-weight:700;color:var(--brand);text-decoration:none}
+    .entry-details a:hover{text-decoration:underline}
+    .entry-date{color:#666;font-size:.9em}
+    .education-entry ul{margin-top:8px;padding-left:25px}
 
     .publication-list{list-style:none;padding:0}
-    .publication-item{margin-bottom:25px;display:flex}
+    .publication-item{margin-bottom:22px;display:flex}
     .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
     .pub-details{flex-grow:1}
     .pub-title{font-weight:700;font-size:1em;margin-bottom:4px}
     .pub-authors{font-size:1em;color:#555;margin-bottom:6px}
     .pub-authors b{color:#333}
-    .pub-venue{font-size:1em;color:#555;font-style:italic;margin-bottom:4px}
-    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-venue{font-size:1em;color:#555;font-style:italic}
 
-    /* Language visibility */
-    .lang-zh{display:none}
-    html[data-lang="zh"] .lang-en{display:none}
-    html[data-lang="zh"] .lang-zh{display:inline}
+    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-links > a, .pub-links > .pdf-link{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)}
+    .pub-links > a:hover, .pub-links > .pdf-link:hover{text-decoration:underline}
+
+    /* 徽章体系 */
+    .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{
+      display:inline-flex;align-items:center;justify-content:center;font-size:0.86em;font-weight:800;letter-spacing:.2px;border-radius:999px;padding:4px 10px;line-height:1.2;color:#fff;white-space:nowrap;vertical-align:middle;-webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .ei-badge{background:var(--ei-color)}
+    .sci-badge{background:var(--sci-color)}
+    .jcrq1-badge{background:var(--jcrq1-color)}
+    .accepted-badge{background:var(--accepted-color)}
+    .published-badge{background:var(--published-color)}
+    .author-badge{background:var(--author-color)} /* 共同一作 */
+    .corresp-badge{color:var(--corresp-color);background:transparent;border:1.6px solid var(--corresp-color);} /* 兼容旧内容，不再生成 */
+    .pub-authors .author-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
+
+    /* 新增：第一作者 与 Advisor 徽章 */
+    .first-badge{display:inline-flex;align-items:center;justify-content:center;font-size:0.86em;font-weight:800;letter-spacing:.2px;border-radius:999px;padding:4px 10px;line-height:1.2;color:#fff;background:var(--first-color);white-space:nowrap;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .pub-authors .first-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
+    .advisor-badge{display:inline-flex;align-items:center;justify-content:center;font-size:0.86em;font-weight:800;letter-spacing:.2px;border-radius:999px;padding:4px 10px;line-height:1.2;color:var(--advisor-color);background:transparent;border:1.6px solid var(--advisor-color);white-space:nowrap;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .pub-authors .advisor-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
+
+    .awards-list{list-style:none;padding:0}
+    .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
+    .award-item:last-child{border-bottom:none}
+    .award-name{flex-grow:1;padding-right:20px}
+    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
+
+    body.dark-mode{background:#1a1a1a;color:#f5f5f5}
+    .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
+    .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
+    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links > a,.dark-mode .pub-links > .pdf-link{color:#8ab4f8}
+    .dark-mode hr{background:#444}
+    .dark-mode nav.site-nav{background:#2a2a2a}
+    .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
+    .dark-mode .advisor-badge{border-color:#ffc266;color:#ffc266}
+
+    #backToTop{position:fixed;right:20px;bottom:24px;display:none;z-index:1100;border:none;border-radius:999px;padding:10px 12px;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.15);background:#ffffff}
+    body.dark-mode #backToTop{background:#2a2a2a;color:#f5f5f5}
+
+    .cv-print{width:794px; padding:24px 24px 32px; background:#ffffff!important; color:#222!important;font-size:15px; line-height:1.55;-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .cv-print *{ box-shadow:none!important; text-shadow:none!important; transition:none!important; }
+    .cv-print nav,.cv-print .top-controls,#backToTop{ display:none!important; }
+    .cv-print header{ margin-bottom:16px; }
+    .cv-print .publication-item,.cv-print .education-entry,.cv-print .award-item{ break-inside:avoid; page-break-inside:avoid; }
+    .cv-print .page-avoid{ break-inside:avoid; page-break-inside:avoid; }
+    .cv-print h2{ margin-top:6px; }
+    .cv-print.twocol{ column-count:2; column-gap:28px; }
+    .cv-print.twocol section{ break-inside:avoid; }
+
+    html:not([data-lang="zh"]) .lang-zh{display:none!important}
+    html[data-lang="zh"] .lang-en{display:none!important}
+
+    .pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s}
+    .pdf-modal.open{opacity:1;visibility:visible;pointer-events:auto}
+    .pdf-modal-content{position:relative;margin:5% auto;width:80%;max-width:900px;height:85%;background:#fff;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden}
+    .pdf-modal-content iframe{width:100%;height:100%;border:none}
+    .close-button{position:absolute;top:8px;right:8px;color:#fff;background:#333;font-size:22px;font-weight:bold;width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+    .close-button:hover{background:#d9534f}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="top-controls">
-      <button id="theme-switcher">🌙</button>
-      <div id="lang-switcher">
+      <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
+      <div id="lang-switcher" aria-label="Language switcher">
         <a href="#" data-lang="en" class="lang-link active">English</a> /
         <a href="#" data-lang="zh" class="lang-link">中文</a>
       </div>
-      <button id="download-pdf" title="Download CV as PDF">📄</button>
-      <button id="download-pdf-2col" title="Download CV as two-column PDF">📄📄</button>
+      <button id="download-pdf" type="button" title="Download CV as PDF" aria-label="Download CV as PDF">📄</button>
+      <button id="download-pdf-2col" type="button" title="Download two-column CV as PDF" aria-label="Download two-column CV as PDF">📄📄</button>
     </div>
 
     <nav class="site-nav" aria-label="Section navigation">
@@ -82,57 +157,262 @@
       <a href="#awards"><span class="lang-en">Awards</span><span class="lang-zh">荣誉</span></a>
     </nav>
 
-    <!-- 示例 Publications 段落 -->
-    <section id="publications">
-      <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2>
-      <hr>
-      <ul class="publication-list">
-        <li class="publication-item">
-          <div class="pub-index">[C1]</div>
-          <div class="pub-details">
-            <div class="pub-title">An Example Paper Title</div>
-            <div class="pub-authors"><b>Haokai Ding</b><span class="author-badge"><span class="lang-en">First Author</span><span class="lang-zh">第一作者</span></span>, Someone Else<span class="corresp-badge"><span class="lang-en">Corresponding Author</span><span class="lang-zh">通讯作者</span></span></div>
-            <div class="pub-venue">Proceedings of Example Conference</div>
-            <div class="pub-links">
-              <span class="pdf-link" data-pdf="pdfs/example.pdf">[PDF]</span>
-              <span class="accepted-badge">Accepted</span>
-              <span class="ei-badge">EI</span>
+    <header>
+      <div class="profile-container" id="profileBox">
+        <img class="profile-image default" loading="lazy" crossorigin="anonymous" src="my-academic-site/images/haokai_DING_photo_cartoon.png" alt="Anime style profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.%20(Anime)';">
+        <img class="profile-image hover" loading="lazy" crossorigin="anonymous" src="my-academic-site/images/profile.jpg" alt="Profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';">
+      </div>
+      <div class="header-info">
+        <h1>Haokai Ding (丁浩剀)</h1>
+        <div class="contact-info">
+          <p>
+            <span class="lang-en">Future Technology School, Shenzhen Technology University (Shenzhen, Guangdong)</span>
+            <span class="lang-zh">深圳技术大学, 未来技术学院 (中国, 深圳)</span>
+            <br>
+            <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute (Shenzhen, Guangdong)</span>
+            <span class="lang-zh">清华大学钱学森班 - 深圳零一学院 (中国, 深圳)</span>
+            <br>
+            E-mail:
+            <a href="mailto:hk_ding@outlook.com">hk_ding@outlook.com</a> |
+            <a href="mailto:202200101041@stumail.sztu.edu.cn">202200101041@stumail.sztu.edu.cn</a> |
+            <a href="mailto:dinghaokai@mails.x-institute.edu.cn">dinghaokai@mails.x-institute.edu.cn</a><br>
+            <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a> |
+            <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">ORCID</a>
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content page-avoid" id="cv-main">
+      <section id="about" class="page-avoid">
+        <h2><span class="lang-en">About Me</span><span class="lang-zh">个人简介</span></h2><hr>
+        <p>
+          <span class="lang-en">I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University, building a foundation in electronics and circuits. Concurrently, as an X Scholar in a joint program with Tsinghua University and Shenzhen X-Institute, I am engaged in advanced research focusing on underactuated robotic grippers and novel mechanical linkages. My goal is to integrate my knowledge in electronics with hands-on robotics research to contribute to the field.</span>
+          <span class="lang-zh">我目前是深圳技术大学电子科学与技术专业的本科生，致力于夯实电子电路与技术的基础。同时，作为清华大学钱学森班-深圳零一学院的零一学者，我正深入参与欠驱动机器人抓手及新型机械连杆等方向的前沿研究。我的目标是将电子领域的知识与机器人学的科研实践相结合，为未来在该领域的贡献做准备。</span>
+        </p>
+      </section>
+
+      <section id="education" class="page-avoid">
+        <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2><hr>
+        <div class="education-entry">
+          <div class="entry-line-1">
+            <strong class="entry-role"><span class="lang-en">Undergraduate:</span><span class="lang-zh">本科:</span></strong>
+            <img class="entry-logo" loading="lazy" crossorigin="anonymous" src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="SZTU Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU';">
+            <div class="entry-details">
+              <a href="https://www.sztu.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Shenzhen Technology University</span><span class="lang-zh">深圳技术大学</span></a>
+              <span class="lang-en">, Future Technology School -- Bachelor of Engineering in Electronic Science and Technology</span>
+              <span class="lang-zh">, 未来技术学院 -- 电子科学与技术 工学学士</span>
             </div>
           </div>
-        </li>
-        <li class="publication-item">
-          <div class="pub-index">[J1]</div>
-          <div class="pub-details">
-            <div class="pub-title">Another Example Journal Paper</div>
-            <div class="pub-authors">Yating Liu<span class="author-badge"><span class="lang-en">Co-first Author</span><span class="lang-zh">共同第一作者</span></span>, <b>Haokai Ding</b><span class="author-badge"><span class="lang-en">Co-first Author</span><span class="lang-zh">共同第一作者</span></span>, Someone Else<span class="corresp-badge"><span class="lang-en">Corresponding Author</span><span class="lang-zh">通讯作者</span></span></div>
-            <div class="pub-venue">Journal of Examples, Vol. 1</div>
-            <div class="pub-links">
-              <span class="pdf-link" data-pdf="pdfs/example2.pdf">[PDF]</span>
-              <span class="published-badge">Published</span>
-              <span class="sci-badge">SCI</span>
-              <span class="jcrq1-badge">JCR Q1</span>
+          <div class="entry-line-2"><div class="entry-date">2022.09–2026.07</div></div>
+          <ul>
+            <li><span class="lang-en">Main Courses: C++, Python, Digital Circuits, Sensors and Actuators, Engineering Project Design</span><span class="lang-zh">主修课程: C++, Python, 数字电路, 传感器与执行器, 工程项目设计</span></li>
+            <li><span class="lang-en">Main Research: Laser-Induced Breakdown Spectroscopy (LIBS)</span><span class="lang-zh">主要研究: 激光诱导击穿光谱 (LIBS)</span></li>
+          </ul>
+        </div>
+
+        <div class="education-entry">
+          <div class="entry-line-1">
+            <strong class="entry-role"><span class="lang-en">Joint Training:</span><span class="lang-zh">联合培养:</span></strong>
+            <img class="entry-logo" loading="lazy" crossorigin="anonymous" src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';">
+            <img class="entry-logo" loading="lazy" crossorigin="anonymous" src="my-academic-site/images/x-institute_logo.jpg" alt="X-Institute Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';">
+            <div class="entry-details">
+              <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span><span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span></a> --
+              <span class="lang-en">X Scholar</span><span class="lang-zh">零一学者</span>
             </div>
           </div>
-        </li>
-      </ul>
-    </section>
+          <div class="entry-line-2"><div class="entry-date">2023.09–Present</div></div>
+          <ul>
+            <li><span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">See Qian Class Step-by-Step Training Program</a></span><span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">见钱班进阶式培养计划</a></span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="publications" class="page-avoid">
+        <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2><hr>
+        <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
+        <h4><span class="lang-en">Conference Papers</span><span class="lang-zh">会议论文</span></h4>
+        <ul class="publication-list">
+          <li class="publication-item">
+            <div class="pub-index">[C5]</div>
+            <div class="pub-details">
+              <div class="pub-title">An Underactuated Gripper with Grasshopper-Inspired Linkages and Delay Triggering for Pinching and Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Yizhe Chen<sup>†</sup>, Dongjun Jia, Wenzeng Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 International Conference on Information and Automation (ICIA)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/icia_v4.pdf">[PDF]</span>
+                <span class="accepted-badge">Accepted</span>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
+          <li class="publication-item">
+            <div class="pub-index">[C4]</div>
+            <div class="pub-details">
+              <div class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span>
+                <span class="accepted-badge">Accepted</span>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
+          <li class="publication-item">
+            <div class="pub-index">[C3]</div>
+            <div class="pub-details">
+              <div class="pub-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Z.Chen, T.Yang*, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Automation Science and Engineering (CASE)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/CASE25_0693_FI.pdf">[PDF]</span>
+                <span class="published-badge">Published</span>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
+          <li class="publication-item">
+            <div class="pub-index">[C2]</div>
+            <div class="pub-details">
+              <div class="pub-title">Peaucellier Gripper: A Novel Underactuated Gripper for Linear Pinching and Self-Adaptive Grasp with the Peaucellier Linkage</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, J.Fan, Z.Zhu, Y.Zhao, K.Chen*, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Advanced Robotics and Mechatronics (ARM)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/ICARM25_0037_FI.pdf">[PDF]</span>
+                <span class="published-badge">Published</span>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
+          <li class="publication-item">
+            <div class="pub-index">[C1]</div>
+            <div class="pub-details">
+              <div class="pub-title">Rapid Analysis of Heavy Metal Element Adsorption by SCG Based on LIBS Technology</div>
+              <div class="pub-authors">Hairui Xie, Libing You, Xiaodong Fang, Leyi Li, <b>Haokai Ding</b>, Zhengqi Zhou, Guanyang Zhang, Dongjian Zhang</div>
+              <div class="pub-venue">E3S Web Conf., 615 (2025) 02010</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/e3sconf_eppc2025_02010.pdf">[PDF]</span>
+                <a href="https://doi.org/10.1051/e3sconf/202561502010" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <h4><span class="lang-en">Journal Articles</span><span class="lang-zh">期刊论文</span></h4>
+        <ul class="publication-list">
+          <li class="publication-item">
+            <div class="pub-index">[J1]</div>
+            <div class="pub-details">
+              <div class="pub-title">Recent Progress on the Research of 3D Printing in Aqueous Zinc-Ion Batteries</div>
+              <div class="pub-authors">Yating Liu<sup>†</sup>, <b>Haokai Ding<sup>†</sup></b>, Honglin Chen, Haoxuan Gao, Jixin Yu, Funian Mo, Ning Wang*</div>
+              <div class="pub-venue">Polymers 17, no. 15: 2136</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/polymers-17-02136.pdf">[PDF]</span>
+                <a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                <span class="sci-badge">SCI</span>
+                <span class="jcrq1-badge">JCR Q1</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="awards" class="page-avoid">
+        <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2><hr>
+        <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
+        <div class="awards-list">
+          <div class="award-item"><span class="award-name"><span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span></span><span class="award-year">2025</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></span><span class="award-year">2023</span></div>
+        </div>
+        <h3><span class="lang-en">University-Level</span><span class="lang-zh">校级</span></h3>
+        <div class="awards-list">
+          <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2024</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">CHENHSONG Scholarship (Dean's Award & Academic Excellence)</span><span class="lang-zh">震雄奖学金 (院长奖学金, 学业卓越奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
+        </div>
+      </section>
+    </main>
 
     <footer>
       <p>&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
     </footer>
   </div>
 
-  <!-- PDF Modal -->
-  <div id="pdfModal" class="pdf-modal">
+  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="pdf-modal-content">
-      <button class="close-button" id="pdfClose" type="button">&times;</button>
-      <iframe id="pdf-viewer" src=""></iframe>
+      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">&times;</button>
+      <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
     </div>
   </div>
 
-  <!-- Back to top -->
-  <button id="backToTop" type="button">⬆️</button>
+  <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+    const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+
+    const themeSwitcher=$('#theme-switcher');
+    const applyTheme=t=>{ if(t==='dark'){document.body.classList.add('dark-mode');themeSwitcher.textContent='☀️';}else{document.body.classList.remove('dark-mode');themeSwitcher.textContent='🌙';} };
+    applyTheme(localStorage.getItem('theme')||'light');
+    themeSwitcher.addEventListener('click',()=>{const cur=document.body.classList.contains('dark-mode')?'dark':'light';const nxt=cur==='dark'?'light':'dark';localStorage.setItem('theme',nxt);applyTheme(nxt);});
+
+    function setLanguage(lang){document.documentElement.setAttribute('data-lang',lang); $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active',a.dataset.lang===lang)); try{localStorage.setItem('preferredLanguage',lang);}catch{}}
+    $('#lang-switcher').addEventListener('click',e=>{const a=e.target.closest('.lang-link');if(!a)return;e.preventDefault();setLanguage(a.dataset.lang);});
+    document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
+
+    let touchCapable=false; window.addEventListener('touchstart',()=>{touchCapable=true;},{once:true});
+    $('#profileBox').addEventListener('click',()=>{ if(touchCapable) $('#profileBox').classList.toggle('toggled'); });
+
+    const modal=$('#pdfModal'), pdfViewer=$('#pdf-viewer'), pdfClose=$('#pdfClose'); let lastFocused=null;
+    function openPdfModal(path){lastFocused=document.activeElement;pdfViewer.src=path;modal.classList.add('open');modal.setAttribute('aria-hidden','false');pdfClose.focus();}
+    function closePdfModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');pdfViewer.src='';if(lastFocused&&lastFocused.focus)lastFocused.focus();}
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
+    window.addEventListener('click',e=>{ if(e.target===modal) closePdfModal(); });
+    pdfClose.addEventListener('click', closePdfModal);
+    document.addEventListener('click',e=>{const t=e.target.closest('.pdf-link');if(!t)return;e.preventDefault();openPdfModal(t.getAttribute('data-pdf'));});
+
+    function cloneForPrint(twoCol=false){
+      const main=document.querySelector('main');
+      const wrap=document.createElement('div'); wrap.className='cv-print'+(twoCol?' twocol':''); wrap.appendChild(main.cloneNode(true));
+      const host=document.createElement('div'); host.style.cssText='position:absolute;left:-10000px;top:-10000px;width:794px;height:auto;overflow:hidden;'; host.appendChild(wrap); document.body.appendChild(host);
+      return {host,wrap};
+    }
+    function waitForImages(root){ const imgs=[...root.querySelectorAll('img')]; return Promise.all(imgs.map(img=> (img.complete&&img.naturalWidth>0) ? null : new Promise(res=>{img.onload=res;img.onerror=res;}))); }
+    function waitForFonts(){ return (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(()=>{}) : Promise.resolve(); }
+
+    async function exportPDF(twoCol=false, filename='Ding_Haokai_CV.pdf'){
+      const wasDark=document.body.classList.contains('dark-mode'); if(wasDark) document.body.classList.remove('dark-mode');
+      const {host,wrap}=cloneForPrint(twoCol);
+      await Promise.all([waitForImages(wrap), waitForFonts()]);
+      const opt={ margin:0.5, filename, image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,removeContainer:true}, jsPDF:{unit:'in',format:'a4',orientation:'portrait'}, pagebreak:{mode:['css','legacy'],avoid:['.publication-item','.education-entry','.award-item','.page-avoid']} };
+      try{ await html2pdf().set(opt).from(wrap).save(); }
+      finally{ document.body.removeChild(host); if(wasDark) document.body.classList.add('dark-mode'); }
+    }
+    $('#download-pdf').addEventListener('click', ()=>exportPDF(false,'Ding_Haokai_CV.pdf'));
+    $('#download-pdf-2col').addEventListener('click', ()=>exportPDF(true,'Ding_Haokai_CV_2col.pdf'));
+
+    const backBtn=$('#backToTop'); const onScroll=()=>{ backBtn.style.display=(window.scrollY>300)?'block':'none'; }; window.addEventListener('scroll', onScroll, { passive:true }); backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+    // 作者徽章自动化：†=共同一作；*=Advisor；首个<b>=第一作者
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.pub-authors').forEach(el=>{
+        const nodes=[...el.childNodes];
+        const makeBadge=(cls,en,zh)=>{const s=document.createElement('span');s.className=cls;s.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;return s;}
+        nodes.forEach(node=>{
+          if(node.nodeType===1 && node.tagName==='SUP'){
+            const t=node.textContent.trim(); el.replaceChild(t==='†'?makeBadge('author-badge','Co-first Author','共同第一作者'):makeBadge('advisor-badge','Advisor','导师'), node); return; }
+          if(node.nodeType===3){ const txt=node.nodeValue; if(!txt||(!txt.includes('†')&&!txt.includes('*'))) return; const frag=document.createDocumentFragment(); const re=/[†*]/g; let i=0,m; while((m=re.exec(txt))){ const chunk=txt.slice(i,m.index); if(chunk) frag.appendChild(document.createTextNode(chunk)); frag.appendChild(m[0]==='†'?makeBadge('author-badge','Co-first Author','共同第一作者'):makeBadge('advisor-badge','Advisor','导师')); i=re.lastIndex;} const tail=txt.slice(i); if(tail) frag.appendChild(document.createTextNode(tail)); el.replaceChild(frag,node); }
+        });
+        el.querySelectorAll('.corresp-badge').forEach(b=>{ b.classList.remove('corresp-badge'); b.classList.add('advisor-badge'); b.innerHTML='<span class="lang-en">Advisor</span><span class="lang-zh">导师</span>'; });
+        const firstBold=el.querySelector('b'); if(firstBold){ const next=firstBold.nextSibling; const hasCoFirst=next && next.nodeType===1 && next.classList && next.classList.contains('author-badge'); const hasFirst=next && next.nodeType===1 && next.classList && next.classList.contains('first-badge'); if(!hasCoFirst && !hasFirst){ firstBold.insertAdjacentElement('afterend', makeBadge('first-badge','First Author','第一作者')); } }
+      });
+    });
+  </script>
 </body>
 </html>
