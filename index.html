@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
   <meta name="color-scheme" content="light dark" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -15,52 +13,40 @@
   <style>
     :root{
       --brand:#0b63c7;
-
-      /* badges palette */
-      --ei-color:#1266f1;
-      --sci-color:#2e9e44;
-      --jcrq1-color:#6a4cc7;
-      --accepted-color:#56606a;
-      --published-color:#3f4954;
-
-      --author-color:#0d6efd;
-      --corresp-color:#ff9800;
+      --ei-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a; --published-color:#3f4954;
+      --author-color:#0d6efd; --corresp-color:#ff9800;
     }
-
     html{scroll-behavior:smooth;}
     body{
       font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
       margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     .container{max-width:900px;width:100%;margin:40px 20px;}
 
-    /* Top controls */
     .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
     #theme-switcher,#download-pdf,#download-pdf-2col{background:none;border:none;cursor:pointer;font-size:1.5em;padding:0 5px;line-height:1}
     #download-pdf:hover,#download-pdf-2col:hover{transform:scale(1.12)}
     #lang-switcher a{color:#888;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .2s}
     #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
 
-    /* Nav anchors */
     nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:8px;margin-bottom:14px;display:flex;gap:12px;flex-wrap:wrap}
     nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
     nav.site-nav a:hover{background:#e7f1ff}
 
-    /* Header & contact */
     header{display:flex;align-items:flex-start;margin-bottom:25px}
     .header-info h1{font-family:'Lato',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
     .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
     .contact-info a{color:var(--brand);text-decoration:none}
     .contact-info a:hover{text-decoration:underline}
 
-    /* Profile images */
     .profile-container{position:relative;width:120px;height:120px;margin-right:30px;border-radius:8px;overflow:hidden;flex-shrink:0}
     .profile-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;transition:opacity .5s ease-in-out}
     .profile-image.default{opacity:1}.profile-image.hover{opacity:0}
     .profile-container:hover .profile-image.default,.profile-container.toggled .profile-image.default{opacity:0}
     .profile-container:hover .profile-image.hover,.profile-container.toggled .profile-image.hover{opacity:1}
 
-    /* Sections */
     section{margin-bottom:30px}
     h2,h3,h4{font-family:'Lato',sans-serif;font-weight:700;color:#1a1a1a}
     h2{font-size:1.6em;margin:0}
@@ -68,7 +54,6 @@
     h4{font-size:1.05em;color:#444;margin:20px 0 15px}
     hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 20px}
 
-    /* Education */
     .education-entry{margin-bottom:25px}
     .entry-line-1{display:flex;align-items:center}
     .entry-line-2{text-align:right;margin-top:4px}
@@ -80,7 +65,6 @@
     .entry-date{color:#666;font-size:.9em}
     .education-entry ul{margin-top:8px;padding-left:25px}
 
-    /* Publications */
     .publication-list{list-style:none;padding:0}
     .publication-item{margin-bottom:25px;display:flex}
     .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
@@ -90,26 +74,19 @@
     .pub-authors b{color:#333}
     .pub-venue{font-size:1em;color:#555;font-style:italic}
 
-    /* Links area */
-    .pub-links{
-      margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px
-    }
-    /* 只给链接和 [PDF] 上色，避免影响徽章 */
-    .pub-links > a,
-    .pub-links > .pdf-link{
+    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-links > a, .pub-links > .pdf-link{
       cursor:pointer;text-decoration:none;font-weight:700;
       font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
     }
-    /* 链接 hover */
-    .pub-links > a:hover,
-    .pub-links > .pdf-link:hover{ text-decoration:underline }
+    .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
 
-    /* Badges（独立控制颜色，不受链接区影响） */
     .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{
       display:inline-flex;align-items:center;justify-content:center;
       font-size:0.86em;font-weight:800;letter-spacing:.2px;
       border-radius:999px;padding:4px 10px;line-height:1.2;
       color:#fff;white-space:nowrap;vertical-align:middle;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
     .ei-badge{background:var(--ei-color)}
     .sci-badge{background:var(--sci-color)}
@@ -117,28 +94,16 @@
     .accepted-badge{background:var(--accepted-color)}
     .published-badge{background:var(--published-color)}
     .author-badge{background:var(--author-color)}
-
-    /* 通讯作者：描边款，克制清晰 */
-    .corresp-badge{
-      color:var(--corresp-color);
-      background:transparent;border:1.6px solid var(--corresp-color);
-      padding:2px 7px;font-weight:800;
-    }
-    /* 作者行上的身份徽章更小、更贴近姓名 */
-    .pub-authors .author-badge,.pub-authors .corresp-badge{
-      font-size:.74em;padding:2px 6px;margin-left:6px
-    }
-    /* 避免出现空块 */
+    .corresp-badge{color:var(--corresp-color);background:transparent;border:1.6px solid var(--corresp-color);padding:2px 7px;font-weight:800}
+    .pub-authors .author-badge,.pub-authors .corresp-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
     .author-badge:empty,.corresp-badge:empty{display:none}
 
-    /* Awards */
     .awards-list{list-style:none;padding:0}
     .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
     .award-item:last-child{border-bottom:none}
     .award-name{flex-grow:1;padding-right:20px}
     .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
 
-    /* Dark mode */
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
     .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
@@ -148,39 +113,28 @@
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
     .dark-mode .corresp-badge{border-color:#ffc266;color:#ffc266}
 
-    /* Back to top */
     #backToTop{
       position:fixed;right:20px;bottom:24px;display:none;z-index:1100;border:none;border-radius:999px;
       padding:10px 12px;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.15);background:#ffffff
     }
     body.dark-mode #backToTop{background:#2a2a2a;color:#f5f5f5}
 
-    /* Two-column wrapper for export only */
-    .twocol-wrapper{column-count:2;column-gap:26px}
-    .twocol-wrapper h1,.twocol-wrapper h2,.twocol-wrapper h3,.twocol-wrapper h4,
-    .twocol-wrapper .education-entry,.twocol-wrapper .publication-item,
-    .twocol-wrapper .awards-list,.twocol-wrapper ul,.twocol-wrapper p{break-inside:avoid}
-    .twocol-wrapper section{margin:0 0 18px 0}
-
-    @media print{#backToTop,.top-controls,nav.site-nav{display:none!important}}
-
-    /* Language visibility */
-    .lang-zh{display:none}
-    html[data-lang="zh"] .lang-en{display:none}
-    html[data-lang="zh"] .lang-zh{display:inline}
-
-    /* PDF modal */
-    .pdf-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000}
-    .pdf-modal-content{
-      position:relative;margin:5% auto;width:80%;max-width:900px;height:85%;
-      background:#fff;border-radius:8px;box-shadow:0 5px 15px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden
+    /* —— 导出专用：更稳定的打印样式 —— */
+    .cv-print{
+      width:794px; /* A4 宽度（96dpi） */
+      padding:24px 24px 32px;
+      background:#ffffff !important; color:#222 !important;
+      font-size:15px; line-height:1.55;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
-    .pdf-modal-content iframe{width:100%;height:100%;border:none}
-    .close-button{
-      position:absolute;top:8px;right:8px;color:#fff;background:#333;font-size:24px;font-weight:bold;
-      width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)
-    }
-    .close-button:hover{background:#d9534f}
+    .cv-print *{ box-shadow:none!important; text-shadow:none!important; transition:none!important; }
+    .cv-print nav,.cv-print .top-controls,#backToTop{ display:none!important; }
+    .cv-print header{ margin-bottom:16px; }
+    .cv-print .publication-item,.cv-print .education-entry,.cv-print .award-item{ break-inside:avoid; page-break-inside:avoid; }
+    .cv-print .page-avoid{ break-inside:avoid; page-break-inside:avoid; }
+    .cv-print h2{ margin-top:6px; }
+    .cv-print.twocol{ column-count:2; column-gap:28px; }
+    .cv-print.twocol section{ break-inside:avoid; }
   </style>
 </head>
 <body>
@@ -234,11 +188,10 @@
       </div>
     </header>
 
-    <main class="main-content">
+    <main class="main-content page-avoid" id="cv-main">
       <!-- About -->
-      <section id="about">
-        <h2><span class="lang-en">About Me</span><span class="lang-zh">个人简介</span></h2>
-        <hr>
+      <section id="about" class="page-avoid">
+        <h2><span class="lang-en">About Me</span><span class="lang-zh">个人简介</span></h2><hr>
         <p>
           <span class="lang-en">
             I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University, building a foundation in electronics and circuits. Concurrently, as an X Scholar in a joint program with Tsinghua University and Shenzhen X-Institute, I am engaged in advanced research focusing on underactuated robotic grippers and novel mechanical linkages. My goal is to integrate my knowledge in electronics with hands-on robotics research to contribute to the field.
@@ -250,9 +203,8 @@
       </section>
 
       <!-- Education -->
-      <section id="education">
-        <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2>
-        <hr>
+      <section id="education" class="page-avoid">
+        <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2><hr>
         <div class="education-entry">
           <div class="entry-line-1">
             <strong class="entry-role"><span class="lang-en">Undergraduate:</span><span class="lang-zh">本科:</span></strong>
@@ -300,9 +252,9 @@
       </section>
 
       <!-- Publications -->
-      <section id="publications">
-        <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2>
-        <hr>
+      <section id="publications" class="page-avoid">
+        <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2><hr>
+
         <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
 
         <h4><span class="lang-en">Conference Papers</span><span class="lang-zh">会议论文</span></h4>
@@ -398,9 +350,8 @@
       </section>
 
       <!-- Awards -->
-      <section id="awards">
-        <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2>
-        <hr>
+      <section id="awards" class="page-avoid">
+        <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2><hr>
         <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
         <div class="awards-list">
           <div class="award-item">
@@ -444,96 +395,81 @@
   <!-- Back to top -->
   <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
+  <!-- html2pdf CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <script>
     const $ = (s,r=document)=>r.querySelector(s);
     const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 
     /* Theme switcher */
-    const themeSwitcher = $('#theme-switcher');
-    const applyTheme = (t)=>{ if(t==='dark'){ document.body.classList.add('dark-mode'); themeSwitcher.textContent='☀️'; } else { document.body.classList.remove('dark-mode'); themeSwitcher.textContent='🌙'; } };
+    const themeSwitcher=$('#theme-switcher');
+    const applyTheme=t=>{ if(t==='dark'){document.body.classList.add('dark-mode');themeSwitcher.textContent='☀️';}else{document.body.classList.remove('dark-mode');themeSwitcher.textContent='🌙';} };
     applyTheme(localStorage.getItem('theme')||'light');
-    themeSwitcher.addEventListener('click',()=>{
-      const cur = document.body.classList.contains('dark-mode') ? 'dark':'light';
-      const nxt = cur==='dark' ? 'light':'dark';
-      localStorage.setItem('theme',nxt); applyTheme(nxt);
-    });
+    themeSwitcher.addEventListener('click',()=>{const cur=document.body.classList.contains('dark-mode')?'dark':'light';const nxt=cur==='dark'?'light':'dark';localStorage.setItem('theme',nxt);applyTheme(nxt);});
 
     /* Language switcher */
-    function setLanguage(lang){
-      document.documentElement.setAttribute('data-lang', lang);
-      $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active', a.dataset.lang===lang));
-      try{ localStorage.setItem('preferredLanguage', lang);}catch(e){}
-    }
-    $('#lang-switcher').addEventListener('click',(e)=>{
-      const link = e.target.closest('.lang-link'); if(!link) return;
-      e.preventDefault(); setLanguage(link.dataset.lang);
-    });
+    function setLanguage(lang){document.documentElement.setAttribute('data-lang',lang); $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active',a.dataset.lang===lang)); try{localStorage.setItem('preferredLanguage',lang);}catch{}}
+    $('#lang-switcher').addEventListener('click',e=>{const a=e.target.closest('.lang-link');if(!a)return;e.preventDefault();setLanguage(a.dataset.lang);});
     document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
 
-    /* Mobile toggle for profile */
+    /* Avatar toggle for touch */
     let touchCapable=false; window.addEventListener('touchstart',()=>{touchCapable=true;},{once:true});
     $('#profileBox').addEventListener('click',()=>{ if(touchCapable) $('#profileBox').classList.toggle('toggled'); });
 
     /* PDF modal logic */
     const modal=$('#pdfModal'), pdfViewer=$('#pdf-viewer'), pdfClose=$('#pdfClose');
     let lastFocused=null;
-    function openPdfModal(path){
-      lastFocused=document.activeElement;
-      pdfViewer.src=path;
-      modal.style.display='block';
-      modal.setAttribute('aria-hidden','false');
-      pdfClose.focus();
-    }
-    function closePdfModal(){
-      modal.style.display='none';
-      modal.setAttribute('aria-hidden','true');
-      pdfViewer.src='';
-      if(lastFocused && lastFocused.focus) lastFocused.focus();
-    }
+    function openPdfModal(path){lastFocused=document.activeElement;pdfViewer.src=path;modal.style.display='block';modal.setAttribute('aria-hidden','false');pdfClose.focus();}
+    function closePdfModal(){modal.style.display='none';modal.setAttribute('aria-hidden','true');pdfViewer.src='';if(lastFocused&&lastFocused.focus)lastFocused.focus();}
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
-    window.addEventListener('click',(e)=>{ if(e.target===modal) closePdfModal(); });
+    window.addEventListener('click',e=>{ if(e.target===modal) closePdfModal(); });
     pdfClose.addEventListener('click', closePdfModal);
-    document.addEventListener('click',(e)=>{
-      const trg=e.target.closest('.pdf-link'); if(!trg) return;
-      e.preventDefault(); e.stopPropagation();
-      const path=trg.getAttribute('data-pdf'); if(path) openPdfModal(path);
-    });
+    document.addEventListener('click',e=>{const t=e.target.closest('.pdf-link');if(!t)return;e.preventDefault();openPdfModal(t.getAttribute('data-pdf'));});
 
-    /* Single-column PDF export */
-    $('#download-pdf').addEventListener('click', async ()=>{
-      if(typeof html2pdf==='undefined'){ alert('PDF 组件尚未加载，请稍后再试。'); return; }
-      const main=document.querySelector('main'); const isDark=document.body.classList.contains('dark-mode');
-      const opt={ margin:0.5, filename:'Ding_Haokai_CV.pdf', image:{type:'jpeg',quality:0.98},
-        html2canvas:{scale:2,useCORS:true,backgroundColor:isDark?'#1a1a1a':'#ffffff'},
-        jsPDF:{unit:'in',format:'a4',orientation:'portrait'} };
-      if(isDark){ document.body.classList.remove('dark-mode'); await new Promise(r=>setTimeout(r,50)); }
-      await html2pdf().set(opt).from(main).save();
-      if(isDark) document.body.classList.add('dark-mode');
-    });
+    /* —— 导出 PDF：构建“打印 DOM”，等待资源加载，稳定分页 —— */
+    function cloneForPrint(twoCol=false){
+      const main = document.querySelector('main');
+      const wrap = document.createElement('div');
+      wrap.className = 'cv-print' + (twoCol ? ' twocol' : '');
+      wrap.appendChild(main.cloneNode(true));
+      const host = document.createElement('div');
+      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0';
+      host.style.width='794px'; host.style.zIndex='-1';
+      host.appendChild(wrap);
+      document.body.appendChild(host);
+      return {host,wrap};
+    }
+    function waitForImages(root){
+      const imgs = Array.from(root.querySelectorAll('img'));
+      return Promise.all(imgs.map(img=>{
+        if(img.complete && img.naturalWidth>0) return;
+        return new Promise(res=>{ img.onload=res; img.onerror=res; });
+      }));
+    }
+    function waitForFonts(){ if(document.fonts && document.fonts.ready) return document.fonts.ready.catch(()=>{}); return Promise.resolve(); }
 
-    /* Two-column PDF export */
-    $('#download-pdf-2col').addEventListener('click', async ()=>{
-      if(typeof html2pdf==='undefined'){ alert('PDF 组件尚未加载，请稍后再试。'); return; }
-      const isDark=document.body.classList.contains('dark-mode');
-      const main=document.querySelector('main');
+    async function exportPDF(twoCol=false, filename='Ding_Haokai_CV.pdf'){
+      const wasDark = document.body.classList.contains('dark-mode');
+      if(wasDark) document.body.classList.remove('dark-mode');
 
-      const wrapper=document.createElement('div');
-      wrapper.className='twocol-wrapper';
-      wrapper.style.background='#ffffff';
-      wrapper.appendChild(main.cloneNode(true));
+      const {host,wrap} = cloneForPrint(twoCol);
+      await Promise.all([waitForImages(wrap), waitForFonts()]);
 
-      const host=document.createElement('div');
-      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style.width='794px';
-      host.appendChild(wrapper); document.body.appendChild(host);
+      const opt = {
+        margin: 0.5,
+        filename,
+        image: { type:'jpeg', quality:0.98 },
+        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff', logging:false, removeContainer:true },
+        jsPDF: { unit:'in', format:'a4', orientation:'portrait' },
+        pagebreak: { mode:['css','legacy'], avoid: ['.publication-item','.education-entry','.award-item','.page-avoid'] }
+      };
+      try{ await html2pdf().set(opt).from(wrap).save(); }
+      finally{ document.body.removeChild(host); if(wasDark) document.body.classList.add('dark-mode'); }
+    }
 
-      const opt={ margin:0.5, filename:'Ding_Haokai_CV_2col.pdf', image:{type:'jpeg',quality:0.98},
-        html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
-        jsPDF:{unit:'in',format:'a4',orientation:'portrait'} };
-
-      if(isDark) document.body.classList.remove('dark-mode');
-      try{ await html2pdf().set(opt).from(wrapper).save(); }
-      finally{ if(isDark) document.body.classList.add('dark-mode'); document.body.removeChild(host); }
-    });
+    $('#download-pdf').addEventListener('click', ()=> exportPDF(false,'Ding_Haokai_CV.pdf'));
+    $('#download-pdf-2col').addEventListener('click', ()=> exportPDF(true,'Ding_Haokai_CV_2col.pdf'));
 
     /* Back-to-top */
     const backBtn=$('#backToTop');
@@ -541,7 +477,7 @@
     window.addEventListener('scroll', onScroll, { passive:true });
     backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    /* Auto-badge: † → Co-first, * → Corresponding（仅处理作者行） */
+    /* 作者标记自动徽章化（仅作者行） */
     document.addEventListener('DOMContentLoaded', ()=>{
       document.querySelectorAll('.pub-authors').forEach(el=>{
         const nodes = Array.from(el.childNodes);
@@ -552,42 +488,24 @@
           return span;
         };
         nodes.forEach(node=>{
-          // handle <sup>
-          if(node.nodeType === 1 && node.tagName === 'SUP'){
-            const t = node.textContent.trim();
-            if(t === '†'){
-              el.replaceChild(makeBadge('author-badge','Co-first Author','共同第一作者'), node);
-            }else if(t === '*'){
-              el.replaceChild(makeBadge('corresp-badge','Corresponding Author','通讯作者'), node);
-            }
-            return;
+          if(node.nodeType===1 && node.tagName==='SUP'){
+            const t=node.textContent.trim();
+            el.replaceChild(
+              t==='†' ? makeBadge('author-badge','Co-first Author','共同第一作者')
+                      : makeBadge('corresp-badge','Corresponding Author','通讯作者')
+            , node); return;
           }
-          // handle plain text
-          if(node.nodeType === 3){
-            const txt = node.nodeValue;
-            if(!txt || (!txt.includes('†') && !txt.includes('*'))) return;
-            const frag = document.createDocumentFragment();
-            const re = /[†*]/g;
-            let lastIndex = 0, m;
-            while((m = re.exec(txt)) !== null){
-              const chunk = txt.slice(lastIndex, m.index);
-              if(chunk) frag.appendChild(document.createTextNode(chunk));
-              frag.appendChild(m[0]==='†'
-                ? makeBadge('author-badge','Co-first Author','共同第一作者')
-                : makeBadge('corresp-badge','Corresponding Author','通讯作者'));
-              lastIndex = re.lastIndex;
-            }
-            const tail = txt.slice(lastIndex);
-            if(tail) frag.appendChild(document.createTextNode(tail));
-            el.replaceChild(frag, node);
+          if(node.nodeType===3){
+            const txt=node.nodeValue; if(!txt||(!txt.includes('†')&&!txt.includes('*'))) return;
+            const frag=document.createDocumentFragment();const re=/[†*]/g;let i=0,m;
+            while((m=re.exec(txt))){ const chunk=txt.slice(i,m.index); if(chunk) frag.appendChild(document.createTextNode(chunk));
+              frag.appendChild(m[0]==='†'?makeBadge('author-badge','Co-first Author','共同第一作者'):makeBadge('corresp-badge','Corresponding Author','通讯作者')); i=re.lastIndex;}
+            const tail=txt.slice(i); if(tail) frag.appendChild(document.createTextNode(tail));
+            el.replaceChild(frag,node);
           }
         });
       });
     });
   </script>
-
-  <!-- html2pdf CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>
