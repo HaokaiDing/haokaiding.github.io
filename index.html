@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Haokai Ding(丁浩剀)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com ">
+    <link rel="preconnect" href="https://fonts.gstatic.com " crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400 ;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         /* --- General Style & Layout --- */
         body {
@@ -104,7 +104,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 8px;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.5 ease-in-out;
         }
         .profile-image.default {
             opacity: 1;
@@ -423,7 +423,14 @@
             border-top-color: #444;
             color: #aaa;
         }
-
+        /* --- PDF download button --- */
+        #download-pdf{
+          background:none; border:none; cursor:pointer;
+          font-size:1.5em; margin-left:12px;
+          transition:transform .2s;
+        }
+        #download-pdf:hover{transform:scale(1.15);}
+        @media print { #download-pdf { display:none; } }
     </style>
 </head>
 <body>
@@ -435,12 +442,13 @@
             <a href="#" onclick="setLanguage('en')" class="lang-link active">English</a> / 
             <a href="#" onclick="setLanguage('zh')" class="lang-link">中文</a>
         </div>
+        <button id="download-pdf" title="Download CV as PDF">📄</button>
     </div>
 
     <header>
         <div class="profile-container">
-            <img class="profile-image default" src="my-academic-site/images/haokai_DING_photo_cartoon.png" alt="Anime style profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D. (Anime)';">
-            <img class="profile-image hover" src="my-academic-site/images/profile.jpg" alt="Profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';">
+            <img class="profile-image default" src="my-academic-site/images/haokai_DING_photo_cartoon.png" alt="Anime style profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D . (Anime)';">
+            <img class="profile-image hover" src="my-academic-site/images/profile.jpg" alt="Profile photo of Haokai Ding" onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D .';">
         </div>
         <div class="header-info">
             <h1>Haokai Ding (丁浩剀)</h1>
@@ -453,7 +461,7 @@
                     <span class="lang-zh">清华大学钱学森班 - 深圳零一学院 (中国, 深圳)</span>
                     <br>
                     E-mail: <a href="mailto:hk_ding@outlook.com">hk_ding@outlook.com</a> | <a href="mailto:202200101041@stumail.sztu.edu.cn">202200101041@stumail.sztu.edu.cn</a> | <a href="mailto:dinghaokai@mails.x-institute.edu.cn">dinghaokai@mails.x-institute.edu.cn</a><br>
-                    <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank">Google Scholar</a> | <a href="https://orcid.org/0009-0001-6158-9897" target="_blank">ORCID</a>
+                    <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en " target="_blank">Google Scholar</a> | <a href="https://orcid.org/0009-0001-6158-9897 " target="_blank">ORCID</a>
                 </p>
             </div>
         </div>
@@ -488,9 +496,9 @@
                         <span class="lang-en">Undergraduate:</span>
                         <span class="lang-zh">本科:</span>
                     </strong>
-                    <img class="entry-logo" src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="SZTU Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU';">
+                    <img class="entry-logo" src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="SZTU Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU ';">
                     <div class="entry-details">
-                        <a href="https://www.sztu.edu.cn/" target="_blank">
+                        <a href="https://www.sztu.edu.cn/ " target="_blank">
                             <span class="lang-en">Shenzhen Technology University</span>
                             <span class="lang-zh">深圳技术大学</span>
                         </a>
@@ -512,10 +520,10 @@
                         <span class="lang-en">Joint Training:</span>
                         <span class="lang-zh">联合培养:</span>
                     </strong>
-                    <img class="entry-logo" src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';">
-                    <img class="entry-logo" src="my-academic-site/images/x-institue_logo.jpg" alt="X-Institute Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';">
+                    <img class="entry-logo" src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua ';">
+                    <img class="entry-logo" src="my-academic-site/images/x-institue_logo.jpg" alt="X-Institute Logo" onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst ';">
                     <div class="entry-details">
-                        <a href="https://www.x-institute.edu.cn/" target="_blank">
+                        <a href="https://www.x-institute.edu.cn/ " target="_blank">
                             <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span>
                             <span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span>
                         </a>--
@@ -527,7 +535,7 @@
                     <div class="entry-date">2023.09–Present</div>
                 </div>
                 <ul>
-                    <li><span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank">See Qian Class Step-by-Step Training Program</a></span><span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank">见钱班进阶式培养计划</a></span></li>
+                    <li><span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea " target="_blank">See Qian Class Step-by-Step Training Program</a></span><span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea " target="_blank">见钱班进阶式培养计划</a></span></li>
                 </ul>
             </div>
         </section>
@@ -611,7 +619,7 @@
                         <div class="pub-venue">E3S Web Conf., 615 (2025) 02010</div>
                         <div class="pub-links">
                             <span class="pdf-link" onclick="openPdfModal('pdfs/e3sconf_eppc2025_02010.pdf')">[PDF]</span>
-                            <a href="https://doi.org/10.1051/e3sconf/202561502010" target="_blank">[DOI]</a>
+                            <a href="https://doi.org/10.1051/e3sconf/202561502010 " target="_blank">[DOI]</a>
                             <span class="pub-status">[EI]</span>
                         </div>
                     </div>
@@ -630,7 +638,7 @@
                         <div class="pub-venue">Polymers 17, no. 15: 2136</div>
                         <div class="pub-links">
                             <span class="pdf-link" onclick="openPdfModal('pdfs/polymers-17-02136.pdf')">[PDF]</span>
-                            <a href="https://doi.org/10.3390/polym17152136" target="_blank">[DOI]</a>
+                            <a href="https://doi.org/10.3390/polym17152136 " target="_blank">[DOI]</a>
                             <span class="pub-status">[SCI, JCR Q1]</span>
                             <span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span>
                         </div>
@@ -803,7 +811,36 @@
             closePdfModal();
         }
     }
-</script>
 
+    // --- PDF Download Logic (Plan A) ---
+    document.getElementById('download-pdf').addEventListener('click', async () => {
+      const main = document.querySelector('main');
+      const isDark = document.body.classList.contains('dark-mode');
+
+      const opt = {
+        margin:       0.5,
+        filename:     'Ding_Haokai_CV.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: isDark ? '#1a1a1a' : '#ffffff'
+        },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+
+      // Temporarily switch to light mode for better printing
+      if (isDark) {
+        document.body.classList.remove('dark-mode');
+        await new Promise(r => setTimeout(r, 50));
+      }
+
+      await html2pdf().set(opt).from(main).save();
+
+      if (isDark) document.body.classList.add('dark-mode');
+    });
+</script>
+<!-- html2pdf CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
