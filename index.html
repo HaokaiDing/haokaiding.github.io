@@ -15,13 +15,13 @@
   <style>
     :root{
       --brand:#0056b3;
-      --ei-color:#0056b3;
-      --sci-color:#28a745;
-      --jcrq1-color:#6f42c1;
-      --accepted-color:#6c757d;
-      --published-color:#343a40;
-      --author-color:#007bff;
-      --corresp-color:#ff9800;
+      --ei-color:#0056b3;   /* EI */
+      --sci-color:#2e9e44;  /* SCI */
+      --jcrq1-color:#6d4bc3;/* JCR Q1 */
+      --accepted-color:#6f7a83;
+      --published-color:#495057;
+      --author-color:#0d6efd;  /* Author role */
+      --corresp-color:#ff9800; /* Corresponding */
     }
     html{scroll-behavior:smooth;}
     body{
@@ -85,12 +85,17 @@
     .pub-authors{font-size:1em;color:#555;margin-bottom:4px}
     .pub-authors b{color:#333}
     .pub-venue{font-size:1em;color:#555;font-style:italic}
-    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-    .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.9em;color:var(--brand)}
 
-    /* Badges (统一胶囊风格) */
+    /* Links + badges layout */
+    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)}
+
+    /* Badges (pill, improved contrast) */
     .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{
-      display:inline-block;font-size:0.8em;font-weight:600;border-radius:12px;padding:4px 10px;line-height:1.2;color:#fff
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:0.82em;font-weight:700;letter-spacing:.1px;
+      border-radius:999px;padding:4px 9px;line-height:1.2;color:#fff;
+      vertical-align:middle;white-space:nowrap;
     }
     .ei-badge{background:var(--ei-color)}
     .sci-badge{background:var(--sci-color)}
@@ -99,7 +104,7 @@
     .published-badge{background:var(--published-color)}
     .author-badge{background:var(--author-color)}
     .corresp-badge{background:var(--corresp-color)}
-    .author-note{font-size:.9em;color:var(--brand)}
+    .author-badge:empty,.corresp-badge:empty{display:none}
 
     /* Awards */
     .awards-list{list-style:none;padding:0}
@@ -112,7 +117,7 @@
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
     .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
-    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links a,.dark-mode .author-note{color:#8ab4f8}
+    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links a{color:#8ab4f8}
     .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
@@ -433,7 +438,7 @@
       localStorage.setItem('theme',nxt); applyTheme(nxt);
     });
 
-    /* Language switcher (no FOUC) */
+    /* Language switcher */
     function setLanguage(lang){
       document.documentElement.setAttribute('data-lang', lang);
       $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active', a.dataset.lang===lang));
@@ -445,7 +450,7 @@
     });
     document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
 
-    /* Mobile tap toggle for profile */
+    /* Mobile toggle for profile */
     let touchCapable=false; window.addEventListener('touchstart',()=>{touchCapable=true;},{once:true});
     $('#profileBox').addEventListener('click',()=>{ if(touchCapable) $('#profileBox').classList.toggle('toggled'); });
 
@@ -466,11 +471,8 @@
       if(lastFocused && lastFocused.focus) lastFocused.focus();
     }
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
-    // Close only when clicking backdrop
     window.addEventListener('click',(e)=>{ if(e.target===modal) closePdfModal(); });
     pdfClose.addEventListener('click', closePdfModal);
-
-    // Delegate open on [PDF]
     document.addEventListener('click',(e)=>{
       const trg=e.target.closest('.pdf-link'); if(!trg) return;
       e.preventDefault(); e.stopPropagation();
@@ -519,20 +521,18 @@
     window.addEventListener('scroll', onScroll, { passive:true });
     backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    /* Auto-badge: convert † to Co-first Author, * to Corresponding Author (supports <sup> and plain text) */
+    /* Auto-badge: † → Co-first, * → Corresponding (supports <sup> and plain text) */
     document.addEventListener('DOMContentLoaded', ()=>{
       document.querySelectorAll('.pub-authors').forEach(el=>{
         const nodes = Array.from(el.childNodes);
-
         const makeBadge = (cls, en, zh)=>{
           const span = document.createElement('span');
           span.className = cls;
           span.innerHTML = `<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
           return span;
         };
-
         nodes.forEach(node=>{
-          // 1) Handle <sup>†> and <sup>*>
+          // handle <sup>
           if(node.nodeType === 1 && node.tagName === 'SUP'){
             const t = node.textContent.trim();
             if(t === '†'){
@@ -542,22 +542,19 @@
             }
             return;
           }
-          // 2) Handle plain text daggers/asterisks
+          // handle plain text
           if(node.nodeType === 3){
             const txt = node.nodeValue;
             if(!txt || (!txt.includes('†') && !txt.includes('*'))) return;
             const frag = document.createDocumentFragment();
-            // Replace both † and *
             const re = /[†*]/g;
             let lastIndex = 0, m;
             while((m = re.exec(txt)) !== null){
               const chunk = txt.slice(lastIndex, m.index);
               if(chunk) frag.appendChild(document.createTextNode(chunk));
-              if(m[0] === '†'){
-                frag.appendChild(makeBadge('author-badge','Co-first Author','共同第一作者'));
-              }else{
-                frag.appendChild(makeBadge('corresp-badge','Corresponding Author','通讯作者'));
-              }
+              frag.appendChild(m[0]==='†'
+                ? makeBadge('author-badge','Co-first Author','共同第一作者')
+                : makeBadge('corresp-badge','Corresponding Author','通讯作者'));
               lastIndex = re.lastIndex;
             }
             const tail = txt.slice(lastIndex);
