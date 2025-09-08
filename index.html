@@ -14,15 +14,19 @@
 
   <style>
     :root{
-      --brand:#0056b3;
-      --ei-color:#0056b3;   /* EI */
-      --sci-color:#2e9e44;  /* SCI */
-      --jcrq1-color:#6d4bc3;/* JCR Q1 */
-      --accepted-color:#6f7a83;
-      --published-color:#495057;
-      --author-color:#0d6efd;  /* Author role */
-      --corresp-color:#ff9800; /* Corresponding */
+      --brand:#0b63c7;
+
+      /* badges palette */
+      --ei-color:#1266f1;
+      --sci-color:#2e9e44;
+      --jcrq1-color:#6a4cc7;   /* 更通透的紫 */
+      --accepted-color:#6f7a83; /* 柔和灰 */
+      --published-color:#45515f;/* 更有层次的深灰 */
+
+      --author-color:#0d6efd;   /* 共同/第一作者（蓝） */
+      --corresp-color:#ff9800;  /* 通讯作者（橙） */
     }
+
     html{scroll-behavior:smooth;}
     body{
       font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
@@ -82,15 +86,17 @@
     .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
     .pub-details{flex-grow:1}
     .pub-title{font-weight:700;font-size:1em;margin-bottom:4px}
-    .pub-authors{font-size:1em;color:#555;margin-bottom:4px}
+    .pub-authors{font-size:1em;color:#555;margin-bottom:6px}
     .pub-authors b{color:#333}
     .pub-venue{font-size:1em;color:#555;font-style:italic}
 
     /* Links + badges layout */
     .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
     .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)}
+    /* 不在链接行显示作者说明，避免重复/错位 */
+    .pub-links .author-note{display:none}
 
-    /* Badges (pill, improved contrast) */
+    /* Badges（统一胶囊） */
     .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{
       display:inline-flex;align-items:center;justify-content:center;
       font-size:0.82em;font-weight:700;letter-spacing:.1px;
@@ -103,7 +109,18 @@
     .accepted-badge{background:var(--accepted-color)}
     .published-badge{background:var(--published-color)}
     .author-badge{background:var(--author-color)}
-    .corresp-badge{background:var(--corresp-color)}
+    /* 通讯作者：克制的描边款（更清爽） */
+    .corresp-badge{
+      color:var(--corresp-color);
+      background:transparent;
+      border:1.5px solid var(--corresp-color);
+      padding:2px 7px;
+    }
+    /* 作者行上的身份徽章做小一点，避免喧宾夺主 */
+    .pub-authors .author-badge,.pub-authors .corresp-badge{
+      font-size:.72em; padding:2px 6px; margin-left:6px;
+    }
+    /* 空徽章隐藏，解决“蓝色空块” */
     .author-badge:empty,.corresp-badge:empty{display:none}
 
     /* Awards */
@@ -121,6 +138,7 @@
     .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
+    .dark-mode .corresp-badge{border-color:#ffc266;color:#ffc266}
 
     /* Back to top */
     #backToTop{
@@ -503,7 +521,7 @@
       wrapper.appendChild(main.cloneNode(true));
 
       const host=document.createElement('div');
-      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style.width='794px';
+      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style	width='794px';
       host.appendChild(wrapper); document.body.appendChild(host);
 
       const opt={ margin:0.5, filename:'Ding_Haokai_CV_2col.pdf', image:{type:'jpeg',quality:0.98},
@@ -521,7 +539,7 @@
     window.addEventListener('scroll', onScroll, { passive:true });
     backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    /* Auto-badge: † → Co-first, * → Corresponding (supports <sup> and plain text) */
+    /* Auto-badge: † → Co-first, * → Corresponding（仅处理作者行） */
     document.addEventListener('DOMContentLoaded', ()=>{
       document.querySelectorAll('.pub-authors').forEach(el=>{
         const nodes = Array.from(el.childNodes);
