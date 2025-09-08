@@ -294,7 +294,7 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
     window.addEventListener('click',e=>{ const content=$('.pdf-modal-content'); if(modal.style.display==='block' && !content.contains(e.target)) closePdfModal(); });
     pdfClose.addEventListener('click', closePdfModal);
-    document.addEventListener('click',(e)=>{ const trg=e.target.closest('.pdf-link'); if(!trg) return; const path=trg.getAttribute('data-pdf'); if(path) openPdfModal(path); });
+    document.addEventListener('click',(e)=>{ const trg=e.target.closest('.pdf-link'); if(!trg) return; e.stopPropagation(); e.preventDefault(); const path=trg.getAttribute('data-pdf'); if(path) openPdfModal(path); });
 
     // Single-column PDF
     document.getElementById('download-pdf').addEventListener('click', async () => {
