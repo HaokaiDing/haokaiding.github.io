@@ -19,12 +19,12 @@
       /* badges palette */
       --ei-color:#1266f1;
       --sci-color:#2e9e44;
-      --jcrq1-color:#6a4cc7;   /* 更通透的紫 */
-      --accepted-color:#6f7a83; /* 柔和灰 */
-      --published-color:#45515f;/* 更有层次的深灰 */
+      --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a;
+      --published-color:#3f4954;
 
-      --author-color:#0d6efd;   /* 共同/第一作者（蓝） */
-      --corresp-color:#ff9800;  /* 通讯作者（橙） */
+      --author-color:#0d6efd;
+      --corresp-color:#ff9800;
     }
 
     html{scroll-behavior:smooth;}
@@ -90,18 +90,26 @@
     .pub-authors b{color:#333}
     .pub-venue{font-size:1em;color:#555;font-style:italic}
 
-    /* Links + badges layout */
-    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-    .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)}
-    /* 不在链接行显示作者说明，避免重复/错位 */
-    .pub-links .author-note{display:none}
+    /* Links area */
+    .pub-links{
+      margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px
+    }
+    /* 只给链接和 [PDF] 上色，避免影响徽章 */
+    .pub-links > a,
+    .pub-links > .pdf-link{
+      cursor:pointer;text-decoration:none;font-weight:700;
+      font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
+    }
+    /* 链接 hover */
+    .pub-links > a:hover,
+    .pub-links > .pdf-link:hover{ text-decoration:underline }
 
-    /* Badges（统一胶囊） */
+    /* Badges（独立控制颜色，不受链接区影响） */
     .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.corresp-badge{
       display:inline-flex;align-items:center;justify-content:center;
-      font-size:0.82em;font-weight:700;letter-spacing:.1px;
-      border-radius:999px;padding:4px 9px;line-height:1.2;color:#fff;
-      vertical-align:middle;white-space:nowrap;
+      font-size:0.86em;font-weight:800;letter-spacing:.2px;
+      border-radius:999px;padding:4px 10px;line-height:1.2;
+      color:#fff;white-space:nowrap;vertical-align:middle;
     }
     .ei-badge{background:var(--ei-color)}
     .sci-badge{background:var(--sci-color)}
@@ -109,18 +117,18 @@
     .accepted-badge{background:var(--accepted-color)}
     .published-badge{background:var(--published-color)}
     .author-badge{background:var(--author-color)}
-    /* 通讯作者：克制的描边款（更清爽） */
+
+    /* 通讯作者：描边款，克制清晰 */
     .corresp-badge{
       color:var(--corresp-color);
-      background:transparent;
-      border:1.5px solid var(--corresp-color);
-      padding:2px 7px;
+      background:transparent;border:1.6px solid var(--corresp-color);
+      padding:2px 7px;font-weight:800;
     }
-    /* 作者行上的身份徽章做小一点，避免喧宾夺主 */
+    /* 作者行上的身份徽章更小、更贴近姓名 */
     .pub-authors .author-badge,.pub-authors .corresp-badge{
-      font-size:.72em; padding:2px 6px; margin-left:6px;
+      font-size:.74em;padding:2px 6px;margin-left:6px
     }
-    /* 空徽章隐藏，解决“蓝色空块” */
+    /* 避免出现空块 */
     .author-badge:empty,.corresp-badge:empty{display:none}
 
     /* Awards */
@@ -134,7 +142,7 @@
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
     .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
-    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links a{color:#8ab4f8}
+    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links > a,.dark-mode .pub-links > .pdf-link{color:#8ab4f8}
     .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
@@ -309,7 +317,6 @@
                 <span class="pdf-link" data-pdf="pdfs/icia_v4.pdf">[PDF]</span>
                 <span class="accepted-badge">Accepted</span>
                 <span class="ei-badge">EI</span>
-                <span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span>
               </div>
             </div>
           </li>
@@ -324,7 +331,6 @@
                 <span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span>
                 <span class="accepted-badge">Accepted</span>
                 <span class="ei-badge">EI</span>
-                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
               </div>
             </div>
           </li>
@@ -339,7 +345,6 @@
                 <span class="pdf-link" data-pdf="pdfs/CASE25_0693_FI.pdf">[PDF]</span>
                 <span class="published-badge">Published</span>
                 <span class="ei-badge">EI</span>
-                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
               </div>
             </div>
           </li>
@@ -354,7 +359,6 @@
                 <span class="pdf-link" data-pdf="pdfs/ICARM25_0037_FI.pdf">[PDF]</span>
                 <span class="published-badge">Published</span>
                 <span class="ei-badge">EI</span>
-                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
               </div>
             </div>
           </li>
@@ -387,7 +391,6 @@
                 <a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a>
                 <span class="sci-badge">SCI</span>
                 <span class="jcrq1-badge">JCR Q1</span>
-                <span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span>
               </div>
             </div>
           </li>
@@ -442,7 +445,6 @@
   <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
   <script>
-    /* Helpers */
     const $ = (s,r=document)=>r.querySelector(s);
     const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 
@@ -521,7 +523,7 @@
       wrapper.appendChild(main.cloneNode(true));
 
       const host=document.createElement('div');
-      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style	width='794px';
+      host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style.width='794px';
       host.appendChild(wrapper); document.body.appendChild(host);
 
       const opt={ margin:0.5, filename:'Ding_Haokai_CV_2col.pdf', image:{type:'jpeg',quality:0.98},
