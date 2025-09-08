@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
   <meta name="color-scheme" content="light dark" />
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -19,11 +21,7 @@
       --advisor-color:#ff9800;          /* Advisor */
     }
     html{scroll-behavior:smooth;}
-    body{
-      font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
-      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
+    body{font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;}
     .container{max-width:900px;width:100%;margin:40px 20px;}
 
     /* 顶部控件（已移除导出 PDF 按钮）*/
@@ -133,7 +131,7 @@
     html:not([data-lang="zh"]) .lang-zh{display:none!important}
     html[data-lang="zh"] .lang-en{display:none!important}
 
-    /* PDF 预览弹窗（用于论文 PDF，保留） */
+    /* PDF 预览弹窗（保留） */
     .pdf-modal{
       position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
       opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s;
@@ -244,229 +242,66 @@
                  src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo"
                  onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';">
             <img class="entry-logo" loading="lazy" crossorigin="anonymous"
-                 src="my-academic-site/images/x-institute_logo.jpg" alt="X-Institute Logo"
+                 src="my-academic-site/images/x-institue_logo.jpg" alt="X-Institute Logo"
                  onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';">
             <div class="entry-details">
-              <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer">
-                <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span>
-                <span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span>
-              </a> --
-              <span class="lang-en">X Scholar</span><span class="lang-zh">零一学者</span>
+              <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span><span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span></a> -- <span class="lang-en">X Scholar</span><span class="lang-zh">零一学者</span>
             </div>
           </div>
           <div class="entry-line-2"><div class="entry-date">2023.09–Present</div></div>
           <ul>
-            <li>
-              <span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">See Qian Class Step-by-Step Training Program</a></span>
-              <span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">见钱班进阶式培养计划</a></span>
-            </li>
+            <li><span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">See Qian Class Step-by-Step Training Program</a></span><span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">见钱班进阶式培养计划</a></span></li>
           </ul>
         </div>
       </section>
 
-      <!-- Publications -->
+      <!-- Publications Section -->
+
       <section id="publications" class="page-avoid">
         <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2><hr>
+        
+        <!-- Add your publication entries here -->
 
-        <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
-
-        <h4><span class="lang-en">Conference Papers</span><span class="lang-zh">会议论文</span></h4>
-        <ul class="publication-list">
-          <li class="publication-item">
-            <div class="pub-index">[C5]</div>
-            <div class="pub-details">
-              <div class="pub-title">An Underactuated Gripper with Grasshopper-Inspired Linkages and Delay Triggering for Pinching and Adaptive Grasping</div>
-              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Yizhe Chen<sup>†</sup>, Dongjun Jia, Wenzeng Zhang*</div>
-              <div class="pub-venue">Proceedings of the 2025 International Conference on Information and Automation (ICIA)</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/icia_v4.pdf">[PDF]</span>
-                <span class="accepted-badge">Accepted</span>
-                <span class="ei-badge">EI</span>
-              </div>
-            </div>
-          </li>
-          <li class="publication-item">
-            <div class="pub-index">[C4]</div>
-            <div class="pub-details">
-              <div class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
-              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, W.Zhang*</div>
-              <div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span>
-                <span class="accepted-badge">Accepted</span>
-                <span class="ei-badge">EI</span>
-              </div>
-            </div>
-          </li>
-          <li class="publication-item">
-            <div class="pub-index">[C3]</div>
-            <div class="pub-details">
-              <div class="pub-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
-              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Z.Chen, T.Yang*, W.Zhang*</div>
-              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Automation Science and Engineering (CASE)</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/CASE25_0693_FI.pdf">[PDF]</span>
-                <span class="published-badge">Published</span>
-                <span class="ei-badge">EI</span>
-              </div>
-            </div>
-          </li>
-          <li class="publication-item">
-            <div class="pub-index">[C2]</div>
-            <div class="pub-details">
-              <div class="pub-title">Peaucellier Gripper: A Novel Underactuated Gripper for Linear Pinching and Self-Adaptive Grasp with the Peaucellier Linkage</div>
-              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, J.Fan, Z.Zhu, Y.Zhao, K.Chen*, W.Zhang*</div>
-              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Advanced Robotics and Mechatronics (ARM)</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/ICARM25_0037_FI.pdf">[PDF]</span>
-                <span class="published-badge">Published</span>
-                <span class="ei-badge">EI</span>
-              </div>
-            </div>
-          </li>
-          <li class="publication-item">
-            <div class="pub-index">[C1]</div>
-            <div class="pub-details">
-              <div class="pub-title">Rapid Analysis of Heavy Metal Element Adsorption by SCG Based on LIBS Technology</div>
-              <div class="pub-authors">Hairui Xie, Libing You, Xiaodong Fang, Leyi Li, <b>Haokai Ding</b>, Zhengqi Zhou, Guanyang Zhang, Dongjian Zhang</div>
-              <div class="pub-venue">E3S Web Conf., 615 (2025) 02010</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/e3sconf_eppc2025_02010.pdf">[PDF]</span>
-                <a href="https://doi.org/10.1051/e3sconf/202561502010" target="_blank" rel="noopener noreferrer">[DOI]</a>
-                <span class="ei-badge">EI</span>
-              </div>
-            </div>
-          </li>
-        </ul>
-
-        <h4><span class="lang-en">Journal Articles</span><span class="lang-zh">期刊论文</span></h4>
-        <ul class="publication-list">
-          <li class="publication-item">
-            <div class="pub-index">[J1]</div>
-            <div class="pub-details">
-              <div class="pub-title">Recent Progress on the Research of 3D Printing in Aqueous Zinc-Ion Batteries</div>
-              <div class="pub-authors">Yating Liu<sup>†</sup>, <b>Haokai Ding<sup>†</sup></b>, Honglin Chen, Haoxuan Gao, Jixin Yu, Funian Mo, Ning Wang*</div>
-              <div class="pub-venue">Polymers 17, no. 15: 2136</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/polymers-17-02136.pdf">[PDF]</span>
-                <a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a>
-                <span class="sci-badge">SCI</span>
-                <span class="jcrq1-badge">JCR Q1</span>
-              </div>
-            </div>
-          </li>
-        </ul>
       </section>
 
-      <!-- Awards -->
-      <section id="awards" class="page-avoid">
+      <section id="awards">
         <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2><hr>
         <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
+
         <div class="awards-list">
           <div class="award-item">
-            <span class="award-name"><span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span></span>
+            <span class="award-name">
+              <span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span>
+              <span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span>
+            </span>
             <span class="award-year">2025</span>
-          </div>
-          <div class="award-item">
-            <span class="award-name"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></span>
-            <span class="award-year">2023</span>
-          </div>
-          <div class="award-item">
-            <span class="award-name"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></span>
-            <span class="award-year">2023</span>
+            <a href="https://sites.google.com/site/asmemrc/design-competition-showcase/2025-finalists#h.2oibi1g704mf" target="_blank" rel="noopener noreferrer">View the competition details</a>
           </div>
         </div>
 
-        <h3><span class="lang-en">University-Level</span><span class="lang-zh">校级</span></h3>
-        <div class="awards-list">
-          <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2024</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">CHENHSONG Scholarship (Dean's Award & Academic Excellence)</span><span class="lang-zh">震雄奖学金 (院长奖学金, 学业卓越奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
-        </div>
+        <!-- More awards go here -->
+
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
+      <p>&copy; 2025 Haokai Ding · Last updated 2025-09-09</p>
     </footer>
+
   </div>
 
-  <!-- 论文 PDF 预览弹窗（保留） -->
-  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <!-- PDF Modal (For later use if you wish to add it again) -->
+  <div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
-      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">&times;</button>
-      <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
+      <span class="close-button" id="pdfClose">&times;</span>
+      <iframe id="pdf-viewer" src=""></iframe>
     </div>
   </div>
 
-  <!-- 返回顶部 -->
-  <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
+  <!-- Back to Top Button -->
+  <button id="backToTop" type="button">⬆️</button>
 
-  <script>
-    const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    /* 主题切换 */
-    const themeSwitcher=$('#theme-switcher');
-    const applyTheme=t=>{ if(t==='dark'){document.body.classList.add('dark-mode');themeSwitcher.textContent='☀️';}else{document.body.classList.remove('dark-mode');themeSwitcher.textContent='🌙';} };
-    applyTheme(localStorage.getItem('theme')||'light');
-    themeSwitcher.addEventListener('click',()=>{const cur=document.body.classList.contains('dark-mode')?'dark':'light';const nxt=cur==='dark'?'light':'dark';localStorage.setItem('theme',nxt);applyTheme(nxt);});
-
-    /* 语言切换 */
-    function setLanguage(lang){document.documentElement.setAttribute('data-lang',lang); $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active',a.dataset.lang===lang)); try{localStorage.setItem('preferredLanguage',lang);}catch{}}
-    $('#lang-switcher').addEventListener('click',e=>{const a=e.target.closest('.lang-link');if(!a)return;e.preventDefault();setLanguage(a.dataset.lang);});
-    document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
-
-    /* 触摸头像切换 */
-    let touchCapable=false; window.addEventListener('touchstart',()=>{touchCapable=true;},{once:true});
-    $('#profileBox').addEventListener('click',()=>{ if(touchCapable) $('#profileBox').classList.toggle('toggled'); });
-
-    /* 论文 PDF 预览弹窗（简历导出已删除） */
-    const modal=$('#pdfModal'), pdfViewer=$('#pdf-viewer'), pdfClose=$('#pdfClose'); let lastFocused=null;
-    function openPdfModal(path){lastFocused=document.activeElement;pdfViewer.src=path;modal.classList.add('open');modal.setAttribute('aria-hidden','false');pdfClose.focus();}
-    function closePdfModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');pdfViewer.src='';if(lastFocused&&lastFocused.focus)lastFocused.focus();}
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
-    window.addEventListener('click',e=>{ if(e.target===modal) closePdfModal(); });
-    pdfClose.addEventListener('click', closePdfModal);
-    document.addEventListener('click',e=>{const t=e.target.closest('.pdf-link');if(!t)return;e.preventDefault();openPdfModal(t.getAttribute('data-pdf'));});
-
-    /* 返回顶部 */
-    const backBtn=$('#backToTop');
-    const onScroll=()=>{ backBtn.style.display=(window.scrollY>300)?'block':'none'; };
-    window.addEventListener('scroll', onScroll, { passive:true });
-    backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
-
-    /* 作者徽章自动化：†=Co-first；*=Advisor；不自动判定 First Author */
-    document.addEventListener('DOMContentLoaded', ()=>{
-      document.querySelectorAll('.pub-authors').forEach(el=>{
-        const nodes=[...el.childNodes];
-        const makeBadge=(cls,en,zh)=>{const s=document.createElement('span');s.className=cls;s.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;return s;}
-        nodes.forEach(node=>{
-          if(node.nodeType===1 && node.tagName==='SUP'){
-            const t=node.textContent.trim();
-            el.replaceChild(t==='†'
-              ? makeBadge('author-badge','Co-first Author','共同第一作者')
-              : makeBadge('advisor-badge','Advisor','导师')
-            , node);
-            return;
-          }
-          if(node.nodeType===3){
-            const txt=node.nodeValue; if(!txt||(!txt.includes('†')&&!txt.includes('*'))) return;
-            const frag=document.createDocumentFragment(); const re=/[†*]/g; let i=0,m;
-            while((m=re.exec(txt))){
-              const chunk=txt.slice(i,m.index); if(chunk) frag.appendChild(document.createTextNode(chunk));
-              frag.appendChild(m[0]==='†'
-                ? makeBadge('author-badge','Co-first Author','共同第一作者')
-                : makeBadge('advisor-badge','Advisor','导师'));
-              i=re.lastIndex;
-            }
-            const tail=txt.slice(i); if(tail) frag.appendChild(document.createTextNode(tail));
-            el.replaceChild(frag,node);
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>
