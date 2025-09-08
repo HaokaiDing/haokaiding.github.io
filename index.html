@@ -7,111 +7,145 @@
   <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
   <meta name="color-scheme" content="light dark" />
 
-  <!-- Fonts (no stray spaces) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    :root { --brand: #0056b3; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Source Serif Pro', serif; background:#fff; color:#333; line-height:1.6; margin:0; padding:0; display:flex; justify-content:center; transition: background-color .3s, color .3s; }
-    .container { max-width: 900px; width:100%; margin:40px 20px; }
+    :root{
+      --brand:#0056b3;
+      --ei-color:#0056b3;
+      --sci-color:#28a745;
+      --jcrq1-color:#6f42c1;
+      --accepted-color:#6c757d;
+      --published-color:#343a40;
+    }
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
+      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+    }
+    .container{max-width:900px;width:100%;margin:40px 20px;}
 
-    /* --- Top Controls --- */
-    .top-controls { text-align:right; margin-bottom: 12px; font-size:.9em; font-family:'Lato',sans-serif; display:flex; justify-content:flex-end; align-items:center; gap:8px; }
-    #theme-switcher, #download-pdf, #download-pdf-2col { background:none; border:none; cursor:pointer; font-size:1.5em; padding:0 5px; line-height:1; }
-    #download-pdf:hover, #download-pdf-2col:hover { transform: scale(1.12); }
-    #lang-switcher a { color:#888; font-weight:700; text-decoration:none; padding:4px 8px; border-radius:4px; transition: all .2s; }
-    #lang-switcher a.active { color:var(--brand); background:#e7f1ff; }
+    /* Top controls */
+    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
+    #theme-switcher,#download-pdf,#download-pdf-2col{background:none;border:none;cursor:pointer;font-size:1.5em;padding:0 5px;line-height:1}
+    #download-pdf:hover,#download-pdf-2col:hover{transform:scale(1.12)}
+    #lang-switcher a{color:#888;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .2s}
+    #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
 
-    /* --- Nav Anchors --- */
-    nav.site-nav { background:#f5f5f5; padding:10px 12px; border-radius:8px; margin-bottom:14px; display:flex; gap:12px; flex-wrap:wrap; }
-    nav.site-nav a { text-decoration:none; font-family:'Lato',sans-serif; font-weight:700; color:var(--brand); padding:6px 10px; border-radius:999px; background:#fff; border:1px solid #e7f1ff; }
-    nav.site-nav a:hover { background:#e7f1ff; }
+    /* Nav anchors */
+    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:8px;margin-bottom:14px;display:flex;gap:12px;flex-wrap:wrap}
+    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
+    nav.site-nav a:hover{background:#e7f1ff}
 
-    /* --- Header & Contact --- */
-    header { display:flex; align-items:flex-start; margin-bottom:25px; }
-    .header-info h1 { font-family:'Lato',sans-serif; font-size:2.2em; font-weight:700; margin:0 0 10px 0; }
-    .contact-info p { margin:0; line-height:1.5; font-size:.95em; color:#444; }
-    .contact-info a { color:var(--brand); text-decoration:none; }
-    .contact-info a:hover { text-decoration:underline; }
+    /* Header & contact */
+    header{display:flex;align-items:flex-start;margin-bottom:25px}
+    .header-info h1{font-family:'Lato',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
+    .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
+    .contact-info a{color:var(--brand);text-decoration:none}
+    .contact-info a:hover{text-decoration:underline}
 
-    /* --- Profile --- */
-    .profile-container { position:relative; width:120px; height:120px; margin-right:30px; border-radius:8px; overflow:hidden; flex-shrink:0; }
-    .profile-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:8px; transition: opacity .5s ease-in-out; }
-    .profile-image.default { opacity:1; } .profile-image.hover { opacity:0; }
-    .profile-container:hover .profile-image.default, .profile-container.toggled .profile-image.default { opacity:0; }
-    .profile-container:hover .profile-image.hover, .profile-container.toggled .profile-image.hover { opacity:1; }
+    /* Profile images */
+    .profile-container{position:relative;width:120px;height:120px;margin-right:30px;border-radius:8px;overflow:hidden;flex-shrink:0}
+    .profile-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;transition:opacity .5s ease-in-out}
+    .profile-image.default{opacity:1}.profile-image.hover{opacity:0}
+    .profile-container:hover .profile-image.default,.profile-container.toggled .profile-image.default{opacity:0}
+    .profile-container:hover .profile-image.hover,.profile-container.toggled .profile-image.hover{opacity:1}
 
-    /* --- Sections --- */
-    section { margin-bottom:30px; }
-    h2, h3, h4 { font-family:'Lato',sans-serif; font-weight:700; color:#1a1a1a; }
-    h2 { font-size:1.6em; margin:0; }
-    h3 { font-size:1.2em; color:#333; margin:20px 0 15px; }
-    h4 { font-size:1.05em; color:#444; margin:20px 0 15px; }
-    hr { border:0; height:1px; background:#e5e5e5; margin:8px 0 20px; }
+    /* Sections */
+    section{margin-bottom:30px}
+    h2,h3,h4{font-family:'Lato',sans-serif;font-weight:700;color:#1a1a1a}
+    h2{font-size:1.6em;margin:0}
+    h3{font-size:1.2em;color:#333;margin:20px 0 15px}
+    h4{font-size:1.05em;color:#444;margin:20px 0 15px}
+    hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 20px}
 
-    /* --- Education --- */
-    .education-entry { margin-bottom:25px; }
-    .entry-line-1 { display:flex; align-items:center; }
-    .entry-line-2 { text-align:right; margin-top:4px; }
-    .entry-role { font-family:'Lato',sans-serif; font-weight:700; margin-right:10px; font-size:1em; flex-shrink:0; }
-    .entry-logo { width:60px; height:60px; margin-right:15px; object-fit:contain; }
-    .entry-details { font-size:1em; }
-    .entry-details a { font-weight:700; color:var(--brand); text-decoration:none; }
-    .entry-details a:hover { text-decoration:underline; }
-    .entry-date { color:#666; font-size:.9em; }
-    .education-entry ul { margin-top:8px; padding-left:25px; }
+    /* Education */
+    .education-entry{margin-bottom:25px}
+    .entry-line-1{display:flex;align-items:center}
+    .entry-line-2{text-align:right;margin-top:4px}
+    .entry-role{font-family:'Lato',sans-serif;font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
+    .entry-logo{width:60px;height:60px;margin-right:15px;object-fit:contain}
+    .entry-details{font-size:1em}
+    .entry-details a{font-weight:700;color:var(--brand);text-decoration:none}
+    .entry-details a:hover{text-decoration:underline}
+    .entry-date{color:#666;font-size:.9em}
+    .education-entry ul{margin-top:8px;padding-left:25px}
 
-    /* --- Publications --- */
-    .publication-list { list-style:none; padding:0; }
-    .publication-item { margin-bottom:25px; display:flex; }
-    .pub-index { flex-shrink:0; width:40px; font-weight:700; font-family:'Lato',sans-serif; color:#333; }
-    .pub-details { flex-grow:1; }
-    .pub-title { font-weight:700; font-size:1em; margin-bottom:4px; }
-    .pub-authors { font-size:1em; color:#555; margin-bottom:4px; }
-    .pub-authors b { color:#333; }
-    .pub-venue { font-size:1em; color:#555; font-style:italic; }
-    .pub-links { margin-top:6px; display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; }
-    .pub-links a, .pub-links span { text-decoration:none; font-weight:700; font-family:'Lato',sans-serif; font-size:.9em; cursor:pointer; color:var(--brand); }
-    .pub-status { background:var(--brand); color:#fff; padding:3px 8px; border-radius:4px; font-size:.75em; }
-    .publication-state { background:#f0f0f0; color:#555; padding:3px 8px; border-radius:4px; font-size:.75em; }
-    .author-note { font-size:.9em; color:var(--brand); }
+    /* Publications */
+    .publication-list{list-style:none;padding:0}
+    .publication-item{margin-bottom:25px;display:flex}
+    .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
+    .pub-details{flex-grow:1}
+    .pub-title{font-weight:700;font-size:1em;margin-bottom:4px}
+    .pub-authors{font-size:1em;color:#555;margin-bottom:4px}
+    .pub-authors b{color:#333}
+    .pub-venue{font-size:1em;color:#555;font-style:italic}
+    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-links a,.pub-links span{cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.9em;color:var(--brand)}
 
-    /* --- Awards --- */
-    .awards-list { list-style:none; padding:0; }
-    .award-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:1em; }
-    .award-item:last-child { border-bottom:none; }
-    .award-name { flex-grow:1; padding-right:20px; }
-    .award-year { flex-shrink:0; font-weight:700; color:#555; font-family:'Lato',sans-serif; }
+    /* Badges */
+    .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge{
+      display:inline-block;font-size:.7em;font-weight:700;border-radius:4px;padding:3px 6px;color:#fff
+    }
+    .ei-badge{background:var(--ei-color)}
+    .sci-badge{background:var(--sci-color)}
+    .jcrq1-badge{background:var(--jcrq1-color)}
+    .accepted-badge{background:var(--accepted-color)}
+    .published-badge{background:var(--published-color)}
+    .author-note{font-size:.9em;color:var(--brand)}
 
-    /* --- Dark mode --- */
-    body.dark-mode { background:#1a1a1a; color:#f5f5f5; }
-    .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode .pub-index, .dark-mode .pub-authors b { color:#f5f5f5; }
-    .dark-mode .contact-info p, .dark-mode .entry-date, .dark-mode .pub-authors, .dark-mode .pub-venue, .dark-mode .award-year { color:#aaa; }
-    .dark-mode .contact-info a, .dark-mode .entry-details a, .dark-mode .pub-links a, .dark-mode .author-note { color:#8ab4f8; }
-    .dark-mode hr { background:#444; }
-    .dark-mode nav.site-nav { background:#2a2a2a; }
-    .dark-mode nav.site-nav a { color:#8ab4f8; background:#333; border-color:#444; }
+    /* Awards */
+    .awards-list{list-style:none;padding:0}
+    .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
+    .award-item:last-child{border-bottom:none}
+    .award-name{flex-grow:1;padding-right:20px}
+    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
 
-    /* --- Back to top --- */
-    #backToTop { position: fixed; right: 20px; bottom: 24px; display:none; z-index: 1100; border:none; border-radius:999px; padding:10px 12px; font-size:20px; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,.15); background:#ffffff; }
-    body.dark-mode #backToTop { background:#2a2a2a; color:#f5f5f5; }
+    /* Dark mode */
+    body.dark-mode{background:#1a1a1a;color:#f5f5f5}
+    .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
+    .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
+    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links a,.dark-mode .author-note{color:#8ab4f8}
+    .dark-mode hr{background:#444}
+    .dark-mode nav.site-nav{background:#2a2a2a}
+    .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
 
-    /* --- Two-column wrapper for export --- */
-    .twocol-wrapper { column-count:2; column-gap: 26px; }
-    .twocol-wrapper h1, .twocol-wrapper h2, .twocol-wrapper h3, .twocol-wrapper h4,
-    .twocol-wrapper .education-entry, .twocol-wrapper .publication-item,
-    .twocol-wrapper .awards-list, .twocol-wrapper ul, .twocol-wrapper p { break-inside: avoid; }
-    .twocol-wrapper section { margin: 0 0 18px 0; }
+    /* Back to top */
+    #backToTop{
+      position:fixed;right:20px;bottom:24px;display:none;z-index:1100;border:none;border-radius:999px;
+      padding:10px 12px;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.15);background:#ffffff
+    }
+    body.dark-mode #backToTop{background:#2a2a2a;color:#f5f5f5}
 
-    @media print { #backToTop, .top-controls, nav.site-nav { display:none !important; } }
+    /* Two-column wrapper for export only */
+    .twocol-wrapper{column-count:2;column-gap:26px}
+    .twocol-wrapper h1,.twocol-wrapper h2,.twocol-wrapper h3,.twocol-wrapper h4,
+    .twocol-wrapper .education-entry,.twocol-wrapper .publication-item,
+    .twocol-wrapper .awards-list,.twocol-wrapper ul,.twocol-wrapper p{break-inside:avoid}
+    .twocol-wrapper section{margin:0 0 18px 0}
 
-    /* --- Language default (avoid FOUC) --- */
-    .lang-zh { display:none; }
-    html[data-lang="zh"] .lang-en { display:none; }
-    html[data-lang="zh"] .lang-zh { display:inline; }
+    @media print{#backToTop,.top-controls,nav.site-nav{display:none!important}}
+
+    /* Language FOUC fix */
+    .lang-zh{display:none}
+    html[data-lang="zh"] .lang-en{display:none}
+    html[data-lang="zh"] .lang-zh{display:inline}
+
+    /* PDF modal */
+    .pdf-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000}
+    .pdf-modal-content{
+      position:relative;margin:5% auto;width:80%;max-width:900px;height:85%;
+      background:#fff;border-radius:8px;box-shadow:0 5px 15px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden
+    }
+    .pdf-modal-content iframe{width:100%;height:100%;border:none}
+    .close-button{
+      position:absolute;top:8px;right:8px;color:#fff;background:#333;font-size:24px;font-weight:bold;
+      width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)
+    }
+    .close-button:hover{background:#d9534f}
   </style>
 </head>
 <body>
@@ -138,11 +172,11 @@
         <img class="profile-image default" loading="lazy" crossorigin="anonymous"
              src="my-academic-site/images/haokai_DING_photo_cartoon.png"
              alt="Anime style profile photo of Haokai Ding"
-             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.%20(Anime)';" />
+             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.%20(Anime)';">
         <img class="profile-image hover" loading="lazy" crossorigin="anonymous"
              src="my-academic-site/images/profile.jpg"
              alt="Profile photo of Haokai Ding"
-             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';" />
+             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';">
       </div>
       <div class="header-info">
         <h1>Haokai Ding (丁浩剀)</h1>
@@ -150,11 +184,14 @@
           <p>
             <span class="lang-en">Future Technology School, Shenzhen Technology University (Shenzhen, Guangdong)</span>
             <span class="lang-zh">深圳技术大学, 未来技术学院 (中国, 深圳)</span>
-            <br />
+            <br>
             <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute (Shenzhen, Guangdong)</span>
             <span class="lang-zh">清华大学钱学森班 - 深圳零一学院 (中国, 深圳)</span>
-            <br />
-            E-mail: <a href="mailto:hk_ding@outlook.com">hk_ding@outlook.com</a> | <a href="mailto:202200101041@stumail.sztu.edu.cn">202200101041@stumail.sztu.edu.cn</a> | <a href="mailto:dinghaokai@mails.x-institute.edu.cn">dinghaokai@mails.x-institute.edu.cn</a><br />
+            <br>
+            E-mail:
+            <a href="mailto:hk_ding@outlook.com">hk_ding@outlook.com</a> |
+            <a href="mailto:202200101041@stumail.sztu.edu.cn">202200101041@stumail.sztu.edu.cn</a> |
+            <a href="mailto:dinghaokai@mails.x-institute.edu.cn">dinghaokai@mails.x-institute.edu.cn</a><br>
             <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a> |
             <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">ORCID</a>
           </p>
@@ -165,7 +202,7 @@
     <main class="main-content">
       <section id="about">
         <h2><span class="lang-en">About Me</span><span class="lang-zh">个人简介</span></h2>
-        <hr />
+        <hr>
         <p>
           <span class="lang-en">I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University, building a foundation in electronics and circuits. Concurrently, as an X Scholar in a joint program with Tsinghua University and Shenzhen X-Institute, I am engaged in advanced research focusing on underactuated robotic grippers and novel mechanical linkages. My goal is to integrate my knowledge in electronics with hands-on robotics research to contribute to the field.</span>
           <span class="lang-zh">我目前是深圳技术大学电子科学与技术专业的本科生，致力于夯实电子电路与技术的基础。同时，作为清华大学钱学森班-深圳零一学院的零一学者，我正深入参与欠驱动机器人抓手及新型机械连杆等方向的前沿研究。我的目标是将电子领域的知识与机器人学的科研实践相结合，为未来在该领域的贡献做准备。</span>
@@ -174,13 +211,13 @@
 
       <section id="education">
         <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2>
-        <hr />
+        <hr>
         <div class="education-entry">
           <div class="entry-line-1">
             <strong class="entry-role"><span class="lang-en">Undergraduate:</span><span class="lang-zh">本科:</span></strong>
             <img class="entry-logo" loading="lazy" crossorigin="anonymous"
                  src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="SZTU Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU';" />
+                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU';">
             <div class="entry-details">
               <a href="https://www.sztu.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Shenzhen Technology University</span><span class="lang-zh">深圳技术大学</span></a>
               <span class="lang-en">, Future Technology School--Bachelor of Engineering in Electronic Science and Technology</span>
@@ -193,15 +230,16 @@
             <li><span class="lang-en">Main Research: Laser-Induced Breakdown Spectroscopy (LIBS)</span><span class="lang-zh">主要研究: 激光诱导击穿光谱 (LIBS)</span></li>
           </ul>
         </div>
+
         <div class="education-entry">
           <div class="entry-line-1">
             <strong class="entry-role"><span class="lang-en">Joint Training:</span><span class="lang-zh">联合培养:</span></strong>
             <img class="entry-logo" loading="lazy" crossorigin="anonymous"
                  src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';" />
+                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';">
             <img class="entry-logo" loading="lazy" crossorigin="anonymous"
                  src="my-academic-site/images/x-institute_logo.jpg" alt="X-Institute Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';" />
+                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';">
             <div class="entry-details">
               <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span><span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span></a>--
               <span class="lang-en">X Scholar</span><span class="lang-zh">零一学者</span>
@@ -216,32 +254,125 @@
 
       <section id="publications">
         <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2>
-        <hr />
+        <hr>
         <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
+
         <h4><span class="lang-en">Conference Papers</span><span class="lang-zh">会议论文</span></h4>
         <ul class="publication-list">
-          <li class="publication-item"><div class="pub-index">[C5]</div><div class="pub-details"><div class="pub-title">An Underactuated Gripper with Grasshopper-Inspired Linkages and Delay Triggering for Pinching and Adaptive Grasping</div><div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Yizhe Chen<sup>†</sup>, Dongjun Jia, Wenzeng Zhang*</div><div class="pub-venue">Proceedings of the 2025 International Conference on Information and Automation (ICIA)</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/icia_v4.pdf">[PDF]</span><span class="publication-state">[Accepted]</span><span class="pub-status">[EI]</span><span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span></div></div></li>
-          <li class="publication-item"><div class="pub-index">[C4]</div><div class="pub-details"><div class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</div><div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, W.Zhang*</div><div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span><span class="publication-state">[Accepted]</span><span class="pub-status">[EI]</span><span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span></div></div></li>
-          <li class="publication-item"><div class="pub-index">[C3]</div><div class="pub-details"><div class="pub-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</div><div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Z.Chen, T.Yang*, W.Zhang*</div><div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Automation Science and Engineering (CASE)</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/CASE25_0693_FI.pdf">[PDF]</span><span class="publication-state">[Published]</span><span class="pub-status">[EI]</span><span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span></div></div></li>
-          <li class="publication-item"><div class="pub-index">[C2]</div><div class="pub-details"><div class="pub-title">Peaucellier Gripper: A Novel Underactuated Gripper for Linear Pinching and Self-Adaptive Grasp with the Peaucellier Linkage</div><div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, J.Fan, Z.Zhu, Y.Zhao, K.Chen*, W.Zhang*</div><div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Advanced Robotics and Mechatronics (ARM)</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/ICARM25_0037_FI.pdf">[PDF]</span><span class="publication-state">[Published]</span><span class="pub-status">[EI]</span><span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span></div></div></li>
-          <li class="publication-item"><div class="pub-index">[C1]</div><div class="pub-details"><div class="pub-title">Rapid Analysis of Heavy Metal Element Adsorption by SCG Based on LIBS Technology</div><div class="pub-authors">Hairui Xie, Libing You, Xiaodong Fang, Leyi Li, <b>Haokai Ding</b>, Zhengqi Zhou, Guanyang Zhang, Dongjian Zhang</div><div class="pub-venue">E3S Web Conf., 615 (2025) 02010</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/e3sconf_eppc2025_02010.pdf">[PDF]</span><a href="https://doi.org/10.1051/e3sconf/202561502010" target="_blank" rel="noopener noreferrer">[DOI]</a><span class="pub-status">[EI]</span></div></div></li>
+          <li class="publication-item">
+            <div class="pub-index">[C5]</div>
+            <div class="pub-details">
+              <div class="pub-title">An Underactuated Gripper with Grasshopper-Inspired Linkages and Delay Triggering for Pinching and Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Yizhe Chen<sup>†</sup>, Dongjun Jia, Wenzeng Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 International Conference on Information and Automation (ICIA)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/icia_v4.pdf">[PDF]</span>
+                <span class="accepted-badge">Accepted</span>
+                <span class="ei-badge">EI</span>
+                <span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="publication-item">
+            <div class="pub-index">[C4]</div>
+            <div class="pub-details">
+              <div class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span>
+                <span class="accepted-badge">Accepted</span>
+                <span class="ei-badge">EI</span>
+                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="publication-item">
+            <div class="pub-index">[C3]</div>
+            <div class="pub-details">
+              <div class="pub-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, Z.Chen, T.Yang*, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Automation Science and Engineering (CASE)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/CASE25_0693_FI.pdf">[PDF]</span>
+                <span class="published-badge">Published</span>
+                <span class="ei-badge">EI</span>
+                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="publication-item">
+            <div class="pub-index">[C2]</div>
+            <div class="pub-details">
+              <div class="pub-title">Peaucellier Gripper: A Novel Underactuated Gripper for Linear Pinching and Self-Adaptive Grasp with the Peaucellier Linkage</div>
+              <div class="pub-authors"><b>Haokai Ding<sup>†</sup></b>, J.Fan, Z.Zhu, Y.Zhao, K.Chen*, W.Zhang*</div>
+              <div class="pub-venue">Proceedings of the 2025 IEEE International Conference on Advanced Robotics and Mechatronics (ARM)</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/ICARM25_0037_FI.pdf">[PDF]</span>
+                <span class="published-badge">Published</span>
+                <span class="ei-badge">EI</span>
+                <span class="author-note"><span class="lang-en">† First Author</span><span class="lang-zh">† 第一作者</span></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="publication-item">
+            <div class="pub-index">[C1]</div>
+            <div class="pub-details">
+              <div class="pub-title">Rapid Analysis of Heavy Metal Element Adsorption by SCG Based on LIBS Technology</div>
+              <div class="pub-authors">Hairui Xie, Libing You, Xiaodong Fang, Leyi Li, <b>Haokai Ding</b>, Zhengqi Zhou, Guanyang Zhang, Dongjian Zhang</div>
+              <div class="pub-venue">E3S Web Conf., 615 (2025) 02010</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/e3sconf_eppc2025_02010.pdf">[PDF]</span>
+                <a href="https://doi.org/10.1051/e3sconf/202561502010" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                <span class="ei-badge">EI</span>
+              </div>
+            </div>
+          </li>
         </ul>
 
         <h4><span class="lang-en">Journal Articles</span><span class="lang-zh">期刊论文</span></h4>
         <ul class="publication-list">
-          <li class="publication-item"><div class="pub-index">[J1]</div><div class="pub-details"><div class="pub-title">Recent Progress on the Research of 3D Printing in Aqueous Zinc-Ion Batteries</div><div class="pub-authors">Yating Liu<sup>†</sup>, <b>Haokai Ding<sup>†</sup></b>, Honglin Chen, Haoxuan Gao, Jixin Yu, Funian Mo, Ning Wang</div><div class="pub-venue">Polymers 17, no. 15: 2136</div><div class="pub-links"><span class="pdf-link" data-pdf="pdfs/polymers-17-02136.pdf">[PDF]</span><a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a><span class="pub-status">[SCI, JCR Q1]</span><span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span></div></div></li>
+          <li class="publication-item">
+            <div class="pub-index">[J1]</div>
+            <div class="pub-details">
+              <div class="pub-title">Recent Progress on the Research of 3D Printing in Aqueous Zinc-Ion Batteries</div>
+              <div class="pub-authors">Yating Liu<sup>†</sup>, <b>Haokai Ding<sup>†</sup></b>, Honglin Chen, Haoxuan Gao, Jixin Yu, Funian Mo, Ning Wang</div>
+              <div class="pub-venue">Polymers 17, no. 15: 2136</div>
+              <div class="pub-links">
+                <span class="pdf-link" data-pdf="pdfs/polymers-17-02136.pdf">[PDF]</span>
+                <a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                <span class="sci-badge">SCI</span>
+                <span class="jcrq1-badge">JCR Q1</span>
+                <span class="author-note"><span class="lang-en">† Co-first Author</span><span class="lang-zh">† 共同第一作者</span></span>
+              </div>
+            </div>
+          </li>
         </ul>
       </section>
 
       <section id="awards">
         <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2>
-        <hr />
+        <hr>
         <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
         <div class="awards-list">
-          <div class="award-item"><span class="award-name"><span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span></span><span class="award-year">2025</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item">
+            <span class="award-name"><span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span></span>
+            <span class="award-year">2025</span>
+          </div>
+          <div class="award-item">
+            <span class="award-name"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></span>
+            <span class="award-year">2023</span>
+          </div>
+          <div class="award-item">
+            <span class="award-name"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></span>
+            <span class="award-year">2023</span>
+          </div>
         </div>
+
         <h3><span class="lang-en">University-Level</span><span class="lang-zh">校级</span></h3>
         <div class="awards-list">
           <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
@@ -254,86 +385,124 @@
     </main>
 
     <footer>
-      <p>&copy; 2025 Haokai Ding &middot; Last updated 2025-08-31</p>
+      <p>&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
     </footer>
   </div>
 
   <!-- PDF Modal -->
-  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdfTitle" aria-hidden="true" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);">
-    <div class="pdf-modal-content" style="position:relative; margin:5% auto; width:80%; max-width:900px; height:85%; background:#fff; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,.3); display:flex; flex-direction:column; overflow:hidden;">
-      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF" style="position:absolute; top:-15px; right:-15px; color:#fff; background:#333; font-size:30px; font-weight:bold; width:40px; height:40px; border-radius:50%; border:none; cursor:pointer;">&times;</button>
-      <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy" style="width:100%; height:100%; border:none;"></iframe>
+  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="pdf-modal-content">
+      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">&times;</button>
+      <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
     </div>
   </div>
 
+  <!-- Back to top -->
   <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
   <script>
-    // Utilities
-    const $ = (s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+    /* Helpers */
+    const $ = (s,r=document)=>r.querySelector(s);
+    const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 
-    // Theme switcher
+    /* Theme switcher */
     const themeSwitcher = $('#theme-switcher');
     const applyTheme = (t)=>{ if(t==='dark'){ document.body.classList.add('dark-mode'); themeSwitcher.textContent='☀️'; } else { document.body.classList.remove('dark-mode'); themeSwitcher.textContent='🌙'; } };
     applyTheme(localStorage.getItem('theme')||'light');
-    themeSwitcher.addEventListener('click',()=>{ const cur=document.body.classList.contains('dark-mode')?'dark':'light'; const nxt=cur==='dark'?'light':'dark'; localStorage.setItem('theme',nxt); applyTheme(nxt); });
+    themeSwitcher.addEventListener('click',()=>{
+      const cur = document.body.classList.contains('dark-mode') ? 'dark':'light';
+      const nxt = cur==='dark' ? 'light':'dark';
+      localStorage.setItem('theme',nxt); applyTheme(nxt);
+    });
 
-    // Language switcher (no FOUC)
-    function setLanguage(lang){ document.documentElement.setAttribute('data-lang', lang); $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active', a.dataset.lang===lang)); try{ localStorage.setItem('preferredLanguage', lang);}catch{} }
-    $('#lang-switcher').addEventListener('click',(e)=>{ const link=e.target.closest('.lang-link'); if(!link) return; e.preventDefault(); setLanguage(link.dataset.lang); });
-    document.addEventListener('DOMContentLoaded',()=>{ setLanguage(localStorage.getItem('preferredLanguage')||'en'); });
+    /* Language switcher (no FOUC) */
+    function setLanguage(lang){
+      document.documentElement.setAttribute('data-lang', lang);
+      $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active', a.dataset.lang===lang));
+      try{ localStorage.setItem('preferredLanguage', lang);}catch(e){}
+    }
+    $('#lang-switcher').addEventListener('click',(e)=>{
+      const link = e.target.closest('.lang-link'); if(!link) return;
+      e.preventDefault(); setLanguage(link.dataset.lang);
+    });
+    document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
 
-    // Profile tap-toggle for touch
+    /* Mobile tap toggle for profile */
     let touchCapable=false; window.addEventListener('touchstart',()=>{touchCapable=true;},{once:true});
     $('#profileBox').addEventListener('click',()=>{ if(touchCapable) $('#profileBox').classList.toggle('toggled'); });
 
-    // PDF modal open/close
-    const modal=$('#pdfModal'), pdfViewer=$('#pdf-viewer'), pdfClose=$('#pdfClose'); let lastFocused=null;
-    function openPdfModal(path){ lastFocused=document.activeElement; pdfViewer.src=path; modal.style.display='block'; modal.setAttribute('aria-hidden','false'); pdfClose.focus(); }
-    function closePdfModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); pdfViewer.src=''; if(lastFocused&&lastFocused.focus) lastFocused.focus(); }
+    /* PDF modal logic */
+    const modal=$('#pdfModal'), pdfViewer=$('#pdf-viewer'), pdfClose=$('#pdfClose');
+    let lastFocused=null;
+    function openPdfModal(path){
+      lastFocused=document.activeElement;
+      pdfViewer.src=path;
+      modal.style.display='block';
+      modal.setAttribute('aria-hidden','false');
+      pdfClose.focus();
+    }
+    function closePdfModal(){
+      modal.style.display='none';
+      modal.setAttribute('aria-hidden','true');
+      pdfViewer.src='';
+      if(lastFocused && lastFocused.focus) lastFocused.focus();
+    }
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePdfModal(); });
-    window.addEventListener('click',e=>{ const content=$('.pdf-modal-content'); if(modal.style.display==='block' && !content.contains(e.target)) closePdfModal(); });
+    // Only close when clicking the dark backdrop
+    window.addEventListener('click',(e)=>{ if(e.target===modal) closePdfModal(); });
     pdfClose.addEventListener('click', closePdfModal);
-    document.addEventListener('click',(e)=>{ const trg=e.target.closest('.pdf-link'); if(!trg) return; e.stopPropagation(); e.preventDefault(); const path=trg.getAttribute('data-pdf'); if(path) openPdfModal(path); });
 
-    // Single-column PDF
-    document.getElementById('download-pdf').addEventListener('click', async () => {
-      if (typeof html2pdf === 'undefined') { alert('PDF 组件尚未加载，请稍后再试。'); return; }
-      const main = document.querySelector('main');
-      const isDark = document.body.classList.contains('dark-mode');
-      const opt = { margin:0.5, filename:'Ding_Haokai_CV.pdf', image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2,useCORS:true, backgroundColor: isDark ? '#1a1a1a' : '#ffffff'}, jsPDF:{unit:'in', format:'a4', orientation:'portrait'} };
-      if (isDark) { document.body.classList.remove('dark-mode'); await new Promise(r=>setTimeout(r,50)); }
-      await html2pdf().set(opt).from(main).save();
-      if (isDark) document.body.classList.add('dark-mode');
+    // Delegate open on [PDF]
+    document.addEventListener('click',(e)=>{
+      const trg=e.target.closest('.pdf-link'); if(!trg) return;
+      e.preventDefault(); e.stopPropagation();
+      const path=trg.getAttribute('data-pdf'); if(path) openPdfModal(path);
     });
 
-    // Two-column PDF
-    document.getElementById('download-pdf-2col').addEventListener('click', async () => {
-      if (typeof html2pdf === 'undefined') { alert('PDF 组件尚未加载，请稍后再试。'); return; }
-      const isDark = document.body.classList.contains('dark-mode');
-      const main = document.querySelector('main');
+    /* Single-column PDF export */
+    $('#download-pdf').addEventListener('click', async ()=>{
+      if(typeof html2pdf==='undefined'){ alert('PDF 组件尚未加载，请稍后再试。'); return; }
+      const main=document.querySelector('main'); const isDark=document.body.classList.contains('dark-mode');
+      const opt={ margin:0.5, filename:'Ding_Haokai_CV.pdf', image:{type:'jpeg',quality:0.98},
+        html2canvas:{scale:2,useCORS:true,backgroundColor:isDark?'#1a1a1a':'#ffffff'},
+        jsPDF:{unit:'in',format:'a4',orientation:'portrait'} };
+      if(isDark){ document.body.classList.remove('dark-mode'); await new Promise(r=>setTimeout(r,50)); }
+      await html2pdf().set(opt).from(main).save();
+      if(isDark) document.body.classList.add('dark-mode');
+    });
 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'twocol-wrapper';
-      wrapper.style.background = '#ffffff';
+    /* Two-column PDF export */
+    $('#download-pdf-2col').addEventListener('click', async ()=>{
+      if(typeof html2pdf==='undefined'){ alert('PDF 组件尚未加载，请稍后再试。'); return; }
+      const isDark=document.body.classList.contains('dark-mode');
+      const main=document.querySelector('main');
+
+      const wrapper=document.createElement('div');
+      wrapper.className='twocol-wrapper';
+      wrapper.style.background='#ffffff';
       wrapper.appendChild(main.cloneNode(true));
 
-      const host = document.createElement('div');
+      const host=document.createElement('div');
       host.style.position='fixed'; host.style.left='-99999px'; host.style.top='0'; host.style.width='794px';
       host.appendChild(wrapper); document.body.appendChild(host);
 
-      const opt = { margin:0.5, filename:'Ding_Haokai_CV_2col.pdf', image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2, useCORS:true, backgroundColor:'#ffffff'}, jsPDF:{unit:'in', format:'a4', orientation:'portrait'} };
-      if (isDark) document.body.classList.remove('dark-mode');
-      try { await html2pdf().set(opt).from(wrapper).save(); }
-      finally { if (isDark) document.body.classList.add('dark-mode'); document.body.removeChild(host); }
+      const opt={ margin:0.5, filename:'Ding_Haokai_CV_2col.pdf', image:{type:'jpeg',quality:0.98},
+        html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
+        jsPDF:{unit:'in',format:'a4',orientation:'portrait'} };
+
+      if(isDark) document.body.classList.remove('dark-mode');
+      try{ await html2pdf().set(opt).from(wrapper).save(); }
+      finally{ if(isDark) document.body.classList.add('dark-mode'); document.body.removeChild(host); }
     });
 
-    // Back-to-top
-    const backBtn=document.getElementById('backToTop');
+    /* Back-to-top */
+    const backBtn=$('#backToTop');
     const onScroll=()=>{ backBtn.style.display = (window.scrollY>300) ? 'block' : 'none'; };
     window.addEventListener('scroll', onScroll, { passive:true });
-    backBtn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+    backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
   </script>
+
+  <!-- html2pdf CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>
