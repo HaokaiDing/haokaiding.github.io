@@ -105,6 +105,13 @@
     }
     .pub-authors .author-badge,.pub-authors .advisor-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
 
+    /* 奖项 */
+    .awards-list{list-style:none;padding:0}
+    .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
+    .award-item:last-child{border-bottom:none}
+    .award-name{flex-grow:1;padding-right:20px}
+    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
+
     /* 深色 */
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
@@ -357,13 +364,26 @@
         <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
         <div class="awards-list">
           <div class="award-item">
-            <span class="award-name">
-              <span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span>
-              <span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span>
-            </span>
+            <span class="award-name"><span class="lang-en">Finalist, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛决赛入围</span></span>
             <span class="award-year">2025</span>
-            <a href="https://sites.google.com/site/asmemrc/design-competition-showcase/2025-finalists#h.2oibi1g704mf" target="_blank" rel="noopener noreferrer">[Link]</a>
           </div>
+          <div class="award-item">
+            <span class="award-name"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></span>
+            <span class="award-year">2023</span>
+          </div>
+          <div class="award-item">
+            <span class="award-name"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></span>
+            <span class="award-year">2023</span>
+          </div>
+        </div>
+
+        <h3><span class="lang-en">University-Level</span><span class="lang-zh">校级</span></h3>
+        <div class="awards-list">
+          <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2024</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">CHENHSONG Scholarship (Dean's Award & Academic Excellence)</span><span class="lang-zh">震雄奖学金 (院长奖学金, 学业卓越奖)</span></span><span class="award-year">2023</span></div>
+          <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
         </div>
       </section>
     </main>
@@ -418,7 +438,35 @@
     backBtn.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
     /* 作者徽章自动化：†=Co-first；*=Advisor；不自动判定 First Author */
-    document.addEventListener('DOMContentLoaded', ()=>{document.querySelectorAll('.pub-authors').forEach(el=>{const nodes=[...el.childNodes];const makeBadge=(cls,en,zh)=>{const s=document.createElement('span');s.className=cls;s.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;return s;}nodes.forEach(node=>{if(node.nodeType===1&&node.tagName==='SUP'){const t=node.textContent.trim();el.replaceChild(t==='†'?makeBadge('author-badge','Co-first Author','共同第一作者'):makeBadge('advisor-badge','Advisor','导师'),node);return}if(node.nodeType===3){const txt=node.nodeValue;if(!txt||(!txt.includes('†')&&!txt.includes('*')))return;const frag=document.createDocumentFragment();const re=/[†*]/g;let i=0,m;while((m=re.exec(txt))){const chunk=txt.slice(i,m.index);if(chunk)frag.appendChild(document.createTextNode(chunk));frag.appendChild(m[0]==='†'?makeBadge('author-badge','Co-first Author','共同第一作者'):makeBadge('advisor-badge','Advisor','导师'));i=re.lastIndex}const tail=txt.slice(i);if(tail)frag.appendChild(document.createTextNode(tail));el.replaceChild(frag,node)}});});});
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.pub-authors').forEach(el=>{
+        const nodes=[...el.childNodes];
+        const makeBadge=(cls,en,zh)=>{const s=document.createElement('span');s.className=cls;s.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;return s;}
+        nodes.forEach(node=>{
+          if(node.nodeType===1 && node.tagName==='SUP'){
+            const t=node.textContent.trim();
+            el.replaceChild(t==='†'
+              ? makeBadge('author-badge','Co-first Author','共同第一作者')
+              : makeBadge('advisor-badge','Advisor','导师')
+            , node);
+            return;
+          }
+          if(node.nodeType===3){
+            const txt=node.nodeValue; if(!txt||(!txt.includes('†')&&!txt.includes('*'))) return;
+            const frag=document.createDocumentFragment(); const re=/[†*]/g; let i=0,m;
+            while((m=re.exec(txt))){
+              const chunk=txt.slice(i,m.index); if(chunk) frag.appendChild(document.createTextNode(chunk));
+              frag.appendChild(m[0]==='†'
+                ? makeBadge('author-badge','Co-first Author','共同第一作者')
+                : makeBadge('advisor-badge','Advisor','导师'));
+              i=re.lastIndex;
+            }
+            const tail=txt.slice(i); if(tail) frag.appendChild(document.createTextNode(tail));
+            el.replaceChild(frag,node);
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
