@@ -7,11 +7,12 @@
     }
     html{scroll-behavior:smooth;}
     body{
-      
+
       font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
       margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
+    img{max-width:100%;height:auto;}
     .container{max-width:900px;width:100%;margin:40px 20px;}
 
     /* 顶部控件（已移除导出 PDF 按钮）*/
@@ -146,9 +147,26 @@
       background:#fff;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden
     }
     .pdf-modal-content iframe{width:100%;height:100%;border:none}
-    .close-button{
+    .close-button{ 
       position:absolute;top:8px;right:8px;color:#fff;background:#333;font-size:22px;font-weight:bold;
       width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)
     }
     .close-button:hover{background:#d9534f}
+
+    /* 响应式布局 */
+    @media (max-width: 600px){
+      .container{margin:20px 10px;}
+      header{flex-direction:column;align-items:center;text-align:center;}
+      .profile-container{width:100px;margin:0 0 20px;}
+      .header-info{align-items:center;}
+      .entry-line-1{flex-direction:column;align-items:flex-start;}
+      .entry-logo{margin:0 0 8px 0;}
+      .publication-item{flex-direction:column;}
+      .pub-index{width:auto;margin-bottom:4px;}
+      .awards-list .award-item{flex-direction:column;align-items:flex-start;}
+      .award-year{margin-top:4px;}
+    }
+    @media (max-width: 400px){
+      nav.site-nav{grid-template-columns:1fr;}
+    }
 
