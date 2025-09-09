@@ -20,34 +20,26 @@
     }
     html{scroll-behavior:smooth;}
     body{
-      font-family: 'Helvetica', 'Arial', sans-serif; /* 修改为Helvetica字体 */
-      background:#fff;
-      color:#333;
-      line-height:1.6;
-      margin:0;
-      padding:0;
-      display:flex;
-      justify-content:center;
-      transition:background-color .3s,color .3s;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
+      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     .container{max-width:900px;width:100%;margin:40px 20px;}
 
     /* 顶部控件（已移除导出 PDF 按钮）*/
-    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Helvetica', sans-serif;font-size:.9em}  /* 修改为Helvetica */
+    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
     #theme-switcher{background:none;border:none;cursor:pointer;font-size:1.4em;padding:0 5px;line-height:1}
     #lang-switcher a{color:#888;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .2s}
     #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
 
     /* 导航 */
     nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap}
-    nav.site-nav a{text-decoration:none;font-family:'Helvetica', sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
+    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
     nav.site-nav a:hover{background:#e7f1ff}
 
     /* 头部/头像 */
     header{display:flex;align-items:flex-start;margin-bottom:25px}
-    .header-info h1{font-family:'Helvetica',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
+    .header-info h1{font-family:'Lato',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
     .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
     .contact-info a{color:var(--brand);text-decoration:none}
     .contact-info a:hover{text-decoration:underline}
@@ -60,33 +52,7 @@
 
     /* 版块 */
     section{margin-bottom:30px}
-    h2,h3,h4{font-family:'Helvetica',sans-serif;font-weight:700;color:#1a1a1a}  /* 修改为Helvetica */
-    h2{font-size:1.6em;margin:0}
-    h3{font-size:1.2em;color:#333;margin:20px 0 15px}
-    h4{font-size:1.05em;color:#444;margin:20px 0 15px}
-    hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 18px}
-
-    /* 导航 */
-    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap}
-    nav.site-nav a{text-decoration:none;font-family:'Helvetica',sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
-    nav.site-nav a:hover{background:#e7f1ff}
-
-    /* 头部/头像 */
-    header{display:flex;align-items:flex-start;margin-bottom:25px}
-    .header-info h1{font-family:'Helvetica',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
-    .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
-    .contact-info a{color:var(--brand);text-decoration:none}
-    .contact-info a:hover{text-decoration:underline}
-
-    .profile-container{position:relative;width:120px;height:120px;margin-right:30px;border-radius:10px;overflow:hidden;flex-shrink:0}
-    .profile-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;transition:opacity .4s ease}
-    .profile-image.default{opacity:1}.profile-image.hover{opacity:0}
-    .profile-container:hover .profile-image.default,.profile-container.toggled .profile-image.default{opacity:0}
-    .profile-container:hover .profile-image.hover,.profile-container.toggled .profile-image.hover{opacity:1}
-
-    /* 版块 */
-    section{margin-bottom:30px}
-    h2,h3,h4{font-family:'Helvetica',sans-serif;font-weight:700;color:#1a1a1a}
+    h2,h3,h4{font-family:'Lato',sans-serif;font-weight:700;color:#1a1a1a}
     h2{font-size:1.6em;margin:0}
     h3{font-size:1.2em;color:#333;margin:20px 0 15px}
     h4{font-size:1.05em;color:#444;margin:20px 0 15px}
@@ -96,7 +62,7 @@
     .education-entry{margin-bottom:25px}
     .entry-line-1{display:flex;align-items:center}
     .entry-line-2{text-align:right;margin-top:4px}
-    .entry-role{font-family:'Helvetica',sans-serif;font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
+    .entry-role{font-family:'Lato',sans-serif;font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
     .entry-logo{width:50px;height:50px;margin-right:15px;object-fit:contain}  /* 修改 Logo 大小 */
     .entry-details{font-size:1em}
     .entry-details a{font-weight:700;color:var(--brand);text-decoration:none}
@@ -107,7 +73,7 @@
     /* 出版 */
     .publication-list{list-style:none;padding:0}
     .publication-item{margin-bottom:22px;display:flex}
-    .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Helvetica',sans-serif;color:#333}
+    .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
     .pub-details{flex-grow:1}
     .pub-title{font-weight:700;font-size:1em;margin-bottom:4px}
     .pub-authors{font-size:1em;color:#555;margin-bottom:6px}
@@ -116,7 +82,7 @@
 
     .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
     .pub-links > a, .pub-links > .pdf-link{
-      cursor:pointer;text-decoration:none;font-weight:700;font-family:'Helvetica',sans-serif;font-size:.92em;color:var(--brand)
+      cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
     }
     .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
 
@@ -144,7 +110,7 @@
     .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
     .award-item:last-child{border-bottom:none}
     .award-name{flex-grow:1;padding-right:20px}
-    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Helvetica',sans-serif}
+    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
 
     /* 深色 */
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
@@ -504,4 +470,3 @@
   </script>
 </body>
 </html>
-
