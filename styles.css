@@ -1,474 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haokai Ding - Academic CV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-            --text-muted: #95a5a6;
-            --accent: #3498db;
-            --accent-secondary: #e74c3c;
-            --background: #ffffff;
-            --background-alt: #f8f9fa;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.05);
-        }
+    :root{
+      --brand:#0b63c7;
+      --ei-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a; --published-color:#3f4954;
+      --author-color:#0d6efd;           /* Co-first */
+      --advisor-color:#ff9800;          /* Advisor */
+    }
+    html{scroll-behavior:smooth;}
+    body{
+      
+      font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
+      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .container{max-width:900px;width:100%;margin:40px 20px;}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    /* 顶部控件（已移除导出 PDF 按钮）*/
+    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
+    #theme-switcher{background:none;border:none;cursor:pointer;font-size:1.4em;padding:0 5px;line-height:1}
+    #lang-switcher a{color:#888;font-weight:700;text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .2s}
+    #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
 
-        body {
-            font-family: 'Source Serif Pro', serif;
-            color: var(--text-primary);
-            line-height: 1.6;
-            background-color: var(--background);
-            padding: 0;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    /* 导航 */
+    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap}
+    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
+    nav.site-nav a:hover{background:#e7f1ff}
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    /* 头部/头像 */
+    header{display:flex;align-items:flex-start;margin-bottom:25px}
+    .header-info h1{font-family:'Lato',sans-serif;font-size:2.2em;font-weight:700;margin:0 0 10px 0}
+    .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
+    .contact-info a{color:var(--brand);text-decoration:none}
+    .contact-info a:hover{text-decoration:underline}
 
-        /* Header styles */
-        header {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
+    .profile-container{position:relative;width:120px;height:120px;margin-right:30px;border-radius:10px;overflow:hidden;flex-shrink:0}
+    .profile-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;transition:opacity .4s ease}
+    .profile-image.default{opacity:1}.profile-image.hover{opacity:0}
+    .profile-container:hover .profile-image.default,.profile-container.toggled .profile-image.default{opacity:0}
+    .profile-container:hover .profile-image.hover,.profile-container.toggled .profile-image.hover{opacity:1}
 
-        .profile-container {
-            width: 130px;
-            height: 130px;
-            margin-right: 2rem;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px var(--shadow);
-            flex-shrink: 0;
-        }
+    /* 版块 */
+    section{margin-bottom:30px}
+    h2,h3,h4{font-family:'Lato',sans-serif;font-weight:700;color:#1a1a1a}
+    h2{font-size:1.6em;margin:0}
+    h3{font-size:1.2em;color:#333;margin:20px 0 15px}
+    h4{font-size:1.05em;color:#444;margin:20px 0 15px}
+    hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 18px}
 
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    /* 教育 */
+    .education-entry{margin-bottom:25px}
+    .entry-line-1{display:flex;align-items:center}
+    .entry-line-2{text-align:right;margin-top:4px}
+    .entry-role{font-family:'Lato',sans-serif;font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
+    .entry-logo{width:60px;height:60px;margin-right:15px;object-fit:contain}
+    .entry-details{font-size:1em}
+    .entry-details a{font-weight:700;color:var(--brand);text-decoration:none}
+    .entry-details a:hover{text-decoration:underline}
+    .entry-date{color:#666;font-size:.9em}
+    .education-entry ul{margin-top:8px;padding-left:25px}
 
-        .header-info {
-            flex-grow: 1;
-        }
+    /* 出版 */
+    .publication-list{list-style:none;padding:0}
+    .publication-item{margin-bottom:22px;display:flex}
+    .pub-index{flex-shrink:0;width:40px;font-weight:700;font-family:'Lato',sans-serif;color:#333}
+    .pub-details{flex-grow:1}
+    .pub-title{font-weight:700;font-size:1em;margin-bottom:4px}
+    .pub-authors{font-size:1em;color:#555;margin-bottom:6px}
+    .pub-authors b{color:#333}
+    .pub-venue{font-size:1em;color:#555;font-style:italic}
 
-        .header-info h1 {
-            font-family: 'Lato', sans-serif;
-            font-size: 2.4rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
+    .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+    .pub-links > a, .pub-links > .pdf-link{
+      cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
+    }
+    .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
 
-        .contact-info {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
+    /* 徽章 */
+    .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.advisor-badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:0.86em;font-weight:800;letter-spacing:.2px;
+      border-radius:999px;padding:4px 10px;line-height:1.2;
+      color:#fff;white-space:nowrap;vertical-align:middle;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .ei-badge{background:var(--ei-color)}
+    .sci-badge{background:var(--sci-color)}
+    .jcrq1-badge{background:var(--jcrq1-color)}
+    .accepted-badge{background:var(--accepted-color)}
+    .published-badge{background:var(--published-color)}
+    .author-badge{background:var(--author-color)} /* Co-first */
+    .advisor-badge{
+      color:var(--advisor-color);background:transparent;border:1.6px solid var(--advisor-color);
+    }
+    .pub-authors .author-badge,.pub-authors .advisor-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
 
-        .contact-info p {
-            margin-bottom: 0.4rem;
-        }
+    /* 奖项 */
+    .awards-list{list-style:none;padding:0}
+    .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
+    .award-item:last-child{border-bottom:none}
+    .award-name{flex-grow:1;padding-right:20px}
+    .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
 
-        .contact-info a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+    /* 深色 */
+    body.dark-mode{background:#1a1a1a;color:#f5f5f5}
+    .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
+    .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
+    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links > a,.dark-mode .pub-links > .pdf-link{color:#8ab4f8}
+    .dark-mode hr{background:#444}
+    .dark-mode nav.site-nav{background:#2a2a2a}
+    .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
+    .dark-mode .advisor-badge{border-color:#ffc266;color:#ffc266}
 
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
+    /* 返回顶部 */
+    #backToTop{
+      position:fixed;right:20px;bottom:24px;display:none;z-index:1100;border:none;border-radius:999px;
+      padding:10px 12px;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.15);background:#ffffff
+    }
+    body.dark-mode #backToTop{background:#2a2a2a;color:#f5f5f5}
 
-        /* Navigation */
-        nav {
-            margin-bottom: 2rem;
-        }
+    /* 强制语言显示单一 */
+    html:not([data-lang="zh"]) .lang-zh{display:none!important}
+    html[data-lang="zh"] .lang-en{display:none!important}
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
+    /* PDF 预览弹窗（用于论文 PDF，保留） */
+    .pdf-modal{
+      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
+      opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s;
+    }
+    .pdf-modal.open{opacity:1;visibility:visible;pointer-events:auto;}
+    .pdf-modal-content{
+      position:relative;margin:5% auto;width:80%;max-width:900px;height:85%;
+      background:#fff;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden
+    }
+    .pdf-modal-content iframe{width:100%;height:100%;border:none}
+    .close-button{
+      position:absolute;top:8px;right:8px;color:#fff;background:#333;font-size:22px;font-weight:bold;
+      width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)
+    }
+    .close-button:hover{background:#d9534f}
 
-        nav a {
-            font-family: 'Lato', sans-serif;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        /* Section styles */
-        section {
-            margin-bottom: 2.5rem;
-        }
-
-        h2 {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.6rem;
-            margin-bottom: 1.2rem;
-            color: var(--text-primary);
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        h3 {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.2rem;
-            margin: 1.8rem 0 1rem;
-            color: var(--text-primary);
-        }
-
-        h4 {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.05rem;
-            margin: 1.5rem 0 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* Education section */
-        .education-entry {
-            margin-bottom: 2rem;
-        }
-
-        .entry-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .entry-title {
-            font-family: 'Lato', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-primary);
-        }
-
-        .entry-date {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .institution {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.3rem;
-        }
-
-        .education-details {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Publications section */
-        .publication-list {
-            list-style: none;
-        }
-
-        .publication-item {
-            margin-bottom: 1.8rem;
-            padding-bottom: 1.8rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .publication-item:last-child {
-            border-bottom: none;
-        }
-
-        .pub-index {
-            font-family: 'Lato', sans-serif;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-            font-size: 0.95rem;
-        }
-
-        .pub-title {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .pub-authors {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .pub-venue {
-            color: var(--text-secondary);
-            font-style: italic;
-            margin-bottom: 0.8rem;
-        }
-
-        .pub-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .pub-links a {
-            font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .pub-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Badges */
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 4px;
-            font-family: 'Lato', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-left: 0.5rem;
-        }
-
-        .badge-primary {
-            background-color: #e1f0fa;
-            color: #0b63c7;
-        }
-
-        .badge-secondary {
-            background-color: #fee7e4;
-            color: #e74c3c;
-        }
-
-        /* Awards section */
-        .awards-list {
-            list-style: none;
-        }
-
-        .award-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .award-item:last-child {
-            border-bottom: none;
-        }
-
-        .award-name {
-            flex-grow: 1;
-            padding-right: 1rem;
-        }
-
-        .award-year {
-            color: var(--text-muted);
-            font-family: 'Lato', sans-serif;
-            font-weight: 700;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            margin-top: 2rem;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-            
-            header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .profile-container {
-                margin-right: 0;
-                margin-bottom: 1.5rem;
-            }
-            
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .entry-header {
-                flex-direction: column;
-            }
-            
-            .entry-date {
-                margin-top: 0.3rem;
-            }
-            
-            .pub-links {
-                flex-wrap: wrap;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-info h1 {
-                font-size: 2rem;
-            }
-            
-            nav ul {
-                gap: 1rem;
-            }
-            
-            h2 {
-                font-size: 1.4rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div class="profile-container">
-                <img class="profile-image" src="my-academic-site/images/profile.jpg" alt="Haokai Ding">
-            </div>
-            <div class="header-info">
-                <h1>Haokai Ding (丁浩剀)</h1>
-                <div class="contact-info">
-                    <p>Future Technology School, Shenzhen Technology University (Shenzhen, Guangdong)</p>
-                    <p>Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute (Shenzhen, Guangdong)</p>
-                    <p>E-mail: 
-                        <a href="mailto:hk_ding@outlook.com">hk_ding@outlook.com</a> |
-                        <a href="mailto:202200101041@stumail.sztu.edu.cn">202200101041@stumail.sztu.edu.cn</a> |
-                        <a href="mailto:dinghaokai@mails.x-institute.edu.cn">dinghaokai@mails.x-institute.edu.cn</a>
-                    </p>
-                    <p>
-                        <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank">Google Scholar</a> |
-                        <a href="https://orcid.org/0009-0001-6158-9897" target="_blank">ORCID</a>
-                    </p>
-                </div>
-            </div>
-        </header>
-
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#publications">Publications</a></li>
-                <li><a href="#awards">Awards</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section id="about">
-                <h2>About Me</h2>
-                <p>I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University, building a foundation in electronics and circuits. Concurrently, as an X Scholar in a joint program with Tsinghua University and Shenzhen X-Institute, I am engaged in advanced research focusing on underactuated robotic grippers and novel mechanical linkages. My goal is to integrate my knowledge in electronics with hands-on robotics research to contribute to the field.</p>
-            </section>
-
-            <section id="education">
-                <h2>Education</h2>
-                
-                <div class="education-entry">
-                    <div class="entry-header">
-                        <div>
-                            <div class="institution">Shenzhen Technology University</div>
-                            <div class="education-details">Future Technology School — Bachelor of Engineering in Electronic Science and Technology</div>
-                        </div>
-                        <div class="entry-date">2022.09–2026.07</div>
-                    </div>
-                    <ul>
-                        <li>Main Courses: C++, Python, Digital Circuits, Sensors and Actuators, Engineering Project Design</li>
-                        <li>Main Research: Laser-Induced Breakdown Spectroscopy (LIBS)</li>
-                    </ul>
-                </div>
-                
-                <div class="education-entry">
-                    <div class="entry-header">
-                        <div>
-                            <div class="institution">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</div>
-                            <div class="education-details">X Scholar</div>
-                        </div>
-                        <div class="entry-date">2023.09–Present</div>
-                    </div>
-                    <ul>
-                        <li>Main Research: Underactuated Robotic Grippers, Peaucellier Linkages</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="publications">
-                <h2>Publications</h2>
-                <h3>2025</h3>
-                <h4>Conference Papers</h4>
-                
-                <ul class="publication-list">
-                    <li class="publication-item">
-                        <div class="pub-index">[C5]</div>
-                        <div class="pub-title">An Underactuated Gripper with Grasshopper-Inspired Linkages and Delay Triggering for Pinching and Adaptive Grasping</div>
-                        <div class="pub-authors">Haokai Ding<span class="badge badge-primary">Co-first Author</span>, Yizhe Chen, Dongjun Jia, Wenzeng Zhang</div>
-                        <div class="pub-venue">Proceedings of the 2025 International Conference on Information and Automation (ICIA)</div>
-                        <div class="pub-links">
-                            <a href="#">[PDF]</a>
-                            <a href="#">[DOI]</a>
-                        </div>
-                    </li>
-                    
-                    <li class="publication-item">
-                        <div class="pub-index">[C4]</div>
-                        <div class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</div>
-                        <div class="pub-authors">Haokai Ding<span class="badge badge-primary">Co-first Author</span>, W. Zhang<span class="badge badge-secondary">Advisor</span></div>
-                        <div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div>
-                        <div class="pub-links">
-                            <a href="#">[PDF]</a>
-                            <a href="#">[DOI]</a>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-
-            <section id="awards">
-                <h2>Honors & Awards</h2>
-                <h3>Provincial-Level & Above</h3>
-                
-                <ul class="awards-list">
-                    <li class="award-item">
-                        <span class="award-name">Finalist, ASME Student Mechanism & Robot Design Competition</span>
-                        <span class="award-year">2025</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-name">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span>
-                        <span class="award-year">2023</span>
-                    </li>
-                </ul>
-            </section>
-        </main>
-
-        <footer>
-            <p>&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
-        </footer>
-    </div>
-</body>
-</html>
