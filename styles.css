@@ -1,4 +1,14 @@
 /* styles.css */
+
+/* 强制显示当前语言 */
+html[data-lang="zh"] .lang-en {
+  display: none;
+}
+
+html[data-lang="en"] .lang-zh {
+  display: none;
+}
+
 :root {
   --brand: #0b63c7;
   --ei-color: #1266f1;
