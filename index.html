@@ -16,8 +16,10 @@
     <div class="top-controls">
       <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
       <div id="lang-switcher" aria-label="Language switcher">
-        <a href="#" data-lang="en" class="lang-link active">English</a> /
-        <a href="#" data-lang="zh" class="lang-link">中文</a>
+        <ul>
+          <li><a href="#" data-lang="en" class="lang-link active">English</a></li>
+          <li><a href="#" data-lang="zh" class="lang-link">中文</a></li>
+        </ul>
       </div>
     </div>
 
@@ -127,9 +129,7 @@
       <!-- Publications -->
       <section id="publications" class="page-avoid">
         <h2><span class="lang-en">Publications</span><span class="lang-zh">学术出版</span></h2><hr>
-
         <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
-
         <h4><span class="lang-en">Conference Papers</span><span class="lang-zh">会议论文</span></h4>
         <ul class="publication-list">
           <li class="publication-item">
@@ -198,24 +198,6 @@
             </div>
           </li>
         </ul>
-
-        <h4><span class="lang-en">Journal Articles</span><span class="lang-zh">期刊论文</span></h4>
-        <ul class="publication-list">
-          <li class="publication-item">
-            <div class="pub-index">[J1]</div>
-            <div class="pub-details">
-              <div class="pub-title">Recent Progress on the Research of 3D Printing in Aqueous Zinc-Ion Batteries</div>
-              <div class="pub-authors">Yating Liu<sup>†</sup>, <b>Haokai Ding<sup>†</sup></b>, Honglin Chen, Haoxuan Gao, Jixin Yu, Funian Mo, Ning Wang*</div>
-              <div class="pub-venue">Polymers 17, no. 15: 2136</div>
-              <div class="pub-links">
-                <span class="pdf-link" data-pdf="pdfs/polymers-17-02136.pdf">[PDF]</span>
-                <a href="https://doi.org/10.3390/polym17152136" target="_blank" rel="noopener noreferrer">[DOI]</a>
-                <span class="sci-badge">SCI</span>
-                <span class="jcrq1-badge">JCR Q1</span>
-              </div>
-            </div>
-          </li>
-        </ul>
       </section>
 
       <!-- Awards -->
@@ -241,28 +223,14 @@
         <div class="awards-list">
           <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
           <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2024</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">CHENHSONG Scholarship (Dean's Award & Academic Excellence)</span><span class="lang-zh">震雄奖学金 (院长奖学金, 学业卓越奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
+      <p>&copy; 2025 Haokai Ding · Last updated 2025-09-09</p>
     </footer>
   </div>
-
-  <!-- 论文 PDF 预览弹窗 -->
-  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="pdf-modal-content">
-      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">&times;</button>
-      <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
-    </div>
-  </div>
-
-  <!-- 返回顶部 -->
-  <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
   <script src="scripts.js"></script>
 </body>
