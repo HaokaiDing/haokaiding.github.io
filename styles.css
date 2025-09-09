@@ -1,4 +1,3 @@
-/* styles.css */
 :root {
   --brand: #0b63c7;
   --ei-color: #1266f1;
@@ -6,13 +5,17 @@
   --jcrq1-color: #6a4cc7;
   --accepted-color: #56606a;
   --published-color: #3f4954;
-  --author-color: #0d6efd;           /* Co-first */
-  --advisor-color: #ff9800;          /* Advisor */
+  --author-color: #0d6efd;
+  --advisor-color: #ff9800;
   --transition-speed: 0.3s;
+  --container-width: min(900px, 95vw);
+  --section-padding: 1.5rem;
+  --border-radius: 8px;
 }
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
@@ -30,9 +33,9 @@ body {
 }
 
 .container {
-  max-width: 900px;
-  width: 100%;
-  margin: 40px 20px;
+  width: var(--container-width);
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 /* 顶部控件 */
@@ -40,10 +43,11 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
   font-family: 'Lato', sans-serif;
-  font-size: .9em;
+  font-size: 0.9em;
+  flex-wrap: wrap;
 }
 
 #theme-switcher {
@@ -51,22 +55,23 @@ body {
   border: none;
   cursor: pointer;
   font-size: 1.4em;
-  padding: 0 5px;
+  padding: 0.3rem;
   line-height: 1;
-  transition: transform 0.2s;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
 #theme-switcher:hover {
-  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 #lang-switcher a {
   color: #888;
   font-weight: 700;
   text-decoration: none;
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 #lang-switcher a.active {
@@ -77,12 +82,13 @@ body {
 /* 导航 */
 nav.site-nav {
   background: #f5f5f5;
-  padding: 10px 12px;
-  border-radius: 12px;
-  margin-bottom: 16px;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 nav.site-nav a {
@@ -90,56 +96,67 @@ nav.site-nav a {
   font-family: 'Lato', sans-serif;
   font-weight: 700;
   color: var(--brand);
-  padding: 8px 12px;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
   background: #fff;
   border: 1px solid #e7f1ff;
   transition: all 0.2s;
+  font-size: 0.95rem;
 }
 
 nav.site-nav a:hover {
   background: #e7f1ff;
+  transform: translateY(-2px);
 }
 
 /* 头部/头像 */
 header {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 25px;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.header-info {
+  flex: 1;
+  min-width: min(100%, 300px);
 }
 
 .header-info h1 {
   font-family: 'Lato', sans-serif;
-  font-size: 2.2em;
+  font-size: 2.2rem;
   font-weight: 700;
-  margin: 0 0 10px 0;
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
 }
 
 .contact-info p {
   margin: 0;
   line-height: 1.5;
-  font-size: .95em;
+  font-size: 0.95rem;
   color: #444;
 }
 
 .contact-info a {
   color: var(--brand);
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 .contact-info a:hover {
   text-decoration: underline;
+  color: #094a9c;
 }
 
 .profile-container {
   position: relative;
   width: 120px;
   height: 120px;
-  margin-right: 30px;
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
 }
 
@@ -154,7 +171,7 @@ header {
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
-  transition: opacity .4s ease;
+  transition: opacity 0.4s ease;
 }
 
 .profile-image.default {
@@ -177,9 +194,9 @@ header {
 
 /* 版块 */
 section {
-  margin-bottom: 30px;
-  padding: 15px;
-  border-radius: 8px;
+  margin-bottom: 2.5rem;
+  padding: var(--section-padding);
+  border-radius: var(--border-radius);
   background: rgba(245, 245, 245, 0.5);
   transition: background-color var(--transition-speed);
 }
@@ -195,34 +212,34 @@ h2, h3, h4 {
 }
 
 h2 {
-  font-size: 1.6em;
-  margin: 0;
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem 0;
 }
 
 h3 {
-  font-size: 1.2em;
+  font-size: 1.4rem;
   color: #333;
-  margin: 20px 0 15px;
+  margin: 1.5rem 0 1rem;
 }
 
 h4 {
-  font-size: 1.05em;
+  font-size: 1.1rem;
   color: #444;
-  margin: 20px 0 15px;
+  margin: 1.5rem 0 1rem;
 }
 
 hr {
   border: 0;
   height: 1px;
   background: #e5e5e5;
-  margin: 8px 0 18px;
+  margin: 0.5rem 0 1.5rem;
 }
 
 /* 教育 */
 .education-entry {
-  margin-bottom: 25px;
-  padding: 15px;
-  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: var(--border-radius);
   transition: background-color 0.3s;
 }
 
@@ -234,25 +251,25 @@ hr {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .entry-line-2 {
   text-align: right;
-  margin-top: 4px;
+  margin-top: 0.25rem;
 }
 
 .entry-role {
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  margin-right: 10px;
-  font-size: 1em;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
 .entry-logo {
-  width: 60px;
-  height: 60px;
-  margin-right: 15px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   transition: transform 0.3s;
 }
@@ -262,7 +279,9 @@ hr {
 }
 
 .entry-details {
-  font-size: 1em;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 200px;
 }
 
 .entry-details a {
@@ -277,12 +296,16 @@ hr {
 
 .entry-date {
   color: #666;
-  font-size: .9em;
+  font-size: 0.9rem;
 }
 
 .education-entry ul {
-  margin-top: 8px;
-  padding-left: 25px;
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.education-entry li {
+  margin-bottom: 0.25rem;
 }
 
 /* 出版 */
@@ -292,10 +315,10 @@ hr {
 }
 
 .publication-item {
-  margin-bottom: 22px;
+  margin-bottom: 1.5rem;
   display: flex;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 1rem;
+  border-radius: var(--border-radius);
   transition: background-color 0.3s;
 }
 
@@ -317,14 +340,16 @@ hr {
 
 .pub-title {
   font-weight: 700;
-  font-size: 1em;
-  margin-bottom: 4px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 
 .pub-authors {
-  font-size: 1em;
+  font-size: 1rem;
   color: #555;
-  margin-bottom: 6px;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
 .pub-authors b {
@@ -332,17 +357,18 @@ hr {
 }
 
 .pub-venue {
-  font-size: 1em;
+  font-size: 1rem;
   color: #555;
   font-style: italic;
+  margin-bottom: 0.5rem;
 }
 
 .pub-links {
-  margin-top: 6px;
+  margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 8px;
+  gap: 0.5rem;
 }
 
 .pub-links > a, .pub-links > .pdf-link {
@@ -350,14 +376,14 @@ hr {
   text-decoration: none;
   font-weight: 700;
   font-family: 'Lato', sans-serif;
-  font-size: .92em;
+  font-size: 0.9rem;
   color: var(--brand);
   transition: color 0.2s;
 }
 
 .pub-links > a:hover, .pub-links > .pdf-link:hover {
   text-decoration: underline;
-  color: #0a4ba9;
+  color: #094a9c;
 }
 
 /* 徽章 */
@@ -365,11 +391,11 @@ hr {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.86em;
+  font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 0.3rem 0.7rem;
   line-height: 1.2;
   color: #fff;
   white-space: nowrap;
@@ -410,9 +436,9 @@ hr {
 }
 
 .pub-authors .author-badge, .pub-authors .advisor-badge {
-  font-size: .74em;
-  padding: 2px 6px;
-  margin-left: 6px;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  margin-left: 0.4rem;
 }
 
 /* 奖项 */
@@ -424,12 +450,13 @@ hr {
 .award-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 1em;
+  font-size: 1rem;
   transition: background-color 0.3s;
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 0.75rem 1rem;
+  flex-wrap: wrap;
 }
 
 .award-item:hover {
@@ -442,7 +469,8 @@ hr {
 
 .award-name {
   flex-grow: 1;
-  padding-right: 20px;
+  padding-right: 1rem;
+  min-width: 200px;
 }
 
 .award-year {
@@ -512,28 +540,29 @@ body.dark-mode {
 /* 返回顶部 */
 #backToTop {
   position: fixed;
-  right: 20px;
-  bottom: 24px;
+  right: 1.5rem;
+  bottom: 1.5rem;
   display: none;
   z-index: 1100;
   border: none;
-  border-radius: 999px;
-  padding: 10px 12px;
-  font-size: 20px;
+  border-radius: 50%;
+  padding: 0.75rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background: #ffffff;
   transition: all 0.3s;
 }
 
 #backToTop:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, .2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode #backToTop {
   background: #2a2a2a;
   color: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* 强制语言显示单一 */
@@ -549,12 +578,12 @@ html[data-lang="zh"] .lang-en {
 .pdf-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, .7);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -568,12 +597,13 @@ html[data-lang="zh"] .lang-en {
 
 .pdf-modal-content {
   position: relative;
-  width: 80%;
+  margin: 5% auto;
+  width: 90%;
   max-width: 900px;
   height: 85%;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -587,19 +617,19 @@ html[data-lang="zh"] .lang-en {
 
 .close-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 0.5rem;
+  right: 0.5rem;
   color: #fff;
   background: #333;
-  font-size: 22px;
+  font-size: 1.4rem;
   font-weight: bold;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   z-index: 2;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
 }
 
@@ -611,7 +641,8 @@ html[data-lang="zh"] .lang-en {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .container {
-    margin: 20px 15px;
+    margin: 1rem auto;
+    padding: 0 0.5rem;
   }
   
   header {
@@ -622,17 +653,18 @@ html[data-lang="zh"] .lang-en {
   
   .profile-container {
     margin-right: 0;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
   }
   
   .entry-line-1 {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
   }
   
   .entry-logo {
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
   }
   
   .entry-line-2 {
@@ -647,6 +679,17 @@ html[data-lang="zh"] .lang-en {
     width: 95%;
     height: 80%;
   }
+  
+  nav.site-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  nav.site-nav a {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -654,20 +697,26 @@ html[data-lang="zh"] .lang-en {
     justify-content: center;
   }
   
-  nav.site-nav {
-    justify-content: center;
-  }
-  
   .header-info h1 {
-    font-size: 1.8em;
+    font-size: 1.8rem;
   }
   
   .contact-info p {
-    font-size: 0.85em;
+    font-size: 0.85rem;
   }
   
   .pub-links {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .award-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .award-year {
+    align-self: flex-end;
   }
 }
