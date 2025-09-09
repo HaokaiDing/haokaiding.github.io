@@ -11,6 +11,8 @@
   --container-width: min(900px, 95vw);
   --section-padding: 1.5rem;
   --border-radius: 8px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 html {
@@ -89,6 +91,7 @@ nav.site-nav {
   gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: center;
+  box-shadow: var(--shadow);
 }
 
 nav.site-nav a {
@@ -107,6 +110,7 @@ nav.site-nav a {
 nav.site-nav a:hover {
   background: #e7f1ff;
   transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 /* 头部/头像 */
@@ -129,6 +133,7 @@ header {
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   color: #1a1a1a;
+  line-height: 1.2;
 }
 
 .contact-info p {
@@ -156,12 +161,13 @@ header {
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .profile-container:hover {
   transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
 }
 
 .profile-image {
@@ -198,11 +204,13 @@ section {
   padding: var(--section-padding);
   border-radius: var(--border-radius);
   background: rgba(245, 245, 245, 0.5);
-  transition: background-color var(--transition-speed);
+  transition: background-color var(--transition-speed), box-shadow 0.3s;
+  box-shadow: var(--shadow);
 }
 
 section:hover {
   background: rgba(245, 245, 245, 0.8);
+  box-shadow: var(--shadow-hover);
 }
 
 h2, h3, h4 {
@@ -240,11 +248,13 @@ hr {
   margin-bottom: 1.5rem;
   padding: 1rem;
   border-radius: var(--border-radius);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: var(--shadow);
 }
 
 .education-entry:hover {
   background-color: rgba(231, 241, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .entry-line-1 {
@@ -319,11 +329,13 @@ hr {
   display: flex;
   padding: 1rem;
   border-radius: var(--border-radius);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: var(--shadow);
 }
 
 .publication-item:hover {
   background-color: rgba(231, 241, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .pub-index {
@@ -453,14 +465,16 @@ hr {
   padding: 0.75rem 0;
   border-bottom: 1px solid #f0f0f0;
   font-size: 1rem;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
   border-radius: 4px;
   padding: 0.75rem 1rem;
   flex-wrap: wrap;
+  box-shadow: var(--shadow);
 }
 
 .award-item:hover {
   background-color: rgba(231, 241, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .award-item:last-child {
@@ -549,14 +563,14 @@ body.dark-mode {
   padding: 0.75rem;
   font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow);
   background: #ffffff;
   transition: all 0.3s;
 }
 
 #backToTop:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-hover);
 }
 
 body.dark-mode #backToTop {
@@ -718,5 +732,13 @@ html[data-lang="zh"] .lang-en {
   
   .award-year {
     align-self: flex-end;
+  }
+  
+  section {
+    padding: 1rem;
+  }
+  
+  .education-entry, .publication-item, .award-item {
+    padding: 0.75rem;
   }
 }
