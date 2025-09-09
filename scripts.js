@@ -1,14 +1,16 @@
 // scripts.js
 document.addEventListener('DOMContentLoaded', () => {
-  // 主题切换
+  // 主题切换功能优化
   const themeSwitcher = document.getElementById('theme-switcher');
   const applyTheme = (theme) => {
     if (theme === 'dark') {
       document.body.classList.add('dark-mode');
       themeSwitcher.textContent = '☀️';
+      themeSwitcher.setAttribute('aria-label', '切换到亮色模式');
     } else {
       document.body.classList.remove('dark-mode');
       themeSwitcher.textContent = '🌙';
+      themeSwitcher.setAttribute('aria-label', '切换到深色模式');
     }
   };
   
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(nextTheme);
   });
 
-  // 语言切换
+  // 语言切换功能优化
   function setLanguage(lang) {
     document.documentElement.setAttribute('data-lang', lang);
     const langLinks = document.querySelectorAll('#lang-switcher .lang-link');
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       localStorage.setItem('preferredLanguage', lang);
     } catch (e) {
-      console.error('Error saving language preference:', e);
+      console.error('保存语言偏好失败:', e);
     }
   }
   
@@ -48,20 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
   setLanguage(savedLanguage);
 
-  // 触摸头像切换
-  let touchCapable = false;
-  window.addEventListener('touchstart', () => {
-    touchCapable = true;
-  }, { once: true });
-  
+  // 头像切换功能优化
   const profileBox = document.getElementById('profileBox');
+  let touchCapable = 'ontouchstart' in window;
+  
   profileBox.addEventListener('click', () => {
     if (touchCapable) {
       profileBox.classList.toggle('toggled');
     }
   });
 
-  // 论文 PDF 预览弹窗
+  // PDF预览功能优化
   const modal = document.getElementById('pdfModal');
   const pdfViewer = document.getElementById('pdf-viewer');
   const pdfClose = document.getElementById('pdfClose');
@@ -73,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     pdfClose.focus();
+    
+    // 添加键盘事件监听
+    document.addEventListener('keydown', handleKeyDown);
   }
   
   function closePdfModal() {
@@ -82,15 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lastFocused && lastFocused.focus) {
       lastFocused.focus();
     }
+    
+    // 移除键盘事件监听
+    document.removeEventListener('keydown', handleKeyDown);
   }
   
-  document.addEventListener('keydown', (e) => {
+  function handleKeyDown(e) {
     if (e.key === 'Escape') {
       closePdfModal();
     }
-  });
+  }
   
-  window.addEventListener('click', (e) => {
+  modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       closePdfModal();
     }
@@ -98,20 +103,28 @@ document.addEventListener('DOMContentLoaded', () => {
   
   pdfClose.addEventListener('click', closePdfModal);
   
+  // 使用事件委托处理PDF链接点击
   document.addEventListener('click', (e) => {
     const pdfLink = e.target.closest('.pdf-link');
-    if (!pdfLink) return;
-    e.preventDefault();
-    openPdfModal(pdfLink.getAttribute('data-pdf'));
+    if (pdfLink) {
+      e.preventDefault();
+      openPdfModal(pdfLink.getAttribute('data-pdf'));
+    }
   });
 
-  // 返回顶部
+  // 返回顶部功能优化（添加防抖）
   const backBtn = document.getElementById('backToTop');
-  const onScroll = () => {
-    backBtn.style.display = (window.scrollY > 300) ? 'block' : 'none';
+  let scrollTimeout;
+  
+  const handleScroll = () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+    }, 100);
   };
   
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  
   backBtn.addEventListener('click', () => {
     window.scrollTo({
       top: 0,
@@ -119,60 +132,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 作者徽章自动化
-  document.querySelectorAll('.pub-authors').forEach(el => {
-    const nodes = [...el.childNodes];
-    const makeBadge = (cls, en, zh) => {
-      const span = document.createElement('span');
-      span.className = cls;
-      span.innerHTML = `<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
-      return span;
-    };
+  // 作者徽章自动化功能优化
+  function createAuthorBadge(type) {
+    const badge = document.createElement('span');
+    badge.className = type === '†' ? 'author-badge' : 'advisor-badge';
     
-    nodes.forEach(node => {
-      if (node.nodeType === 1 && node.tagName === 'SUP') {
-        const text = node.textContent.trim();
-        const badge = text === '†' 
-          ? makeBadge('author-badge', 'Co-first Author', '共同第一作者')
-          : makeBadge('advisor-badge', 'Advisor', '导师');
-        el.replaceChild(badge, node);
-        return;
-      }
-      
-      if (node.nodeType === 3) {
-        const text = node.nodeValue;
-        if (!text || (!text.includes('†') && !text.includes('*'))) return;
-        
-        const fragment = document.createDocumentFragment();
-        const regex = /[†*]/g;
-        let index = 0;
-        let match;
-        
-        while ((match = regex.exec(text)) !== null) {
-          const chunk = text.slice(index, match.index);
-          if (chunk) {
-            fragment.appendChild(document.createTextNode(chunk));
-          }
-          
-          const badge = match[0] === '†' 
-            ? makeBadge('author-badge', 'Co-first Author', '共同第一作者')
-            : makeBadge('advisor-badge', 'Advisor', '导师');
-          
-          fragment.appendChild(badge);
-          index = regex.lastIndex;
-        }
-        
-        const tail = text.slice(index);
-        if (tail) {
-          fragment.appendChild(document.createTextNode(tail));
-        }
-        
-        el.replaceChild(fragment, node);
-      }
-    });
-  });
+    const enSpan = document.createElement('span');
+    enSpan.className = 'lang-en';
+    enSpan.textContent = type === '†' ? 'Co-first Author' : 'Advisor';
+    
+    const zhSpan = document.createElement('span');
+    zhSpan.className = 'lang-zh';
+    zhSpan.textContent = type === '†' ? '共同第一作者' : '导师';
+    
+    badge.appendChild(enSpan);
+    badge.appendChild(zhSpan);
+    return badge;
+  }
   
-  // 平滑滚动导航
+  document.querySelectorAll('.pub-authors').forEach(el => {
+    const content = el.innerHTML;
+    
+    // 使用正则表达式替换特殊标记
+    const updatedContent = content
+      .replace(/(<sup>†<\/sup>)/g, createAuthorBadge('†').outerHTML)
+      .replace(/(<sup>\*<\/sup>)/g, createAuthorBadge('*').outerHTML)
+      .replace(/†/g, createAuthorBadge('†').outerHTML)
+      .replace(/\*/g, createAuthorBadge('*').outerHTML);
+    
+    el.innerHTML = updatedContent;
+  });
+
+  // 平滑滚动导航功能优化
   document.querySelectorAll('nav.site-nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -180,11 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetElement = document.querySelector(targetId);
       
       if (targetElement) {
+        const headerHeight = document.querySelector('header').offsetHeight;
+        const targetPosition = targetElement.offsetTop - headerHeight - 20;
+        
         window.scrollTo({
-          top: targetElement.offsetTop - 80,
+          top: targetPosition,
           behavior: 'smooth'
         });
       }
     });
   });
+
+  // 初始化页面时检查滚动位置
+  handleScroll();
 });
