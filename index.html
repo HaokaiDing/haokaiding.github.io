@@ -176,6 +176,23 @@
                 margin-bottom: 20px;
             }
         }
+
+        /* 隐藏语言部分 */
+        .lang-en {
+            display: none;
+        }
+
+        .lang-zh {
+            display: none;
+        }
+
+        [data-lang="en"] .lang-en {
+            display: block;
+        }
+
+        [data-lang="zh"] .lang-zh {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -191,10 +208,21 @@
             </div>
         </header>
 
-        <div id="about-container"></div> <!-- 个人简介部分 -->
-        <div id="education-container"></div> <!-- 教育背景部分 -->
-        <div id="publications-container"></div> <!-- 出版部分 -->
-        <div id="awards-container"></div> <!-- 奖项部分 -->
+        <!-- 个人简介部分 -->
+        <div id="about-container" data-lang="en" class="lang-en"></div>
+        <div id="about-container" data-lang="zh" class="lang-zh"></div>
+
+        <!-- 教育背景部分 -->
+        <div id="education-container" data-lang="en" class="lang-en"></div>
+        <div id="education-container" data-lang="zh" class="lang-zh"></div>
+
+        <!-- 出版部分 -->
+        <div id="publications-container" data-lang="en" class="lang-en"></div>
+        <div id="publications-container" data-lang="zh" class="lang-zh"></div>
+
+        <!-- 奖项部分 -->
+        <div id="awards-container" data-lang="en" class="lang-en"></div>
+        <div id="awards-container" data-lang="zh" class="lang-zh"></div>
 
         <footer>
             <p style="text-align: center;">&copy; 2025 Haokai Ding · Last updated 2025-08-31</p>
