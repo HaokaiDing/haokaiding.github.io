@@ -1,6 +1,5 @@
-// scripts.js
 document.addEventListener('DOMContentLoaded', () => {
-  // 主题切换功能优化
+  // 主题切换功能
   const themeSwitcher = document.getElementById('theme-switcher');
   const applyTheme = (theme) => {
     if (theme === 'dark') {
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(nextTheme);
   });
 
-  // 语言切换功能优化
+  // 语言切换功能
   function setLanguage(lang) {
     document.documentElement.setAttribute('data-lang', lang);
     const langLinks = document.querySelectorAll('#lang-switcher .lang-link');
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   document.getElementById('lang-switcher').addEventListener('click', (e) => {
-    const link = e.target.closest('.lang-link');
+    const link = e.target.closest('.极速-link');
     if (!link) return;
     e.preventDefault();
     setLanguage(link.dataset.lang);
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
   setLanguage(savedLanguage);
 
-  // 头像切换功能优化
+  // 头像切换功能
   const profileBox = document.getElementById('profileBox');
   let touchCapable = 'ontouchstart' in window;
   
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // PDF预览功能优化
+  // PDF预览功能
   const modal = document.getElementById('pdfModal');
   const pdfViewer = document.getElementById('pdf-viewer');
   const pdfClose = document.getElementById('pdfClose');
@@ -106,13 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // 使用事件委托处理PDF链接点击
   document.addEventListener('click', (e) => {
     const pdfLink = e.target.closest('.pdf-link');
-    if (pdfLink) {
-      e.preventDefault();
-      openPdfModal(pdfLink.getAttribute('data-pdf'));
-    }
+    if (!pdfLink) return;
+    e.preventDefault();
+    openPdfModal(pdfLink.getAttribute('data-pdf'));
   });
 
-  // 返回顶部功能优化（添加防抖）
+  // 返回顶部功能
   const backBtn = document.getElementById('backToTop');
   let scrollTimeout;
   
@@ -132,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 作者徽章自动化功能优化
+  // 作者徽章自动化
   function createAuthorBadge(type) {
     const badge = document.createElement('span');
     badge.className = type === '†' ? 'author-badge' : 'advisor-badge';
@@ -163,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.innerHTML = updatedContent;
   });
 
-  // 平滑滚动导航功能优化
+  // 平滑滚动导航
   document.querySelectorAll('nav.site-nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
