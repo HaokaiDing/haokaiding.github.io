@@ -38,6 +38,7 @@ body {
   padding: 0 1rem;
 }
 
+/* 顶部控件 */
 .top-controls {
   display: flex;
   justify-content: flex-end;
@@ -68,16 +69,18 @@ body {
   color: #888;
   font-weight: 700;
   text-decoration: none;
-  padding: 0.25rem 0.5rem;
+  padding: 6px 12px;
   border-radius: 4px;
   transition: all 0.2s;
 }
 
 #lang-switcher a.active {
   color: var(--brand);
-  background: #e7f1ff;
+  background: rgba(11, 99, 199, 0.15);
+  font-weight: bold;
 }
 
+/* 导航 */
 nav.site-nav {
   background: #f5f5f5;
   padding: 0.75rem;
@@ -107,6 +110,7 @@ nav.site-nav a:hover {
   transform: translateY(-2px);
 }
 
+/* 头部/头像 */
 header {
   display: flex;
   align-items: flex-start;
@@ -189,6 +193,7 @@ header {
   opacity: 1;
 }
 
+/* 版块 */
 section {
   margin-bottom: 2.5rem;
   padding: var(--section-padding);
@@ -231,6 +236,7 @@ hr {
   margin: 0.5rem 0 1.5rem;
 }
 
+/* 教育 */
 .education-entry {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -303,6 +309,7 @@ hr {
   margin-bottom: 0.25rem;
 }
 
+/* 出版 */
 .publication-list {
   list-style: none;
   padding: 0;
@@ -380,6 +387,7 @@ hr {
   color: #094a9c;
 }
 
+/* 徽章 */
 .ei-badge, .sci-badge, .jcrq1-badge, .accepted-badge, .published-badge, .author-badge, .advisor-badge {
   display: inline-flex;
   align-items: center;
@@ -434,6 +442,7 @@ hr {
   margin-left: 0.4rem;
 }
 
+/* 奖项 */
 .awards-list {
   list-style: none;
   padding: 0;
@@ -472,6 +481,7 @@ hr {
   font-family: 'Lato', sans-serif;
 }
 
+/* 深色模式 */
 body.dark-mode {
   background: #1a1a1a;
   color: #f5f5f5;
@@ -528,6 +538,7 @@ body.dark-mode {
   background-color: rgba(10, 46, 110, 0.3);
 }
 
+/* 返回顶部 */
 #backToTop {
   position: fixed;
   right: 1.5rem;
@@ -555,6 +566,7 @@ body.dark-mode #backToTop {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* 强制语言显示单一 */
 html:not([data-lang="zh"]) .lang-zh {
   display: none !important;
 }
@@ -563,6 +575,7 @@ html[data-lang="zh"] .lang-en {
   display: none !important;
 }
 
+/* PDF 预览弹窗 */
 .pdf-modal {
   position: fixed;
   inset: 0;
@@ -626,6 +639,7 @@ html[data-lang="zh"] .lang-en {
   transform: scale(1.05);
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .container {
     margin: 1rem auto;
@@ -705,5 +719,65 @@ html[data-lang="zh"] .lang-en {
   
   .award-year {
     align-self: flex-end;
+  }
+  
+  /* 教育条目响应式优化 */
+  .education-entry .entry-line-1 {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .entry-logo {
+    width: 40px;
+    height: 40px;
+    margin: 0 8px 0 0;
+  }
+}
+
+/* 打印样式优化 */
+@media print {
+  .top-controls, nav.site-nav, #backToTop {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  .container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  section {
+    background: white !important;
+    page-break-inside: avoid;
+    padding: 0.5rem 0;
+  }
+  .profile-container, .profile-image {
+    display: none;
+  }
+  header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pdf-link::after {
+    content: " (" attr(data-pdf) ")";
+    font-size: 0.9em;
+  }
+  .pub-links > a {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .pdf-link {
+    display: none;
+  }
+  .award-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #pdfModal {
+    display: none !important;
   }
 }
