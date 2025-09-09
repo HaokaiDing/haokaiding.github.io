@@ -21,8 +21,14 @@
     #lang-switcher a.active{color:var(--brand);background:#e7f1ff}
 
     /* 导航 */
-    nav.site-nav{background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap}
-    nav.site-nav a{text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff}
+    nav.site-nav{
+      background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;
+    }
+    nav.site-nav a{
+      text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);
+      padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e7f1ff;text-align:center;
+    }
     nav.site-nav a:hover{background:#e7f1ff}
 
     /* 头部/头像 */
@@ -31,8 +37,10 @@
     .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
     .contact-info a{color:var(--brand);text-decoration:none}
     .contact-info a:hover{text-decoration:underline}
+    .header-info{display:flex;flex-direction:column}
+    .cv-button{margin-top:12px;align-self:flex-start}
     .download-cv{
-      display:inline-block;margin-top:8px;padding:6px 12px;
+      display:inline-block;padding:6px 12px;
       background:var(--brand);color:#fff!important;border-radius:6px;
       font-family:'Lato',sans-serif;font-weight:700;text-decoration:none
     }
