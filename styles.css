@@ -38,7 +38,6 @@ body {
   padding: 0 1rem;
 }
 
-/* 顶部控件 */
 .top-controls {
   display: flex;
   justify-content: flex-end;
@@ -79,7 +78,6 @@ body {
   background: #e7f1ff;
 }
 
-/* 导航 */
 nav.site-nav {
   background: #f5f5f5;
   padding: 0.75rem;
@@ -109,7 +107,6 @@ nav.site-nav a:hover {
   transform: translateY(-2px);
 }
 
-/* 头部/头像 */
 header {
   display: flex;
   align-items: flex-start;
@@ -192,7 +189,6 @@ header {
   opacity: 1;
 }
 
-/* 版块 */
 section {
   margin-bottom: 2.5rem;
   padding: var(--section-padding);
@@ -235,7 +231,6 @@ hr {
   margin: 0.5rem 0 1.5rem;
 }
 
-/* 教育 */
 .education-entry {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -308,7 +303,6 @@ hr {
   margin-bottom: 0.25rem;
 }
 
-/* 出版 */
 .publication-list {
   list-style: none;
   padding: 0;
@@ -386,7 +380,6 @@ hr {
   color: #094a9c;
 }
 
-/* 徽章 */
 .ei-badge, .sci-badge, .jcrq1-badge, .accepted-badge, .published-badge, .author-badge, .advisor-badge {
   display: inline-flex;
   align-items: center;
@@ -441,7 +434,6 @@ hr {
   margin-left: 0.4rem;
 }
 
-/* 奖项 */
 .awards-list {
   list-style: none;
   padding: 0;
@@ -480,7 +472,6 @@ hr {
   font-family: 'Lato', sans-serif;
 }
 
-/* 深色模式 */
 body.dark-mode {
   background: #1a1a1a;
   color: #f5f5f5;
@@ -537,7 +528,6 @@ body.dark-mode {
   background-color: rgba(10, 46, 110, 0.3);
 }
 
-/* 返回顶部 */
 #backToTop {
   position: fixed;
   right: 1.5rem;
@@ -565,7 +555,6 @@ body.dark-mode #backToTop {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 强制语言显示单一 */
 html:not([data-lang="zh"]) .lang-zh {
   display: none !important;
 }
@@ -574,7 +563,6 @@ html[data-lang="zh"] .lang-en {
   display: none !important;
 }
 
-/* PDF 预览弹窗 */
 .pdf-modal {
   position: fixed;
   inset: 0;
@@ -638,7 +626,6 @@ html[data-lang="zh"] .lang-en {
   transform: scale(1.05);
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .container {
     margin: 1rem auto;
