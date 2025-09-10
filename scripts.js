@@ -7,8 +7,8 @@
     themeSwitcher.addEventListener('click',()=>{const cur=document.body.classList.contains('dark-mode')?'dark':'light';const nxt=cur==='dark'?'light':'dark';localStorage.setItem('theme',nxt);applyTheme(nxt);});
 
     /* 语言切换 */
-    function setLanguage(lang){document.documentElement.setAttribute('data-lang',lang); $$('#lang-switcher .lang-link').forEach(a=>a.classList.toggle('active',a.dataset.lang===lang)); try{localStorage.setItem('preferredLanguage',lang);}catch{}}
-    $('#lang-switcher').addEventListener('click',e=>{const a=e.target.closest('.lang-link');if(!a)return;e.preventDefault();setLanguage(a.dataset.lang);});
+    function setLanguage(lang){document.documentElement.setAttribute('data-lang',lang); $$('#lang-switcher .lang-link').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang)); try{localStorage.setItem('preferredLanguage',lang);}catch{}}
+    $$('#lang-switcher .lang-link').forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
     document.addEventListener('DOMContentLoaded',()=>setLanguage(localStorage.getItem('preferredLanguage')||'en'));
 
     /* 触摸头像切换 */
