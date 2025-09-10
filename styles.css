@@ -25,6 +25,7 @@
     nav.site-nav{
       background:#f5f5f5;padding:10px 12px;border-radius:12px;margin-bottom:16px;
       display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;
+      position:sticky;top:0;z-index:1000;
     }
     nav.site-nav a{
       text-decoration:none;font-family:'Lato',sans-serif;font-weight:700;color:var(--brand);
@@ -42,7 +43,8 @@
     .download-cv{
       display:inline-block;padding:6px 12px;
       background:var(--brand);color:#fff!important;border-radius:6px;
-      font-family:'Lato',sans-serif;font-weight:700;text-decoration:none
+      font-family:'Lato',sans-serif;font-weight:700;text-decoration:none;
+      border:none;cursor:pointer;
     }
     .download-cv:hover{background:#094a99;text-decoration:none}
 
@@ -83,10 +85,10 @@
     .pub-venue{font-size:1em;color:#555;font-style:italic}
 
     .pub-links{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-    .pub-links > a, .pub-links > .pdf-link{
+    .pub-links > a, .pub-links > .pdf-link, .pub-links > .video-link{
       cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
     }
-    .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
+    .pub-links > a:hover, .pub-links > .pdf-link:hover, .pub-links > .video-link:hover{ text-decoration:underline }
 
     /* 徽章 */
     .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.advisor-badge{
@@ -118,7 +120,11 @@
     body.dark-mode{background:#1a1a1a;color:#f5f5f5}
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
     .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
-    .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links > a,.dark-mode .pub-links > .pdf-link{color:#8ab4f8}
+    .dark-mode .contact-info a,
+    .dark-mode .entry-details a,
+    .dark-mode .pub-links > a,
+    .dark-mode .pub-links > .pdf-link,
+    .dark-mode .pub-links > .video-link{color:#8ab4f8}
     .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
@@ -135,9 +141,21 @@
     html:not([data-lang="zh"]) .lang-zh{display:none!important}
     html[data-lang="zh"] .lang-en{display:none!important}
 
+    /* 视频弹窗 */
+    .video-modal{
+      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;
+      opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s;
+    }
+    .video-modal.open{opacity:1;visibility:visible;pointer-events:auto;}
+    .video-modal-content{
+      position:relative;margin:5% auto;width:60%;max-width:800px;
+      background:#000;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.3);overflow:hidden;
+    }
+    .video-modal-content video{width:100%;height:auto;display:block;}
+
     /* PDF 预览弹窗（用于论文 PDF，保留） */
     .pdf-modal{
-      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
+      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;
       opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s;
     }
     .pdf-modal.open{opacity:1;visibility:visible;pointer-events:auto;}

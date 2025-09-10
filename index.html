@@ -157,6 +157,7 @@
               <div class="pub-venue">Proceedings of the 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</div>
               <div class="pub-links">
                 <span class="pdf-link" data-pdf="pdfs/IROS25_3633_FI.pdf">[PDF]</span>
+                <span class="video-link" id="videoButton"><span class="lang-en">[Video]</span><span class="lang-zh">[视频]</span></span>
                 <span class="accepted-badge">Accepted</span>
                 <span class="ei-badge">EI</span>
               </div>
@@ -255,6 +256,14 @@
     <footer>
       <p>&copy; 2025 Haokai Ding · Last updated 2025-09-09</p>
     </footer>
+  </div>
+
+  <!-- 视频弹窗 -->
+  <div id="videoModal" class="video-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="video-modal-content">
+      <button class="close-button" id="videoClose" type="button" aria-label="Close video">&times;</button>
+      <video id="videoPlayer" src="vedios/SPIDAPT.mp4" controls></video>
+    </div>
   </div>
 
   <!-- 论文 PDF 预览弹窗（保留） -->
