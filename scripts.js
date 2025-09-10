@@ -24,6 +24,15 @@
     pdfClose.addEventListener('click', closePdfModal);
     document.addEventListener('click',e=>{const t=e.target.closest('.pdf-link');if(!t)return;e.preventDefault();openPdfModal(t.getAttribute('data-pdf'));});
 
+    /* 视频弹窗 */
+    const videoModal=$('#videoModal'), videoPlayer=$('#videoPlayer'), videoClose=$('#videoClose'), videoButton=$('#videoButton');
+    function openVideoModal(){lastFocused=document.activeElement;videoModal.classList.add('open');videoModal.setAttribute('aria-hidden','false');videoPlayer.play();videoClose.focus();}
+    function closeVideoModal(){videoModal.classList.remove('open');videoModal.setAttribute('aria-hidden','true');videoPlayer.pause();videoPlayer.currentTime=0;if(lastFocused&&lastFocused.focus)lastFocused.focus();}
+    videoButton.addEventListener('click',openVideoModal);
+    videoClose.addEventListener('click',closeVideoModal);
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeVideoModal(); });
+    window.addEventListener('click',e=>{ if(e.target===videoModal) closeVideoModal(); });
+
     /* 返回顶部 */
     const backBtn=$('#backToTop');
     const onScroll=()=>{ backBtn.style.display=(window.scrollY>300)?'block':'none'; };
