@@ -39,8 +39,9 @@
     .contact-info p{margin:0;line-height:1.5;font-size:.95em;color:#444}
     .contact-info a{color:var(--brand);text-decoration:none}
     .contact-info a:hover{text-decoration:underline}
-    .contact-icons{margin-top:6px;display:flex;gap:10px;align-items:center}
-    .contact-icons img{width:24px;height:24px;display:block}
+    .contact-icons{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+    .contact-icons a{width:32px;height:32px;border-radius:6px;background:#e0e0e0;color:#333;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1em}
+    .contact-icons a:hover{background:var(--brand);color:#fff}
     .header-info{display:flex;flex-direction:column}
     .download-cv,
     .watch-video{
@@ -125,6 +126,7 @@
     .dark-mode h2,.dark-mode h3,.dark-mode h4,.dark-mode .pub-index,.dark-mode .pub-authors b{color:#f5f5f5}
     .dark-mode .contact-info p,.dark-mode .entry-date,.dark-mode .pub-authors,.dark-mode .pub-venue,.dark-mode .award-year{color:#aaa}
     .dark-mode .contact-info a,.dark-mode .entry-details a,.dark-mode .pub-links > a,.dark-mode .pub-links > .pdf-link{color:#8ab4f8}
+    .dark-mode .contact-icons a{background:#444;color:#f5f5f5}
     .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
