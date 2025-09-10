@@ -39,7 +39,6 @@
     .contact-info a{color:var(--brand);text-decoration:none}
     .contact-info a:hover{text-decoration:underline}
     .header-info{display:flex;flex-direction:column}
-    .cv-button{margin-top:12px;align-self:flex-start}
     .download-cv{
       display:inline-block;padding:6px 12px;
       background:var(--brand);color:#fff!important;border-radius:6px;
