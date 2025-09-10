@@ -44,27 +44,6 @@
     .contact-list li i{margin-right:8px;color:#666;font-size:1.1em;width:20px;text-align:center}
     .contact-list li a{color:#444;text-decoration:none}
     .contact-list li a:hover{text-decoration:underline;color:var(--brand)}
-    .icon-gallery{
-      margin:20px 0;
-    }
-    .icon-samples{
-      list-style:none;
-      padding:0;
-      margin:0;
-    }
-    .icon-samples li{
-      width:32px;
-      height:32px;
-      background:#666;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      margin-bottom:8px;
-      border-radius:4px;
-      font-size:18px;
-    }
-
     .header-info{display:flex;flex-direction:column}
     .download-cv,
     .watch-video{
