@@ -28,7 +28,7 @@
     const videoModal=$('#videoModal'), videoPlayer=$('#videoPlayer'), videoClose=$('#videoClose'), videoButton=$('#videoButton');
     function openVideoModal(){lastFocused=document.activeElement;videoModal.classList.add('open');videoModal.setAttribute('aria-hidden','false');videoPlayer.play();videoClose.focus();}
     function closeVideoModal(){videoModal.classList.remove('open');videoModal.setAttribute('aria-hidden','true');videoPlayer.pause();videoPlayer.currentTime=0;if(lastFocused&&lastFocused.focus)lastFocused.focus();}
-    videoButton.addEventListener('click',openVideoModal);
+    if(videoButton) videoButton.addEventListener('click',openVideoModal);
     videoClose.addEventListener('click',closeVideoModal);
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeVideoModal(); });
     window.addEventListener('click',e=>{ if(e.target===videoModal) closeVideoModal(); });
