@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img">
+  <title>IEEE logo</title>
+  <path d="M16 2l14 14-14 14L2 16 16 2z" fill="none" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" />
+  <path d="M10 16l6 6 6-6-6-6-6 6z" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round" />
+  <path d="M16 11v10" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
+  <path d="M13 16h6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
+</svg>

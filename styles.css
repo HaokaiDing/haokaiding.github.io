@@ -103,8 +103,12 @@
       color:#fff;white-space:nowrap;vertical-align:middle;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
+  .ras-badge,
+  .ieee-badge{gap:6px;padding-right:12px;}
   .ras-badge{background:var(--ras-color)}
   .ieee-badge{background:var(--ieee-color)}
+  .badge-logo{width:16px;height:16px;display:block;flex-shrink:0}
+  .badge-text{line-height:1}
     .sci-badge{background:var(--sci-color)}
     .jcrq1-badge{background:var(--jcrq1-color)}
     .accepted-badge{background:var(--accepted-color)}
