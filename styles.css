@@ -102,7 +102,10 @@
       border-radius:999px;padding:4px 10px;line-height:1.2;
       color:#fff;white-space:nowrap;vertical-align:middle;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      gap:6px;
     }
+  .badge-icon{display:inline-block;width:18px;height:18px}
+  .ras-badge .badge-icon,.ieee-badge .badge-icon{filter:drop-shadow(0 0 1px rgba(0,0,0,.18))}
   .ras-badge{background:var(--ras-color)}
   .ieee-badge{background:var(--ieee-color)}
     .sci-badge{background:var(--sci-color)}
