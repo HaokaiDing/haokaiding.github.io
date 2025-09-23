@@ -1,6 +1,6 @@
     :root{
       --brand:#0b63c7;
-      --ei-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
+    --ras-color:#f39c12; --ieee-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
       --accepted-color:#56606a; --published-color:#3f4954;
       --author-color:#0d6efd;           /* Co-first */
       --advisor-color:#ff9800;          /* Advisor */
@@ -96,14 +96,15 @@
     .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
 
     /* 徽章 */
-    .ei-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.advisor-badge{
+  .ras-badge,.ieee-badge,.sci-badge,.jcrq1-badge,.accepted-badge,.published-badge,.author-badge,.advisor-badge{
       display:inline-flex;align-items:center;justify-content:center;
       font-size:0.86em;font-weight:800;letter-spacing:.2px;
       border-radius:999px;padding:4px 10px;line-height:1.2;
       color:#fff;white-space:nowrap;vertical-align:middle;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
-    .ei-badge{background:var(--ei-color)}
+  .ras-badge{background:var(--ras-color)}
+  .ieee-badge{background:var(--ieee-color)}
     .sci-badge{background:var(--sci-color)}
     .jcrq1-badge{background:var(--jcrq1-color)}
     .accepted-badge{background:var(--accepted-color)}
