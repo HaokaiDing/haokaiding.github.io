@@ -107,7 +107,17 @@
   .badge-icon{display:inline-block;width:18px;height:18px}
   .ras-badge .badge-icon,.ieee-badge .badge-icon{filter:drop-shadow(0 0 1px rgba(0,0,0,.18))}
   .ras-badge{background:var(--ras-color)}
-  .ieee-badge{background:var(--ieee-color)}
+  .ieee-badge{
+      background:linear-gradient(135deg,#0b5ed7,#1a7bff);
+      box-shadow:0 4px 10px rgba(18,102,241,.28);
+      border:1px solid rgba(255,255,255,.35);
+      text-transform:uppercase;
+      letter-spacing:.35px;
+      padding:5px 14px;
+    }
+  .ieee-badge .badge-icon{
+      width:20px;height:20px;flex-shrink:0;
+    }
     .sci-badge{background:var(--sci-color)}
     .jcrq1-badge{background:var(--jcrq1-color)}
     .accepted-badge{background:var(--accepted-color)}
