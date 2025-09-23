@@ -1,14 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" role="img" aria-labelledby="title">
+  <title id="title">IEEE Robotics and Automation Society logo</title>
   <defs>
-    <linearGradient id="rasGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#cf202e"/>
-      <stop offset="100%" stop-color="#ff5a3c"/>
+    <linearGradient id="rasStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C6003D" />
+      <stop offset="100%" stop-color="#F1003A" />
     </linearGradient>
   </defs>
-  <circle cx="16" cy="16" r="12" fill="url(#rasGradient)"/>
-  <rect x="14.25" y="8.5" width="3.5" height="7" rx="1.75" fill="#fff"/>
-  <path d="M10 16.5c0 3.1 2.4 5.5 5.5 5.5h1c3.1 0 5.5-2.4 5.5-5.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="12.4" cy="12.4" r="1.1" fill="#fff"/>
-  <circle cx="19.6" cy="12.4" r="1.1" fill="#fff"/>
-  <text x="16" y="29" font-family="'Lato', 'Segoe UI', sans-serif" font-size="6" font-weight="700" text-anchor="middle" fill="#cf202e">RAS</text>
+  <g transform="translate(20 10)">
+    <g transform="translate(0 0)">
+      <polygon points="56 0 112 56 56 112 0 56" fill="#00629B" />
+      <path d="M56 27.5 38.2 45.3l12.2 12.3L30.4 79.6l12.2 12.1L56 78.3l13.4 13.4 12.1-12.1L61.4 57.6l12.1-12.2Z" fill="#fff" />
+    </g>
+    <g fill="none" stroke="url(#rasStroke)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 42C26 14 70 0 108 10c38 10 72 42 82 72 10 32-6 54-26 32" stroke-width="11" />
+      <path d="M22 90c12 24 54 46 88 44s54-26 54-52c0-26-16-44-34-58" stroke-width="11" />
+    </g>
+    <circle cx="168" cy="32" r="11" fill="#C6003D" />
+  </g>
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="34" transform="translate(190 54)">
+    <text fill="#00629B">IEEE</text>
+  </g>
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-size="30" transform="translate(190 94)">
+    <text fill="#333333">Robotics &amp; Automation</text>
+  </g>
+  <g font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" transform="translate(190 124)">
+    <text fill="#333333">Society</text>
+  </g>
 </svg>
