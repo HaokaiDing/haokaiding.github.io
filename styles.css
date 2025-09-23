@@ -1,7 +1,12 @@
     :root{
       --brand:#0b63c7;
-    --ras-color:#f39c12; --ieee-color:#1266f1; --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
-      --accepted-color:#56606a; --published-color:#3f4954;
+      --ieee-blue:#00629b;
+      --ras-navy:#005a9c;
+      --ras-cyan:#00a9e0;
+      --sci-color:#2e9e44;
+      --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a;
+      --published-color:#3f4954;
       --author-color:#0d6efd;           /* Co-first */
       --advisor-color:#ff9800;          /* Advisor */
     }
@@ -105,9 +110,9 @@
     }
   .ras-badge,
   .ieee-badge{gap:6px;padding-right:12px;}
-  .ras-badge{background:var(--ras-color)}
-  .ieee-badge{background:var(--ieee-color)}
-  .badge-logo{width:16px;height:16px;display:block;flex-shrink:0}
+  .ras-badge{background:linear-gradient(135deg,var(--ras-navy),var(--ras-cyan))}
+  .ieee-badge{background:var(--ieee-blue)}
+  .badge-logo{width:18px;height:18px;display:block;flex-shrink:0}
   .badge-text{line-height:1}
     .sci-badge{background:var(--sci-color)}
     .jcrq1-badge{background:var(--jcrq1-color)}
