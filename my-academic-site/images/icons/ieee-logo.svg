@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f4fac"/>
+      <stop offset="100%" stop-color="#1b72d1"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="20" height="20" rx="2" ry="2" transform="rotate(45 16 16)" fill="url(#grad)"/>
+  <path d="M16 10.2l-2.4 2.4 1.2 1.2 1.2-1.2 1.2 1.2 1.2-1.2L16 10.2zm0 5l-4.2 4.2L14 23.6l2-2 2 2 2.2-4.2L16 15.2z" fill="#fff"/>
+  <text x="16" y="28" font-family="'Lato', 'Segoe UI', sans-serif" font-size="6" font-weight="700" text-anchor="middle" fill="#0f4fac">IEEE</text>
+</svg>
