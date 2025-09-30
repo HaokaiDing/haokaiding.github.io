@@ -70,3 +70,13 @@
       });
     });
 
+    /* 页脚自动更新时间 */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const target=document.getElementById('lastUpdated');
+      if(!target) return;
+      const parsed=new Date(document.lastModified);
+      if(Number.isNaN(parsed.getTime())) return;
+      const pad=n=>String(n).padStart(2,'0');
+      target.textContent=`${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}`;
+    });
+
