@@ -119,6 +119,12 @@
     .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
     .award-item:last-child{border-bottom:none}
     .award-name{flex-grow:1;padding-right:20px}
+    .award-name a{
+      color:var(--brand);
+      text-decoration:none;
+    }
+    .award-name a:visited{color:var(--brand)}
+    .award-name a:hover{color:#094a99;text-decoration:underline}
     .award-year{flex-shrink:0;font-weight:700;color:#555;font-family:'Lato',sans-serif}
 
     /* 深色 */
@@ -132,6 +138,9 @@
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
     .dark-mode .award-item{border-color:#444}
+    .dark-mode .award-name a{color:#a5c7ff}
+    .dark-mode .award-name a:visited{color:#a5c7ff}
+    .dark-mode .award-name a:hover{color:#c4d8ff}
     .dark-mode .award-year{color:#d6d6d6}
     .dark-mode .advisor-badge{border-color:#ffc266;color:#ffc266}
 
