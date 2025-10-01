@@ -131,6 +131,8 @@
 .dark-mode hr{background:#444}
     .dark-mode nav.site-nav{background:#2a2a2a}
     .dark-mode nav.site-nav a{color:#8ab4f8;background:#333;border-color:#444}
+    .dark-mode .award-item{border-color:#444}
+    .dark-mode .award-year{color:#d6d6d6}
     .dark-mode .advisor-badge{border-color:#ffc266;color:#ffc266}
 
     /* 返回顶部 */
