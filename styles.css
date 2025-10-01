@@ -67,6 +67,35 @@
     h4{font-size:1.05em;color:#444;margin:20px 0 15px}
     hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 18px}
 
+    /* 主体链接可读性 */
+    .main-content a{
+      color:var(--brand);
+      text-decoration-color:rgba(11,99,199,.4);
+      text-decoration-thickness:2px;
+      text-underline-offset:3px;
+    }
+    .main-content a:hover{
+      color:#094a99;
+      text-decoration-color:#094a99;
+    }
+    .main-content a:visited{
+      color:#6a4cc7;
+      text-decoration-color:rgba(106,76,199,.6);
+    }
+
+    body.dark-mode .main-content a{
+      color:#a8c3ff;
+      text-decoration-color:rgba(168,195,255,.7);
+    }
+    body.dark-mode .main-content a:hover{
+      color:#c7d8ff;
+      text-decoration-color:#c7d8ff;
+    }
+    body.dark-mode .main-content a:visited{
+      color:#d0beff;
+      text-decoration-color:rgba(208,190,255,.7);
+    }
+
     /* 教育 */
     .education-entry{margin-bottom:25px}
     .entry-line-1{display:flex;align-items:center}
