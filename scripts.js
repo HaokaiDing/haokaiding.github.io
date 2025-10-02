@@ -83,38 +83,76 @@
     /* 访问地图 */
     document.addEventListener('DOMContentLoaded', ()=>{
       const mapContainer=document.getElementById('visitorMap');
-      if(!mapContainer || typeof L==='undefined') return;
+      if(!mapContainer) return;
       const statusEl=document.getElementById('visitorMapStatus');
       const setStatus=(en,zh)=>{
         if(!statusEl) return;
         statusEl.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
       };
-      const map=L.map(mapContainer,{worldCopyJump:true}).setView([20,0],2);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-        maxZoom:18,
-        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+      const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
+      const renderMap=(lat=null,lon=null)=>{
+        const precision=value=>Number(value).toFixed(5);
+        let src='https://www.openstreetmap.org/export/embed.html?bbox=-180,-90,180,90&layer=mapnik';
+        if(Number.isFinite(lat) && Number.isFinite(lon)){
+          const latSpan=0.6;
+          const lonSpan=0.6;
+          const south=clamp(lat-latSpan,-90,90);
+          const north=clamp(lat+latSpan,-90,90);
+          const west=clamp(lon-lonSpan,-180,180);
+          const east=clamp(lon+lonSpan,-180,180);
+          src=`https://www.openstreetmap.org/export/embed.html?bbox=${precision(west)},${precision(south)},${precision(east)},${precision(north)}&layer=mapnik&marker=${precision(lat)},${precision(lon)}`;
+        }
+        mapContainer.innerHTML='';
+        const iframe=document.createElement('iframe');
+        iframe.src=src;
+        iframe.loading='lazy';
+        iframe.referrerPolicy='no-referrer-when-downgrade';
+        iframe.title='OpenStreetMap view of visitor location';
+        mapContainer.appendChild(iframe);
+      };
+      renderMap();
       setStatus('Locating your approximate position…','正在定位您的大致位置…');
-      fetch('https://ipapi.co/json/')
-        .then(res=>res.ok?res.json():Promise.reject(new Error('Network response was not ok')))
-        .then(data=>{
-          if(!data || typeof data.latitude==='undefined' || typeof data.longitude==='undefined'){
-            throw new Error('Missing coordinates');
+
+      const providers=[
+        'https://ipapi.co/json/',
+        'https://get.geojs.io/v1/ip/geo.json',
+        'https://ipwho.is/'
+      ];
+
+      const parseLocation=data=>{
+        if(!data || typeof data!=='object') return null;
+        const lat=Number.parseFloat(data.latitude ?? data.lat ?? data.lat_deg ?? data.latDecimal ?? data.location?.latitude);
+        const lon=Number.parseFloat(data.longitude ?? data.lon ?? data.lng ?? data.lng_deg ?? data.location?.longitude);
+        if(!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+        const locationParts=[
+          data.city ?? data.city_name ?? data.cityName ?? data.location?.city,
+          data.region ?? data.region_name ?? data.regionName ?? data.state ?? data.state_prov ?? data.regionCode ?? data.location?.region,
+          data.country_name ?? data.country ?? data.country_name_en ?? data.countryCode ?? data.location?.country
+        ].filter(Boolean);
+        const locationText=locationParts.join(', ')||'Unknown location';
+        return {lat,lon,locationText};
+      };
+
+      (async()=>{
+        const headers={Accept:'application/json'};
+        for(const url of providers){
+          try{
+            const response=await fetch(url,{headers});
+            if(!response.ok) continue;
+            const data=await response.json();
+            const parsed=parseLocation(data);
+            if(!parsed) continue;
+            renderMap(parsed.lat,parsed.lon);
+            setStatus(
+              `Approximate location based on your IP: ${parsed.locationText}.`,
+              `基于您的 IP 推测的大致位置：${parsed.locationText}。`
+            );
+            return;
+          }catch(_err){
+            /* 尝试下一个服务 */
           }
-          const lat=Number.parseFloat(data.latitude);
-          const lon=Number.parseFloat(data.longitude);
-          if(Number.isNaN(lat) || Number.isNaN(lon)) throw new Error('Invalid coordinates');
-          const locationParts=[data.city,data.region,data.country_name].filter(Boolean);
-          const locationText=locationParts.join(', ')||'Unknown location';
-          map.setView([lat,lon],6);
-          L.marker([lat,lon]).addTo(map).bindPopup(locationText).openPopup();
-          setStatus(
-            `Approximate location based on your IP: ${locationText}.`,
-            `基于您的 IP 推测的大致位置：${locationText}。`
-          );
-        })
-        .catch(()=>{
-          setStatus('Unable to locate your position automatically.','无法自动定位您的位置。');
-        });
+        }
+        setStatus('Unable to locate your position automatically.','无法自动定位您的位置。');
+      })();
     });
 
