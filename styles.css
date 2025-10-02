@@ -67,6 +67,26 @@
     h4{font-size:1.05em;color:#444;margin:20px 0 15px}
     hr{border:0;height:1px;background:#e5e5e5;margin:8px 0 18px}
 
+    /* 访问地图 */
+    #visitorMap{
+      height:320px;
+      border-radius:14px;
+      border:1px solid #e0e0e0;
+      overflow:hidden;
+      margin-top:12px;
+    }
+    .map-description{font-size:.95em;color:#555;margin:6px 0 0}
+    .map-note{
+      font-size:.9em;
+      color:#666;
+      margin:10px 0 0;
+      font-family:'Lato',sans-serif;
+    }
+
+    body.dark-mode #visitorMap{border-color:#333}
+    body.dark-mode .map-description{color:#ccc}
+    body.dark-mode .map-note{color:#bbb}
+
     /* 主体链接可读性 */
     .main-content a{
       color:var(--brand);

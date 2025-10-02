@@ -11,6 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
 </head>
 <body>
   <div class="container">
@@ -283,6 +289,19 @@
           <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
         </div>
       </section>
+
+      <section id="visitor-map" class="page-avoid">
+        <h2><span class="lang-en">Visitor Map</span><span class="lang-zh">访问地图</span></h2><hr>
+        <p class="map-description">
+          <span class="lang-en">See an approximate location of your visit based on your IP address.</span>
+          <span class="lang-zh">基于您的 IP 地址，展示您此次访问的大致位置。</span>
+        </p>
+        <div id="visitorMap" role="img" aria-label="Visitor location map"></div>
+        <p id="visitorMapStatus" class="map-note" aria-live="polite">
+          <span class="lang-en">Loading your approximate location…</span>
+          <span class="lang-zh">正在加载您的大致位置…</span>
+        </p>
+      </section>
     </main>
 
     <footer>
@@ -309,6 +328,11 @@
   <!-- 返回顶部 -->
   <button id="backToTop" type="button" aria-label="Back to top">⬆️</button>
 
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j7kPpGt3JSrS2JbEo4JbUdw0LFpbbQbbH2yZu3A="
+    crossorigin=""
+  ></script>
   <script src="scripts.js"></script>
 </body>
 </html>
