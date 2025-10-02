@@ -80,48 +80,384 @@
       target.textContent=`${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}`;
     });
 
-    /* ClustrMaps 访客地图 */
+    /* 匿名访客地图与日志 */
     document.addEventListener('DOMContentLoaded', ()=>{
       const container=document.getElementById('visitorMap');
       if(!container) return;
       const status=document.getElementById('visitorMapStatus');
-      const id=(container.getAttribute('data-clustrmaps-id')||'').trim();
-      if(!id){
-        container.classList.add('map-error');
-        if(status){
-          status.querySelector('.lang-en').textContent='ClustrMaps identifier missing. Please configure data-clustrmaps-id.';
-          status.querySelector('.lang-zh').textContent='缺少 ClustrMaps 标识符，请配置 data-clustrmaps-id 属性。';
+      const summaryEl=document.getElementById('visitorSummary');
+      const listEl=document.getElementById('visitorLogList');
+      const fallback=document.getElementById('visitorLogFallback');
+      const rawEndpoint=(container.getAttribute('data-storage-endpoint')||'').trim();
+      const storageEndpoint=/PUT_YOUR_PANTRY_ID_HERE/i.test(rawEndpoint)?'':rawEndpoint;
+      const autoLog=(container.getAttribute('data-auto-log')||'true')!=='false';
+      const maxEntries=Math.max(25,Math.min(1000,parseInt(container.getAttribute('data-max-entries')||'250',10)||250));
+
+      const setDualText=(target,en,zh)=>{
+        if(!target) return;
+        const enNode=target.querySelector('.lang-en');
+        const zhNode=target.querySelector('.lang-zh');
+        if(enNode) enNode.textContent=en;
+        if(zhNode) zhNode.textContent=zh;
+      };
+
+      const setStatus=(en,zh,isError=false)=>{
+        if(!status) return;
+        setDualText(status,en,zh);
+        container.classList.toggle('map-error',isError);
+      };
+
+      const escapeHtml=str=>String(str??'').replace(/[&<>"']/g,c=>({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      })[c]);
+
+      const detectDevice=()=>{
+        if(navigator.userAgentData){
+          const brands=(navigator.userAgentData.brands||[])
+            .map(b=>b.brand)
+            .filter(Boolean)
+            .join(', ');
+          const platform=navigator.userAgentData.platform||'';
+          return [brands||'Unknown Browser',platform||'Unknown Platform'].join(' • ');
         }
-        return;
-      }
+        const ua=(navigator.userAgent||'').toLowerCase();
+        const browsers=[
+          ['edg','Microsoft Edge'],
+          ['chrome','Chrome'],
+          ['safari','Safari'],
+          ['firefox','Firefox'],
+          ['opr','Opera'],
+          ['trident','Internet Explorer']
+        ];
+        const systems=[
+          ['windows nt 10','Windows 10/11'],
+          ['windows nt 6.3','Windows 8.1'],
+          ['windows nt 6.2','Windows 8'],
+          ['windows nt 6.1','Windows 7'],
+          ['mac os x','macOS'],
+          ['iphone','iOS'],
+          ['ipad','iPadOS'],
+          ['android','Android'],
+          ['linux','Linux']
+        ];
+        const browser=(browsers.find(([sig])=>ua.includes(sig))||[])[1]||'Unknown Browser';
+        const os=(systems.find(([sig])=>ua.includes(sig))||[])[1]||'Unknown Platform';
+        return `${browser} • ${os}`;
+      };
 
-      const script=document.createElement('script');
-      script.async=true;
-      script.src=`https://www.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=${encodeURIComponent(id)}`;
-      script.referrerPolicy='no-referrer-when-downgrade';
-
-      let resolved=false;
-      const clearStatus=success=>{
-        if(resolved) return;
-        resolved=true;
-        if(success){
-          container.classList.add('map-ready');
-          if(status) status.remove();
-        }else{
-          container.classList.add('map-error');
-          if(status){
-            const en=status.querySelector('.lang-en');
-            const zh=status.querySelector('.lang-zh');
-            if(en) en.textContent='Unable to load ClustrMaps widget. Please use the direct link below.';
-            if(zh) zh.textContent='ClustrMaps 小部件加载失败，请使用下方链接直接查看。';
+      const hashIdentifier=async input=>{
+        const encoder=new TextEncoder();
+        try{
+          const buffer=await crypto.subtle.digest('SHA-256',encoder.encode(input));
+          return Array.from(new Uint8Array(buffer)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,20);
+        }catch{
+          let hash=0;
+          for(let i=0;i<input.length;i+=1){
+            hash=(hash<<5)-hash+input.charCodeAt(i);
+            hash|=0;
           }
+          return Math.abs(hash).toString(16).padStart(8,'0');
         }
       };
 
-      const timeout=setTimeout(()=>clearStatus(false),12000);
-      script.addEventListener('load',()=>{clearTimeout(timeout);clearStatus(true);});
-      script.addEventListener('error',()=>{clearTimeout(timeout);clearStatus(false);});
+      const fetchVisitorLog=async()=>{
+        if(!storageEndpoint) return [];
+        try{
+          const res=await fetch(storageEndpoint,{cache:'no-store'});
+          if(res.status===404) return [];
+          if(!res.ok) throw new Error(`HTTP ${res.status}`);
+          const payload=await res.json().catch(()=>({visitors:[]}));
+          const list=Array.isArray(payload)?payload:payload?.visitors;
+          if(!Array.isArray(list)) return [];
+          return list
+            .filter(entry=>entry && typeof entry==='object' && !Number.isNaN(Number(entry.lat)) && !Number.isNaN(Number(entry.lng)))
+            .map(entry=>({
+              id:entry.id||'',
+              city:entry.city||'',
+              region:entry.region||'',
+              country:entry.country||'',
+              iso2:entry.iso2||'',
+              lat:Number(entry.lat),
+              lng:Number(entry.lng),
+              visits:Number(entry.visits)||1,
+              lastSeen:entry.lastSeen||entry.timestamp||'',
+              device:entry.device||'',
+              timezone:entry.timezone||'',
+              notes:entry.notes||''
+            }));
+        }catch(err){
+          console.error('Failed to load visitor log', err);
+          setStatus('Unable to load visitor data. Please refresh later.','访客数据加载失败，请稍后重试。',true);
+          return [];
+        }
+      };
 
-      if(status) status.insertAdjacentElement('afterend', script);
-      else container.appendChild(script);
+      const persistVisitorLog=async visitors=>{
+        if(!storageEndpoint) return visitors;
+        try{
+          await fetch(storageEndpoint,{
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({visitors})
+          });
+        }catch(err){
+          console.error('Failed to persist visitor log', err);
+          setStatus('Unable to save visitor data, showing cached view only.','访客数据无法写入，当前仅显示已缓存的记录。',true);
+        }
+        return visitors;
+      };
+
+      const locateVisitor=async()=>{
+        try{
+          const res=await fetch('https://ipwho.is/?lang=en',{cache:'no-store'});
+          const data=await res.json();
+          if(!data||data.success===false) throw new Error(data?.message||'Lookup failed');
+          return {
+            ip:data.ip||'',
+            city:data.city||'',
+            region:data.region||data.region_name||'',
+            country:data.country||'',
+            iso2:data.country_code||'',
+            lat:Number(data.latitude),
+            lng:Number(data.longitude),
+            timezone:data.timezone?.id||data.timezone||''
+          };
+        }catch(err){
+          console.error('Geolocation lookup failed', err);
+          setStatus('Unable to determine visitor location. Existing data is still shown.','无法获取访客定位，将仅显示已记录的数据。',true);
+          return null;
+        }
+      };
+
+      const aggregateByCoordinate=visitors=>{
+        const groups=new Map();
+        visitors.forEach(item=>{
+          const key=`${item.lat.toFixed(2)}|${item.lng.toFixed(2)}`;
+          if(!groups.has(key)){
+            groups.set(key,{
+              lat:item.lat,
+              lng:item.lng,
+              city:item.city,
+              region:item.region,
+              country:item.country,
+              iso2:item.iso2,
+              entries:[]
+            });
+          }
+          groups.get(key).entries.push(item);
+        });
+        return Array.from(groups.values()).map(group=>{
+          group.entries.sort((a,b)=>new Date(b.lastSeen||0)-new Date(a.lastSeen||0));
+          return group;
+        });
+      };
+
+      const ensureMapInstance=()=>{
+        if(!window.L){
+          setStatus('Leaflet library failed to load.','Leaflet 地图库加载失败。',true);
+          return null;
+        }
+        if(container._visitorMapInstance) return container._visitorMapInstance;
+        const mapHost=document.createElement('div');
+        mapHost.className='leaflet-map-host';
+        mapHost.style.height='100%';
+        mapHost.style.width='100%';
+        container.appendChild(mapHost);
+        const map=L.map(mapHost,{
+          worldCopyJump:true,
+          attributionControl:true,
+          zoomControl:true
+        }).setView([20,0],2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+          maxZoom:11,
+          attribution:'&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        container._visitorLayer=L.layerGroup().addTo(map);
+        container._visitorMapInstance=map;
+        return map;
+      };
+
+      const renderMapMarkers=visitors=>{
+        const map=ensureMapInstance();
+        if(!map) return;
+        const layer=(container._visitorLayer)||(container._visitorLayer=L.layerGroup().addTo(map));
+        layer.clearLayers();
+        const groups=aggregateByCoordinate(visitors);
+        if(!groups.length){
+          map.setView([20,0],2);
+          return;
+        }
+        const bounds=[];
+        groups.forEach(group=>{
+          const {lat,lng,city,region,country,entries}=group;
+          const marker=L.circleMarker([lat,lng],{
+            radius:8,
+            color:'#0b63c7',
+            weight:1,
+            fillOpacity:0.8,
+            fillColor:'#0b63c7'
+          });
+          const locationText=[city,region,country].filter(Boolean).join(', ');
+          const listHtml=entries.slice(0,6).map(entry=>{
+            const id=entry.id?entry.id.toString().slice(0,8).toUpperCase():'ANON';
+            const device=escapeHtml(entry.device||'Unknown device');
+            const seen=entry.lastSeen?new Date(entry.lastSeen):null;
+            const seenText=seen&&!Number.isNaN(seen.getTime())?seen.toISOString().replace('T',' ').replace('Z',' UTC'):'Unknown';
+            return `<li><strong>${escapeHtml(id)}</strong> · ${device} · ${escapeHtml(seenText)} · ×${entry.visits||1}</li>`;
+          }).join('');
+          marker.bindPopup(`
+            <div class="visitor-popup">
+              <strong>${escapeHtml(locationText||'Unknown location')}</strong>
+              <ul>${listHtml}</ul>
+              <p style="margin:6px 0 0;font-size:.8em;">Approximate location only · 粗略位置信息</p>
+            </div>
+          `);
+          layer.addLayer(marker);
+          bounds.push([lat,lng]);
+        });
+        if(bounds.length===1){
+          map.setView(bounds[0],6);
+        }else{
+          map.fitBounds(bounds,{padding:[30,30]});
+        }
+      };
+
+      const renderSummary=visitors=>{
+        if(!summaryEl) return;
+        if(!visitors.length){
+          summaryEl.innerHTML='';
+          if(fallback) fallback.hidden=false;
+          return;
+        }
+        if(fallback) fallback.hidden=true;
+        const totalVisits=visitors.reduce((sum,item)=>sum+(Number(item.visits)||1),0);
+        const countries=new Set(visitors.map(v=>v.iso2||v.country).filter(Boolean));
+        summaryEl.innerHTML=`
+          <div class="summary-card">
+            <span class="summary-number">${visitors.length}</span>
+            <span class="lang-en">Unique devices</span>
+            <span class="lang-zh">唯一访客</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number">${totalVisits}</span>
+            <span class="lang-en">Total visits</span>
+            <span class="lang-zh">累计访问</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-number">${countries.size}</span>
+            <span class="lang-en">Countries/regions</span>
+            <span class="lang-zh">覆盖国家/地区</span>
+          </div>`;
+      };
+
+      const listVisitors=visitors=>{
+        if(!listEl) return;
+        if(!visitors.length){
+          listEl.innerHTML='';
+          return;
+        }
+        const formatterEn=new Intl.DateTimeFormat('en-GB',{
+          timeZone:'UTC',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'
+        });
+        const formatterZh=new Intl.DateTimeFormat('zh-CN',{
+          timeZone:'UTC',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'
+        });
+        const formatted=visitors
+          .slice()
+          .sort((a,b)=>new Date(b.lastSeen||0)-new Date(a.lastSeen||0))
+          .slice(0,20)
+          .map(entry=>{
+            const location=[entry.city,entry.region,entry.country].filter(Boolean);
+            const id=entry.id?entry.id.toString().slice(0,8).toUpperCase():'ANON';
+            const device=entry.device||'Unknown device';
+            const lastSeen=entry.lastSeen?new Date(entry.lastSeen):null;
+            const enTime=lastSeen&&!Number.isNaN(lastSeen.getTime())?formatterEn.format(lastSeen):'Unknown';
+            const zhTime=lastSeen&&!Number.isNaN(lastSeen.getTime())?formatterZh.format(lastSeen):'未知';
+            const visits=Number(entry.visits)||1;
+            const locationEn=location.length?location.join(', '):'Unknown location';
+            const locationZh=location.length?location.join('，'):'位置未知';
+            return `<li class="visitor-log-entry">
+              <span class="lang-en">${escapeHtml(id)} • ${escapeHtml(device)} • ${escapeHtml(locationEn)} • ${visits} visit${visits>1?'s':''} • ${escapeHtml(enTime)} UTC</span>
+              <span class="lang-zh">${escapeHtml(id)} · ${escapeHtml(device)} · ${escapeHtml(locationZh)} · 共 ${visits} 次 · ${escapeHtml(zhTime)}（世界时）</span>
+            </li>`;
+          }).join('');
+        listEl.innerHTML=formatted;
+      };
+
+      const trimVisitors=visitors=>{
+        if(visitors.length<=maxEntries) return visitors;
+        return visitors
+          .slice()
+          .sort((a,b)=>new Date(b.lastSeen||0)-new Date(a.lastSeen||0))
+          .slice(0,maxEntries);
+      };
+
+      const upsertVisitor=async visitors=>{
+        if(!autoLog) return visitors;
+        const location=await locateVisitor();
+        if(!location) return visitors;
+        if(Number.isNaN(location.lat)||Number.isNaN(location.lng)) return visitors;
+        const hashed=await hashIdentifier(location.ip||`${location.lat},${location.lng}`);
+        const now=new Date().toISOString();
+        const device=detectDevice();
+        const existing=visitors.findIndex(item=>item.id===hashed);
+        if(existing>=0){
+          const current=visitors[existing];
+          visitors[existing]={
+            ...current,
+            city:location.city||current.city,
+            region:location.region||current.region,
+            country:location.country||current.country,
+            iso2:location.iso2||current.iso2,
+            lat:location.lat||current.lat,
+            lng:location.lng||current.lng,
+            lastSeen:now,
+            visits:(Number(current.visits)||1)+1,
+            device
+          };
+        }else{
+          visitors.push({
+            id:hashed,
+            city:location.city||'',
+            region:location.region||'',
+            country:location.country||'',
+            iso2:location.iso2||'',
+            lat:location.lat,
+            lng:location.lng,
+            visits:1,
+            lastSeen:now,
+            device,
+            timezone:location.timezone||''
+          });
+        }
+        return trimVisitors(visitors);
+      };
+
+      const init=async()=>{
+        if(!storageEndpoint){
+          setStatus('Storage endpoint is not configured. Showing the current visit only.','尚未配置存储端点，将仅展示本次访问。');
+          let localVisitors=await upsertVisitor([]);
+          container.classList.add('map-ready');
+          if(status) status.remove();
+          renderSummary(localVisitors);
+          listVisitors(localVisitors);
+          renderMapMarkers(localVisitors);
+          return;
+        }
+        setStatus('Loading visitor data…','正在加载访客数据…');
+        let visitors=await fetchVisitorLog();
+        visitors=await upsertVisitor(visitors);
+        await persistVisitorLog(visitors);
+        container.classList.add('map-ready');
+        if(status) status.remove();
+        renderSummary(visitors);
+        listVisitors(visitors);
+        renderMapMarkers(visitors);
+      };
+
+      init();
     });

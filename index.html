@@ -11,6 +11,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-o9N1j7kGStjz7J0w7NmBGG99nmCa0LhXxM2f5x3HTaw="
+    crossorigin=""
+  />
+  <script
+    defer
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-oX8Yw9JyI072QtdgQXl3k5ufADG7n2AFD+a83H5l5r0="
+    crossorigin=""
+  ></script>
 </head>
 <body>
   <div class="container">
@@ -287,44 +299,56 @@
       <section id="visitor-map" class="page-avoid">
         <h2><span class="lang-en">Visitor Map</span><span class="lang-zh">访问地图</span></h2><hr>
         <p class="map-description">
-          <span class="lang-en">Explore a global view of page visits aggregated by ClustrMaps.</span>
-          <span class="lang-zh">通过 ClustrMaps 汇总的全球访问分布，一览访客足迹。</span>
+          <span class="lang-en">View anonymized visitor footprints and see which regions have viewed this homepage.</span>
+          <span class="lang-zh">查看匿名化的访客记录，了解哪些地区访问了此主页。</span>
         </p>
-        <div
-          id="visitorMap"
-          role="img"
-          aria-live="polite"
-          aria-label="Global visitor distribution map"
-          data-clustrmaps-id="aGtkaW5nMDEyNS5naXRodWIuaW8"
-        >
-          <div class="map-status" id="visitorMapStatus">
-            <span class="lang-en">Loading visitor footprint…</span>
-            <span class="lang-zh">正在载入访客足迹…</span>
+        <div class="visitor-map-wrapper">
+          <div
+            id="visitorMap"
+            class="visitor-map"
+            role="img"
+            aria-live="polite"
+            aria-label="Global visitor distribution map"
+            data-storage-endpoint="https://getpantry.cloud/apiv1/pantry/PUT_YOUR_PANTRY_ID_HERE/basket/visitor-log"
+            data-auto-log="true"
+            data-max-entries="250"
+          >
+            <div class="map-status" id="visitorMapStatus">
+              <span class="lang-en">Initializing visitor map…</span>
+              <span class="lang-zh">正在初始化访客地图…</span>
+            </div>
+            <noscript>
+              <p class="map-fallback">
+                <span class="lang-en">
+                  JavaScript is required to display the interactive visitor map.
+                </span>
+                <span class="lang-zh">
+                  需要启用 JavaScript 才能显示交互式访客地图。
+                </span>
+              </p>
+            </noscript>
           </div>
-          <noscript>
-            <p class="map-fallback">
-              <span class="lang-en">
-                JavaScript is required to display the interactive visitor map. You can view the public
-                dashboard directly on <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps</a>.
-              </span>
-              <span class="lang-zh">
-                该交互式访客地图需要启用 JavaScript，可直接在
-                <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps 仪表盘</a>
-                查看。
-              </span>
+          <aside class="visitor-log-panel" aria-live="polite">
+            <h3 class="map-subheading">
+              <span class="lang-en">Recent Visitors</span>
+              <span class="lang-zh">最近访客</span>
+            </h3>
+            <div id="visitorSummary" class="visitor-summary"></div>
+            <ol id="visitorLogList" class="visitor-log-list" aria-label="Visitor list"></ol>
+            <p class="map-fallback" id="visitorLogFallback">
+              <span class="lang-en">Visitor details will appear here once available.</span>
+              <span class="lang-zh">一旦有访问记录，将在此显示详细信息。</span>
             </p>
-          </noscript>
+          </aside>
         </div>
         <p class="map-note">
           <span class="lang-en">
-            Visitor footprint powered by <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">ClustrMaps</a>.
-            If the widget does not appear, open the public dashboard directly via
-            <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">this link</a>.
+            Only coarse location (city/region/country) and anonymized device fingerprints are stored. No raw IP addresses are saved.
+            Create a free <a href="https://getpantry.cloud/" target="_blank" rel="noopener noreferrer">GetPantry</a> basket (or another JSON store) and replace the placeholder URL in <code>data-storage-endpoint</code> to start logging.
           </span>
           <span class="lang-zh">
-            访客足迹由 <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">ClustrMaps</a> 提供。
-            若小部件未显示，可直接访问
-            <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps 仪表盘</a>。
+            系统仅保存粗粒度的城市/地区/国家信息及匿名化的设备标识，不会存储真实 IP 地址。
+            请在 <a href="https://getpantry.cloud/" target="_blank" rel="noopener noreferrer">GetPantry</a>（或其他 JSON 存储服务）创建储存篮，并将 <code>data-storage-endpoint</code> 中的占位链接替换为实际地址即可开始记录。
           </span>
         </p>
       </section>
