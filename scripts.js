@@ -79,3 +79,49 @@
       const pad=n=>String(n).padStart(2,'0');
       target.textContent=`${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}`;
     });
+
+    /* ClustrMaps 访客地图 */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const container=document.getElementById('visitorMap');
+      if(!container) return;
+      const status=document.getElementById('visitorMapStatus');
+      const id=(container.getAttribute('data-clustrmaps-id')||'').trim();
+      if(!id){
+        container.classList.add('map-error');
+        if(status){
+          status.querySelector('.lang-en').textContent='ClustrMaps identifier missing. Please configure data-clustrmaps-id.';
+          status.querySelector('.lang-zh').textContent='缺少 ClustrMaps 标识符，请配置 data-clustrmaps-id 属性。';
+        }
+        return;
+      }
+
+      const script=document.createElement('script');
+      script.async=true;
+      script.src=`https://www.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=${encodeURIComponent(id)}`;
+      script.referrerPolicy='no-referrer-when-downgrade';
+
+      let resolved=false;
+      const clearStatus=success=>{
+        if(resolved) return;
+        resolved=true;
+        if(success){
+          container.classList.add('map-ready');
+          if(status) status.remove();
+        }else{
+          container.classList.add('map-error');
+          if(status){
+            const en=status.querySelector('.lang-en');
+            const zh=status.querySelector('.lang-zh');
+            if(en) en.textContent='Unable to load ClustrMaps widget. Please use the direct link below.';
+            if(zh) zh.textContent='ClustrMaps 小部件加载失败，请使用下方链接直接查看。';
+          }
+        }
+      };
+
+      const timeout=setTimeout(()=>clearStatus(false),12000);
+      script.addEventListener('load',()=>{clearTimeout(timeout);clearStatus(true);});
+      script.addEventListener('error',()=>{clearTimeout(timeout);clearStatus(false);});
+
+      if(status) status.insertAdjacentElement('afterend', script);
+      else container.appendChild(script);
+    });
