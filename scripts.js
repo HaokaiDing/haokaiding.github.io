@@ -79,18 +79,3 @@
       const pad=n=>String(n).padStart(2,'0');
       target.textContent=`${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}`;
     });
-
-    /* 访问地图 */
-    document.addEventListener('DOMContentLoaded', ()=>{
-      const mapContainer=document.getElementById('visitorMap');
-      if(!mapContainer) return;
-      const embed=document.getElementById('clustrmaps');
-      if(!embed){
-        mapContainer.insertAdjacentHTML('beforeend', `<p class="map-note"><span class="lang-en">Visitor map unavailable.</span><span class="lang-zh">访问地图暂不可用。</span></p>`);
-        return;
-      }
-      embed.addEventListener('error', ()=>{
-        mapContainer.innerHTML=`<p class="map-note"><span class="lang-en">Failed to load visitor map from ClustrMaps.</span><span class="lang-zh">无法从 ClustrMaps 加载访问地图。</span></p>`;
-      });
-    });
-
