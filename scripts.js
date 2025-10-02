@@ -84,75 +84,30 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       const mapContainer=document.getElementById('visitorMap');
       if(!mapContainer) return;
-      const statusEl=document.getElementById('visitorMapStatus');
-      const setStatus=(en,zh)=>{
-        if(!statusEl) return;
-        statusEl.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
+      const clustrId=mapContainer.getAttribute('data-clustrmaps-id');
+      if(!clustrId){
+        mapContainer.innerHTML=`<p class="map-note"><span class="lang-en">Visitor map unavailable.</span><span class="lang-zh">访问地图暂不可用。</span></p>`;
+        return;
+      }
+      const params=new URLSearchParams({
+        cl:'ffffff',
+        w:'a',
+        t:'tt',
+        d:clustrId,
+        co:'1d5da7',
+        cmo:'f8bd19',
+        cmn:'c62828',
+        ct:'ffffff'
+      });
+      const script=document.createElement('script');
+      script.id='clustrmaps';
+      script.type='text/javascript';
+      script.async=true;
+      script.src=`https://clustrmaps.com/map_v2.js?${params.toString()}`;
+      script.onerror=()=>{
+        mapContainer.innerHTML=`<p class="map-note"><span class="lang-en">Failed to load visitor map from ClustrMaps.</span><span class="lang-zh">无法从 ClustrMaps 加载访问地图。</span></p>`;
       };
-      const clamp=(value,min,max)=>Math.min(Math.max(value,min),max);
-      const renderMap=(lat=null,lon=null)=>{
-        const precision=value=>Number(value).toFixed(5);
-        let src='https://www.openstreetmap.org/export/embed.html?bbox=-180,-90,180,90&layer=mapnik';
-        if(Number.isFinite(lat) && Number.isFinite(lon)){
-          const latSpan=0.6;
-          const lonSpan=0.6;
-          const south=clamp(lat-latSpan,-90,90);
-          const north=clamp(lat+latSpan,-90,90);
-          const west=clamp(lon-lonSpan,-180,180);
-          const east=clamp(lon+lonSpan,-180,180);
-          src=`https://www.openstreetmap.org/export/embed.html?bbox=${precision(west)},${precision(south)},${precision(east)},${precision(north)}&layer=mapnik&marker=${precision(lat)},${precision(lon)}`;
-        }
-        mapContainer.innerHTML='';
-        const iframe=document.createElement('iframe');
-        iframe.src=src;
-        iframe.loading='lazy';
-        iframe.referrerPolicy='no-referrer-when-downgrade';
-        iframe.title='OpenStreetMap view of visitor location';
-        mapContainer.appendChild(iframe);
-      };
-      renderMap();
-      setStatus('Locating your approximate position…','正在定位您的大致位置…');
-
-      const providers=[
-        'https://ipapi.co/json/',
-        'https://get.geojs.io/v1/ip/geo.json',
-        'https://ipwho.is/'
-      ];
-
-      const parseLocation=data=>{
-        if(!data || typeof data!=='object') return null;
-        const lat=Number.parseFloat(data.latitude ?? data.lat ?? data.lat_deg ?? data.latDecimal ?? data.location?.latitude);
-        const lon=Number.parseFloat(data.longitude ?? data.lon ?? data.lng ?? data.lng_deg ?? data.location?.longitude);
-        if(!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
-        const locationParts=[
-          data.city ?? data.city_name ?? data.cityName ?? data.location?.city,
-          data.region ?? data.region_name ?? data.regionName ?? data.state ?? data.state_prov ?? data.regionCode ?? data.location?.region,
-          data.country_name ?? data.country ?? data.country_name_en ?? data.countryCode ?? data.location?.country
-        ].filter(Boolean);
-        const locationText=locationParts.join(', ')||'Unknown location';
-        return {lat,lon,locationText};
-      };
-
-      (async()=>{
-        const headers={Accept:'application/json'};
-        for(const url of providers){
-          try{
-            const response=await fetch(url,{headers});
-            if(!response.ok) continue;
-            const data=await response.json();
-            const parsed=parseLocation(data);
-            if(!parsed) continue;
-            renderMap(parsed.lat,parsed.lon);
-            setStatus(
-              `Approximate location based on your IP: ${parsed.locationText}.`,
-              `基于您的 IP 推测的大致位置：${parsed.locationText}。`
-            );
-            return;
-          }catch(_err){
-            /* 尝试下一个服务 */
-          }
-        }
-        setStatus('Unable to locate your position automatically.','无法自动定位您的位置。');
-      })();
+      mapContainer.innerHTML='';
+      mapContainer.appendChild(script);
     });
 
