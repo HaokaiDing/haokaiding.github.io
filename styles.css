@@ -69,20 +69,26 @@
 
     /* 访问地图 */
     #visitorMap{
-      height:320px;
       border-radius:14px;
       border:1px solid #e0e0e0;
       overflow:hidden;
       margin-top:12px;
       background:#f7f7f7;
       position:relative;
+      padding:12px;
+      min-height:320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    #visitorMap iframe{
+    #visitorMap iframe,
+    #visitorMap img{
       width:100%;
       height:100%;
       border:0;
       display:block;
     }
+    #visitorMap script{display:none!important}
     .map-description{font-size:.95em;color:#555;margin:6px 0 0}
     .map-note{
       font-size:.9em;
