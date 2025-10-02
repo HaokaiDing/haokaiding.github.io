@@ -295,28 +295,25 @@
           role="img"
           aria-label="Global visitor distribution map"
         >
-          <script
-            id="clustrmaps"
-            type="text/javascript"
-            async
-            crossorigin="anonymous"
-            src="https://clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=9qN2NjdFY42ywYwkeXnJlw&co=1d5da7&cmo=f8bd19&cmn=c62828&ct=ffffff"
-          ></script>
-          <noscript>
-            <p class="map-note">
-              <span class="lang-en">
-                JavaScript is required to view the interactive visitor map. Visit
-                <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">the ClustrMaps website</a>
-                instead.
-              </span>
-              <span class="lang-zh">
-                需要启用 JavaScript 才能查看互动地图，您可访问
-                <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">ClustrMaps 官网</a>
-                查看。
-              </span>
-            </p>
-          </noscript>
+          <iframe
+            title="OpenStreetMap world visitor view"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-179.99,-85,179.99,85&layer=mapnik"
+          ></iframe>
         </div>
+        <p class="map-note">
+          <span class="lang-en">
+            Map tiles by <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>.
+            If the map fails to load, open it directly via
+            <a href="https://www.openstreetmap.org/#map=2/0.0/0.0" target="_blank" rel="noopener noreferrer">this link</a>.
+          </span>
+          <span class="lang-zh">
+            地图瓦片由 <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap 贡献者</a> 提供。
+            若地图未能加载，可直接访问
+            <a href="https://www.openstreetmap.org/#map=2/0.0/0.0" target="_blank" rel="noopener noreferrer">该链接</a>。
+          </span>
+        </p>
       </section>
     </main>
 
