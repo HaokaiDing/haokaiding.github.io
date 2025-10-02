@@ -80,3 +80,41 @@
       target.textContent=`${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}`;
     });
 
+    /* 访问地图 */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const mapContainer=document.getElementById('visitorMap');
+      if(!mapContainer || typeof L==='undefined') return;
+      const statusEl=document.getElementById('visitorMapStatus');
+      const setStatus=(en,zh)=>{
+        if(!statusEl) return;
+        statusEl.innerHTML=`<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
+      };
+      const map=L.map(mapContainer,{worldCopyJump:true}).setView([20,0],2);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        maxZoom:18,
+        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      setStatus('Locating your approximate position…','正在定位您的大致位置…');
+      fetch('https://ipapi.co/json/')
+        .then(res=>res.ok?res.json():Promise.reject(new Error('Network response was not ok')))
+        .then(data=>{
+          if(!data || typeof data.latitude==='undefined' || typeof data.longitude==='undefined'){
+            throw new Error('Missing coordinates');
+          }
+          const lat=Number.parseFloat(data.latitude);
+          const lon=Number.parseFloat(data.longitude);
+          if(Number.isNaN(lat) || Number.isNaN(lon)) throw new Error('Invalid coordinates');
+          const locationParts=[data.city,data.region,data.country_name].filter(Boolean);
+          const locationText=locationParts.join(', ')||'Unknown location';
+          map.setView([lat,lon],6);
+          L.marker([lat,lon]).addTo(map).bindPopup(locationText).openPopup();
+          setStatus(
+            `Approximate location based on your IP: ${locationText}.`,
+            `基于您的 IP 推测的大致位置：${locationText}。`
+          );
+        })
+        .catch(()=>{
+          setStatus('Unable to locate your position automatically.','无法自动定位您的位置。');
+        });
+    });
+
