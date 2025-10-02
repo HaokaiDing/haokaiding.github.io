@@ -84,30 +84,13 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       const mapContainer=document.getElementById('visitorMap');
       if(!mapContainer) return;
-      const clustrId=mapContainer.getAttribute('data-clustrmaps-id');
-      if(!clustrId){
-        mapContainer.innerHTML=`<p class="map-note"><span class="lang-en">Visitor map unavailable.</span><span class="lang-zh">访问地图暂不可用。</span></p>`;
+      const embed=document.getElementById('clustrmaps');
+      if(!embed){
+        mapContainer.insertAdjacentHTML('beforeend', `<p class="map-note"><span class="lang-en">Visitor map unavailable.</span><span class="lang-zh">访问地图暂不可用。</span></p>`);
         return;
       }
-      const params=new URLSearchParams({
-        cl:'ffffff',
-        w:'a',
-        t:'tt',
-        d:clustrId,
-        co:'1d5da7',
-        cmo:'f8bd19',
-        cmn:'c62828',
-        ct:'ffffff'
-      });
-      const script=document.createElement('script');
-      script.id='clustrmaps';
-      script.type='text/javascript';
-      script.async=true;
-      script.src=`https://clustrmaps.com/map_v2.js?${params.toString()}`;
-      script.onerror=()=>{
+      embed.addEventListener('error', ()=>{
         mapContainer.innerHTML=`<p class="map-note"><span class="lang-en">Failed to load visitor map from ClustrMaps.</span><span class="lang-zh">无法从 ClustrMaps 加载访问地图。</span></p>`;
-      };
-      mapContainer.innerHTML='';
-      mapContainer.appendChild(script);
+      });
     });
 
