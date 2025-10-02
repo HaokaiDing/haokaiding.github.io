@@ -92,6 +92,7 @@
       const storageEndpoint=/PUT_YOUR_PANTRY_ID_HERE/i.test(rawEndpoint)?'':rawEndpoint;
       const autoLog=(container.getAttribute('data-auto-log')||'true')!=='false';
       const maxEntries=Math.max(25,Math.min(1000,parseInt(container.getAttribute('data-max-entries')||'250',10)||250));
+      const localCacheKey='visitorMapLocalCache';
 
       const setDualText=(target,en,zh)=>{
         if(!target) return;
@@ -114,6 +115,25 @@
         '"':'&quot;',
         "'":'&#39;'
       })[c]);
+
+      const readLocalCache=()=>{
+        try{
+          const parsed=JSON.parse(localStorage.getItem(localCacheKey)||'[]');
+          if(!Array.isArray(parsed)) return [];
+          return parsed.filter(entry=>entry && typeof entry==='object');
+        }catch(err){
+          console.error('Failed to read cached visitor log', err);
+          return [];
+        }
+      };
+
+      const writeLocalCache=data=>{
+        try{
+          localStorage.setItem(localCacheKey,JSON.stringify(data));
+        }catch(err){
+          console.error('Failed to persist visitor log locally', err);
+        }
+      };
 
       const detectDevice=()=>{
         if(navigator.userAgentData){
@@ -165,7 +185,13 @@
       };
 
       const fetchVisitorLog=async()=>{
-        if(!storageEndpoint) return [];
+        if(!storageEndpoint){
+          const cached=readLocalCache();
+          if(!cached.length){
+            setStatus('No remote storage configured. Data is kept on this device only.','尚未配置远程存储，访客数据仅保存在此设备。');
+          }
+          return cached;
+        }
         try{
           const res=await fetch(storageEndpoint,{cache:'no-store'});
           if(res.status===404) return [];
@@ -173,7 +199,7 @@
           const payload=await res.json().catch(()=>({visitors:[]}));
           const list=Array.isArray(payload)?payload:payload?.visitors;
           if(!Array.isArray(list)) return [];
-          return list
+          const visitors=list
             .filter(entry=>entry && typeof entry==='object' && !Number.isNaN(Number(entry.lat)) && !Number.isNaN(Number(entry.lng)))
             .map(entry=>({
               id:entry.id||'',
@@ -189,14 +215,22 @@
               timezone:entry.timezone||'',
               notes:entry.notes||''
             }));
+          writeLocalCache(visitors);
+          return visitors;
         }catch(err){
           console.error('Failed to load visitor log', err);
+          const cached=readLocalCache();
+          if(cached.length){
+            setStatus('Remote visitor data unavailable. Showing cached copy.','远程访客数据不可用，已显示本地缓存。',true);
+            return cached;
+          }
           setStatus('Unable to load visitor data. Please refresh later.','访客数据加载失败，请稍后重试。',true);
           return [];
         }
       };
 
       const persistVisitorLog=async visitors=>{
+        writeLocalCache(visitors);
         if(!storageEndpoint) return visitors;
         try{
           await fetch(storageEndpoint,{
@@ -212,25 +246,65 @@
       };
 
       const locateVisitor=async()=>{
-        try{
-          const res=await fetch('https://ipwho.is/?lang=en',{cache:'no-store'});
-          const data=await res.json();
-          if(!data||data.success===false) throw new Error(data?.message||'Lookup failed');
-          return {
-            ip:data.ip||'',
-            city:data.city||'',
-            region:data.region||data.region_name||'',
-            country:data.country||'',
-            iso2:data.country_code||'',
-            lat:Number(data.latitude),
-            lng:Number(data.longitude),
-            timezone:data.timezone?.id||data.timezone||''
-          };
-        }catch(err){
-          console.error('Geolocation lookup failed', err);
-          setStatus('Unable to determine visitor location. Existing data is still shown.','无法获取访客定位，将仅显示已记录的数据。',true);
-          return null;
+        const providers=[
+          async()=>{
+            const res=await fetch('https://ipwho.is/?lang=en',{cache:'no-store'});
+            const data=await res.json();
+            if(!data||data.success===false) throw new Error(data?.message||'Lookup failed');
+            return {
+              ip:data.ip||'',
+              city:data.city||'',
+              region:data.region||data.region_name||'',
+              country:data.country||'',
+              iso2:data.country_code||'',
+              lat:Number(data.latitude),
+              lng:Number(data.longitude),
+              timezone:data.timezone?.id||data.timezone||''
+            };
+          },
+          async()=>{
+            const res=await fetch('https://ipapi.co/json/',{cache:'no-store'});
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data=await res.json();
+            return {
+              ip:data.ip||'',
+              city:data.city||'',
+              region:data.region||data.region_name||data.region_code||'',
+              country:data.country_name||data.country||'',
+              iso2:data.country_code||'',
+              lat:Number(data.latitude),
+              lng:Number(data.longitude),
+              timezone:data.timezone||''
+            };
+          },
+          async()=>{
+            const res=await fetch('https://get.geojs.io/v1/ip/geo.json',{cache:'no-store'});
+            if(!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data=await res.json();
+            return {
+              ip:data.ip||'',
+              city:data.city||'',
+              region:data.region||'',
+              country:data.country||'',
+              iso2:data.country_code||'',
+              lat:Number(data.latitude),
+              lng:Number(data.longitude),
+              timezone:data.timezone||''
+            };
+          }
+        ];
+        for(const provider of providers){
+          try{
+            const location=await provider();
+            if(location && !Number.isNaN(location.lat) && !Number.isNaN(location.lng)){
+              return location;
+            }
+          }catch(err){
+            console.error('Geolocation provider failed', err);
+          }
         }
+        setStatus('Unable to determine visitor location. Existing data is still shown.','无法获取访客定位，将仅显示已记录的数据。',true);
+        return null;
       };
 
       const aggregateByCoordinate=visitors=>{
@@ -438,22 +512,18 @@
       };
 
       const init=async()=>{
-        if(!storageEndpoint){
-          setStatus('Storage endpoint is not configured. Showing the current visit only.','尚未配置存储端点，将仅展示本次访问。');
-          let localVisitors=await upsertVisitor([]);
-          container.classList.add('map-ready');
-          if(status) status.remove();
-          renderSummary(localVisitors);
-          listVisitors(localVisitors);
-          renderMapMarkers(localVisitors);
-          return;
-        }
         setStatus('Loading visitor data…','正在加载访客数据…');
         let visitors=await fetchVisitorLog();
         visitors=await upsertVisitor(visitors);
         await persistVisitorLog(visitors);
         container.classList.add('map-ready');
         if(status) status.remove();
+        if(!storageEndpoint && fallback){
+          setDualText(fallback,
+            'Visitor details will appear here once available. Records are saved only on this device until remote storage is configured.',
+            '一旦有访问记录，将在此显示详细信息。在配置远程存储之前，访客记录仅保存在此设备。'
+          );
+        }
         renderSummary(visitors);
         listVisitors(visitors);
         renderMapMarkers(visitors);
