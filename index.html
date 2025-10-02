@@ -293,25 +293,38 @@
         <div
           id="visitorMap"
           role="img"
+          aria-live="polite"
           aria-label="Global visitor distribution map"
+          data-clustrmaps-id="aGtkaW5nMDEyNS5naXRodWIuaW8"
         >
-          <iframe
-            title="OpenStreetMap world visitor view"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-179.99,-85,179.99,85&layer=mapnik"
-          ></iframe>
+          <div class="map-status" id="visitorMapStatus">
+            <span class="lang-en">Loading visitor footprint…</span>
+            <span class="lang-zh">正在载入访客足迹…</span>
+          </div>
+          <noscript>
+            <p class="map-fallback">
+              <span class="lang-en">
+                JavaScript is required to display the interactive visitor map. You can view the public
+                dashboard directly on <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps</a>.
+              </span>
+              <span class="lang-zh">
+                该交互式访客地图需要启用 JavaScript，可直接在
+                <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps 仪表盘</a>
+                查看。
+              </span>
+            </p>
+          </noscript>
         </div>
         <p class="map-note">
           <span class="lang-en">
-            Map tiles by <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>.
-            If the map fails to load, open it directly via
-            <a href="https://www.openstreetmap.org/#map=2/0.0/0.0" target="_blank" rel="noopener noreferrer">this link</a>.
+            Visitor footprint powered by <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">ClustrMaps</a>.
+            If the widget does not appear, open the public dashboard directly via
+            <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">this link</a>.
           </span>
           <span class="lang-zh">
-            地图瓦片由 <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap 贡献者</a> 提供。
-            若地图未能加载，可直接访问
-            <a href="https://www.openstreetmap.org/#map=2/0.0/0.0" target="_blank" rel="noopener noreferrer">该链接</a>。
+            访客足迹由 <a href="https://clustrmaps.com/" target="_blank" rel="noopener noreferrer">ClustrMaps</a> 提供。
+            若小部件未显示，可直接访问
+            <a href="https://clustrmaps.com/site/aGtkaW5nMDEyNS5naXRodWIuaW8" target="_blank" rel="noopener noreferrer">ClustrMaps 仪表盘</a>。
           </span>
         </p>
       </section>
