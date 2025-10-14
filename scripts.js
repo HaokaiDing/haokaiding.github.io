@@ -41,30 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setLanguage(localStorage.getItem('preferredLanguage') || 'en');
 });
 
-/* 访客地图位置与无障碍优化 */
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('visitorMap');
-  if (!container) return;
-
-  const relocate = () => {
-    const widget = document.getElementById('mapmyvisitors-widget');
-    if (!widget) return false;
-    container.appendChild(widget);
-    widget.setAttribute('aria-label', 'Visitor map showing recent visitors');
-    return true;
-  };
-
-  if (relocate()) return;
-
-  const observer = new MutationObserver(() => {
-    if (relocate()) observer.disconnect();
-  });
-
-  observer.observe(document.body, { childList: true });
-
-  setTimeout(() => observer.disconnect(), 10000);
-});
-
 /* 触摸头像切换 */
 let touchCapable = false;
 window.addEventListener('touchstart', () => {
