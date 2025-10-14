@@ -195,6 +195,29 @@
     }
     .video-modal-content video{width:100%;height:auto;display:block;}
 
+    /* 页脚 */
+    footer{
+      text-align:center;
+      margin-top:3rem;
+      font-size:0.9rem;
+    }
+
+    .visitor-map{
+      margin-top:1.5rem;
+      text-align:center;
+    }
+
+    .visitor-map img{
+      max-width:100%;
+      height:auto;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+    }
+
+    body.dark-mode .visitor-map img{
+      box-shadow:0 4px 12px rgba(0,0,0,.35);
+    }
+
     /* PDF 预览弹窗（用于论文 PDF，保留） */
     .pdf-modal{
       position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
