@@ -205,6 +205,10 @@
     .visitor-map{
       margin-top:1.5rem;
       text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:1rem;
     }
 
     .visitor-map img{
@@ -215,6 +219,28 @@
     }
 
     body.dark-mode .visitor-map img{
+      box-shadow:0 4px 12px rgba(0,0,0,.35);
+    }
+
+    .visitor-map #mapmyvisitors-widget{
+      width:min(100%,680px)!important;
+      margin:0 auto;
+      display:block!important;
+    }
+
+    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map-container,
+    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
+      width:100%!important;
+    }
+
+    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
+      height:clamp(220px,45vw,380px)!important;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+      background-size:cover!important;
+    }
+
+    body.dark-mode .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
       box-shadow:0 4px 12px rgba(0,0,0,.35);
     }
 
