@@ -197,50 +197,41 @@
 
     /* 页脚 */
     footer{
-      text-align:center;
-      margin-top:3rem;
-      font-size:0.9rem;
-    }
-
-    .visitor-map{
-      margin-top:1.5rem;
-      text-align:center;
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap:1rem;
+      gap:1.75rem;
+      text-align:center;
+      margin-top:3rem;
     }
 
-    .visitor-map img{
-      max-width:100%;
+    .footer-meta{font-size:0.9rem;margin:0;}
+
+    .visitor-map{
+      width:min(100%,900px);
+      margin:0 auto;
+    }
+
+    .visitor-map > div,
+    .visitor-map iframe{
+      width:100%!important;
+      max-width:100%!important;
+    }
+
+    .visitor-map a{display:block;text-decoration:none;}
+    .visitor-map a span{display:none;}
+
+    .visitor-map img,
+    .visitor-map iframe{
+      display:block;
+      width:100%!important;
       height:auto;
       border-radius:12px;
       box-shadow:0 4px 12px rgba(0,0,0,.08);
     }
 
-    body.dark-mode .visitor-map img{
-      box-shadow:0 4px 12px rgba(0,0,0,.35);
-    }
-
-    .visitor-map #mapmyvisitors-widget{
-      width:min(100%,680px)!important;
-      margin:0 auto;
-      display:block!important;
-    }
-
-    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map-container,
-    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
-      width:100%!important;
-    }
-
-    .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
-      height:clamp(220px,45vw,380px)!important;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-      background-size:cover!important;
-    }
-
-    body.dark-mode .visitor-map #mapmyvisitors-widget .mapmyvisitors-map{
+    body.dark-mode .visitor-map img,
+    body.dark-mode .visitor-map iframe{
       box-shadow:0 4px 12px rgba(0,0,0,.35);
     }
 
