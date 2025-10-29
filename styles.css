@@ -121,6 +121,12 @@
     .pub-links > a, .pub-links > .pdf-link{
       cursor:pointer;text-decoration:none;font-weight:700;font-family:'Lato',sans-serif;font-size:.92em;color:var(--brand)
     }
+    .pub-links > a[href*="doi.org"]{
+      color:#6a4cc7;
+    }
+    .pub-links > a[href*="doi.org"]:visited{
+      color:#6a4cc7;
+    }
     .pub-links > a:hover, .pub-links > .pdf-link:hover{ text-decoration:underline }
 
     /* 徽章 */
