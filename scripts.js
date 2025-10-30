@@ -187,3 +187,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const pad = value => String(value).padStart(2, '0');
   target.textContent = `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}`;
 });
+
+/* 访客地图加载状态与降级处理 */
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('visitorMap');
+  const fallback = document.getElementById('visitorMapFallback');
+  const scriptEl = document.getElementById('clustrmaps');
+  if (!container || !fallback || !scriptEl) return;
+
+  fallback.dataset.state = 'loading';
+
+  const widgetSelector = 'img, iframe, .clustrmaps-map, .clustrmaps-widget, .clustrmaps-globe';
+  const hasWidget = () => Boolean(container.querySelector(widgetSelector));
+
+  const markLoaded = () => {
+    fallback.dataset.state = 'loaded';
+    fallback.classList.remove('show-help');
+  };
+
+  const showHelp = state => {
+    fallback.dataset.state = state;
+    fallback.classList.add('show-help');
+  };
+
+  if (hasWidget()) {
+    markLoaded();
+    return;
+  }
+
+  scriptEl.addEventListener('error', () => showHelp('error'));
+  scriptEl.addEventListener('load', () => {
+    window.setTimeout(() => {
+      if (fallback.dataset.state === 'loaded') return;
+      if (hasWidget()) markLoaded();
+    }, 120);
+  });
+
+  const observer = new MutationObserver(() => {
+    if (!hasWidget()) return;
+    markLoaded();
+    observer.disconnect();
+  });
+  observer.observe(container, { childList: true, subtree: true });
+
+  window.setTimeout(() => {
+    if (fallback.dataset.state === 'loaded' || fallback.dataset.state === 'error') return;
+    if (!hasWidget()) showHelp('timeout');
+  }, 6000);
+});

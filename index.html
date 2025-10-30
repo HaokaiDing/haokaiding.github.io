@@ -310,7 +310,24 @@
             <span>View the visitor map on ClustrMaps</span>
           </a>
         </noscript>
-        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=znvx_TSWEndb_yGiF_u2P2L6hrNLIet55wRIDi6dAVY&amp;cl=ffffff&amp;w=a"></script>
+        <div id="visitorMapFallback" class="visitor-map-fallback" role="status">
+          <p class="lang-en fallback-loading">Loading visitor map…</p>
+          <p class="lang-zh fallback-loading">访客地图加载中……</p>
+          <p class="lang-en fallback-help">
+            If the map never appears, the ClustrMaps service may be blocked in your region (for example, mainland China).
+            <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">Open the visitor map in a new tab</a>.
+          </p>
+          <p class="lang-zh fallback-help">
+            如果地图始终无法显示，可能是因为 ClustrMaps 服务在您所在的地区（例如中国大陆）被屏蔽。
+            <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">请点击此处在新窗口打开访客地图</a>。
+          </p>
+        </div>
+        <script
+          type="text/javascript"
+          id="clustrmaps"
+          src="https://clustrmaps.com/map_v2.js?d=znvx_TSWEndb_yGiF_u2P2L6hrNLIet55wRIDi6dAVY&amp;cl=ffffff&amp;w=a"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></script>
       </div>
       <p class="footer-meta">&copy; 2025 Haokai Ding · Last updated <span id="lastUpdated">2025-09-09</span></p>
     </footer>
