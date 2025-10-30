@@ -244,6 +244,22 @@
       box-shadow:0 4px 12px rgba(0,0,0,.08);
     }
 
+    .visitor-map-fallback{
+      margin-top:1rem;
+      font-size:0.95rem;
+      color:#555;
+      line-height:1.5;
+    }
+
+    .visitor-map-fallback a{color:inherit;text-decoration:underline;}
+
+    .visitor-map-fallback .fallback-help{display:none;margin-top:0.5rem;}
+    .visitor-map-fallback.show-help .fallback-help{display:block;}
+    .visitor-map-fallback[data-state="loaded"]{display:none;}
+
+    body.dark-mode .visitor-map-fallback{color:#bbb;}
+    body.dark-mode .visitor-map-fallback a{color:#e0e0e0;}
+
     body.dark-mode .visitor-map img,
     body.dark-mode .visitor-map iframe{
       box-shadow:0 4px 12px rgba(0,0,0,.35);
