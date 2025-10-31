@@ -149,8 +149,8 @@
       text-decoration-color:#094a99;
     }
     .main-content a:visited{
-      color:#6a4cc7;
-      text-decoration-color:rgba(106,76,199,.6);
+      color:var(--brand);
+      text-decoration-color:rgba(11,99,199,.4);
     }
 
     body.dark-mode .main-content a{
@@ -162,8 +162,8 @@
       text-decoration-color:#c7d8ff;
     }
     body.dark-mode .main-content a:visited{
-      color:#d0beff;
-      text-decoration-color:rgba(208,190,255,.7);
+      color:#a8c3ff;
+      text-decoration-color:rgba(168,195,255,.7);
     }
 
     /* 教育 */
