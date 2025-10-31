@@ -37,6 +37,7 @@ const openSidebar = () => {
   sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('no-scroll');
   if (sidebarOverlay) {
     sidebarOverlay.hidden = false;
     sidebarOverlay.classList.add('open');
@@ -50,6 +51,7 @@ const closeSidebar = () => {
   if (!sidebar || !sidebarToggle) return;
   sidebar.classList.remove('open');
   sidebar.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('no-scroll');
   if (sidebarOverlay) sidebarOverlay.classList.remove('open');
   sidebarToggle.setAttribute('aria-expanded', 'false');
   window.setTimeout(() => {
