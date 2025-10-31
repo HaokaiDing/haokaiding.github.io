@@ -140,46 +140,6 @@
     @media (max-width:600px){
       .top-bar{top:16px;width:min(900px,calc(100% - 32px))}
     }
-    body.sidebar-static{
-      align-items:center;
-    }
-    body.sidebar-static .container{
-      display:grid;
-      grid-template-columns:minmax(240px,300px) minmax(0,1fr);
-      column-gap:40px;
-      row-gap:40px;
-      max-width:1200px;
-      margin:80px 20px 40px;
-    }
-    body.sidebar-static .top-bar{
-      width:min(1200px,calc(100% - 40px));
-      grid-column:1 / -1;
-    }
-    body.sidebar-static #sidebarOverlay{display:none!important}
-    body.sidebar-static .menu-pill{display:none}
-    body.sidebar-static .sidebar-close{display:none}
-    body.sidebar-static header,
-    body.sidebar-static .main-content,
-    body.sidebar-static footer{
-      grid-column:2;
-    }
-    body.sidebar-static .sidebar{
-      position:sticky;
-      top:100px;
-      height:calc(100vh - 140px);
-      max-height:calc(100vh - 140px);
-      transform:none;
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-      border-radius:20px;
-      margin:0;
-      grid-column:1;
-      align-self:start;
-      box-shadow:0 12px 24px rgba(15,36,74,.12);
-    }
-    body.sidebar-static .sidebar-section{margin-bottom:24px}
-    body.sidebar-static .sidebar-nav{margin-bottom:32px}
     @media (min-width: 940px){
       .top-bar{
         flex-wrap:nowrap;
