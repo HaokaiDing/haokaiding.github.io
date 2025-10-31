@@ -58,6 +58,7 @@
     }
     .sidebar-link:hover,.sidebar-link:focus{background:#e7f1ff;border-color:#c8dcff;transform:translateX(2px);outline:none}
     .sidebar-icon{width:22px;text-align:center;font-size:1.1em;color:#4a4a4a}
+    .sidebar-icon img{display:block;width:22px;height:22px;object-fit:contain;margin:0 auto}
 
     .sidebar-section{margin-bottom:26px}
     .sidebar-section:last-of-type{margin-bottom:12px}
