@@ -27,7 +27,6 @@ const sidebar = $('#siteSidebar');
 const sidebarToggle = $('#sidebarToggle');
 const sidebarOverlay = $('#sidebarOverlay');
 const sidebarClose = $('#sidebarClose');
-const DESKTOP_BREAKPOINT = 1024;
 const isStaticSidebar = () => document.body.classList.contains('sidebar-static');
 let sidebarLastFocused = null;
 const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -79,12 +78,10 @@ const handleSidebarTrap = event => {
 
 const applySidebarMode = () => {
   if (!sidebar) return;
-  const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT;
-  document.body.classList.toggle('sidebar-static', isDesktop);
+  document.body.classList.remove('sidebar-static');
 
-  if (isDesktop) {
-    sidebar.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'false');
+  if (!sidebar.classList.contains('open')) {
+    sidebar.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
     if (sidebarOverlay) {
       sidebarOverlay.classList.remove('open');
@@ -92,11 +89,7 @@ const applySidebarMode = () => {
     }
     if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
   } else {
-    sidebar.setAttribute('aria-hidden', sidebar.classList.contains('open') ? 'false' : 'true');
-    if (sidebarOverlay && !sidebar.classList.contains('open')) {
-      sidebarOverlay.classList.remove('open');
-      sidebarOverlay.hidden = true;
-    }
+    sidebar.setAttribute('aria-hidden', 'false');
   }
 };
 
