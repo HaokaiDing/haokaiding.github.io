@@ -147,7 +147,7 @@
       text-decoration:none;
     }
     .main-content a:visited{
-      color:#6a4cc7;
+      color:var(--brand);
       text-decoration:none;
     }
 
@@ -160,7 +160,7 @@
       text-decoration:none;
     }
     body.dark-mode .main-content a:visited{
-      color:#d0beff;
+      color:#a8c3ff;
       text-decoration:none;
     }
 
