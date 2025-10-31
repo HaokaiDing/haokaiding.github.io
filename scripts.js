@@ -33,27 +33,27 @@ const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:no
 const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
 
 const openSidebar = () => {
-  if (!sidebar || !sidebarOverlay || !sidebarToggle) return;
+  if (!sidebar || !sidebarToggle) return;
   sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
-  sidebarOverlay.hidden = false;
-  sidebarOverlay.classList.add('open');
-  document.body.classList.add('no-scroll');
+  if (sidebarOverlay) {
+    sidebarOverlay.hidden = false;
+    sidebarOverlay.classList.add('open');
+  }
   sidebarToggle.setAttribute('aria-expanded', 'true');
   const focusables = getSidebarFocusable();
   if (focusables.length) focusables[0].focus();
 };
 
 const closeSidebar = () => {
-  if (!sidebar || !sidebarOverlay || !sidebarToggle) return;
+  if (!sidebar || !sidebarToggle) return;
   sidebar.classList.remove('open');
   sidebar.setAttribute('aria-hidden', 'true');
-  sidebarOverlay.classList.remove('open');
-  document.body.classList.remove('no-scroll');
+  if (sidebarOverlay) sidebarOverlay.classList.remove('open');
   sidebarToggle.setAttribute('aria-expanded', 'false');
   window.setTimeout(() => {
-    if (!sidebar.classList.contains('open')) sidebarOverlay.hidden = true;
+    if (sidebarOverlay && !sidebar.classList.contains('open')) sidebarOverlay.hidden = true;
   }, 250);
   if (sidebarLastFocused && typeof sidebarLastFocused.focus === 'function') sidebarLastFocused.focus();
 };
@@ -73,10 +73,16 @@ const handleSidebarTrap = event => {
   }
 };
 
-if (sidebar && sidebarToggle && sidebarOverlay && sidebarClose) {
-  sidebarToggle.addEventListener('click', openSidebar);
+if (sidebar && sidebarToggle && sidebarClose) {
+  sidebarToggle.addEventListener('click', () => {
+    if (sidebar.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
   sidebarClose.addEventListener('click', closeSidebar);
-  sidebarOverlay.addEventListener('click', closeSidebar);
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
   });
