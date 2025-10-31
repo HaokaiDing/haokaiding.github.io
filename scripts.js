@@ -22,6 +22,67 @@ if (themeSwitcher) {
   });
 }
 
+/* 侧边栏菜单 */
+const sidebar = $('#siteSidebar');
+const sidebarToggle = $('#sidebarToggle');
+const sidebarOverlay = $('#sidebarOverlay');
+const sidebarClose = $('#sidebarClose');
+let sidebarLastFocused = null;
+const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
+
+const openSidebar = () => {
+  if (!sidebar || !sidebarOverlay || !sidebarToggle) return;
+  sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  sidebar.classList.add('open');
+  sidebar.setAttribute('aria-hidden', 'false');
+  sidebarOverlay.hidden = false;
+  sidebarOverlay.classList.add('open');
+  document.body.classList.add('no-scroll');
+  sidebarToggle.setAttribute('aria-expanded', 'true');
+  const focusables = getSidebarFocusable();
+  if (focusables.length) focusables[0].focus();
+};
+
+const closeSidebar = () => {
+  if (!sidebar || !sidebarOverlay || !sidebarToggle) return;
+  sidebar.classList.remove('open');
+  sidebar.setAttribute('aria-hidden', 'true');
+  sidebarOverlay.classList.remove('open');
+  document.body.classList.remove('no-scroll');
+  sidebarToggle.setAttribute('aria-expanded', 'false');
+  window.setTimeout(() => {
+    if (!sidebar.classList.contains('open')) sidebarOverlay.hidden = true;
+  }, 250);
+  if (sidebarLastFocused && typeof sidebarLastFocused.focus === 'function') sidebarLastFocused.focus();
+};
+
+const handleSidebarTrap = event => {
+  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab') return;
+  const focusables = getSidebarFocusable();
+  if (focusables.length === 0) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+};
+
+if (sidebar && sidebarToggle && sidebarOverlay && sidebarClose) {
+  sidebarToggle.addEventListener('click', openSidebar);
+  sidebarClose.addEventListener('click', closeSidebar);
+  sidebarOverlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+  });
+  document.addEventListener('keydown', handleSidebarTrap);
+}
+
 /* 语言切换 */
 function setLanguage(lang) {
   document.documentElement.setAttribute('data-lang', lang);
@@ -116,6 +177,7 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     closePdfModal();
     closeVideoModal();
+    closeSidebar();
   }
 });
 window.addEventListener('click', event => {

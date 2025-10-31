@@ -13,8 +13,13 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="top">
     <div class="top-controls">
+      <button id="sidebarToggle" class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+        <span aria-hidden="true">🍉</span>
+        <span class="menu-toggle-label lang-en">Menu</span>
+        <span class="menu-toggle-label lang-zh">菜单</span>
+      </button>
       <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
       <div id="lang-switcher" aria-label="Language switcher">
         <button data-lang="en" class="lang-link active">English</button> /
@@ -22,13 +27,115 @@
       </div>
     </div>
 
-    <nav class="site-nav" aria-label="Section navigation">
-      <a href="#about"><span class="lang-en">About</span><span class="lang-zh">简介</span></a>
-      <a href="#education"><span class="lang-en">Education</span><span class="lang-zh">教育</span></a>
-      <a href="#publications"><span class="lang-en">Publications</span><span class="lang-zh">出版</span></a>
-      <a href="#service"><span class="lang-en">Academic Service</span><span class="lang-zh">学术任职</span></a>
-      <a href="#awards"><span class="lang-en">Awards</span><span class="lang-zh">荣誉</span></a>
-    </nav>
+    <div id="sidebarOverlay" class="sidebar-overlay" hidden></div>
+    <aside id="siteSidebar" class="sidebar" aria-hidden="true">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          <span class="sidebar-title-icon" aria-hidden="true">🍉</span>
+          <span class="lang-en">Menu</span>
+          <span class="lang-zh">菜单</span>
+        </div>
+        <button id="sidebarClose" class="sidebar-close" type="button" aria-label="Close menu">✕</button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Section navigation">
+        <a class="sidebar-link" href="#top">
+          <span class="sidebar-icon" aria-hidden="true">🏠</span>
+          <span class="lang-en">Home</span><span class="lang-zh">首页</span>
+        </a>
+        <a class="sidebar-link" href="#about">
+          <span class="sidebar-icon" aria-hidden="true">👋</span>
+          <span class="lang-en">About</span><span class="lang-zh">简介</span>
+        </a>
+        <a class="sidebar-link" href="#education">
+          <span class="sidebar-icon" aria-hidden="true">🎓</span>
+          <span class="lang-en">Education</span><span class="lang-zh">教育</span>
+        </a>
+        <a class="sidebar-link" href="#publications">
+          <span class="sidebar-icon" aria-hidden="true">🧾</span>
+          <span class="lang-en">Publications</span><span class="lang-zh">出版</span>
+        </a>
+        <a class="sidebar-link" href="#service">
+          <span class="sidebar-icon" aria-hidden="true">🤝</span>
+          <span class="lang-en">Academic Service</span><span class="lang-zh">学术任职</span>
+        </a>
+        <a class="sidebar-link" href="#awards">
+          <span class="sidebar-icon" aria-hidden="true">🏅</span>
+          <span class="lang-en">Awards</span><span class="lang-zh">荣誉</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-section-title">
+          <span class="lang-en">Profiles</span><span class="lang-zh">主页</span>
+        </h3>
+        <ul class="sidebar-list">
+          <li>
+            <a href="https://github.com/hkding0125" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">🐙</span>
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">🔬</span>
+              Google Scholar
+            </a>
+          </li>
+          <li>
+            <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">🆔</span>
+              ORCID
+            </a>
+          </li>
+          <li>
+            <a href="pdfs/Haokai_CV_EN.pdf" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">📄</span>
+              <span class="lang-en">Résumé</span><span class="lang-zh">简历</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-section-title">
+          <span class="lang-en">Contact</span><span class="lang-zh">联系</span>
+        </h3>
+        <ul class="sidebar-list">
+          <li>
+            <a href="mailto:hk_ding@outlook.com">
+              <span class="sidebar-icon" aria-hidden="true">✉️</span>
+              hk_ding@outlook.com
+            </a>
+          </li>
+          <li>
+            <span class="sidebar-icon" aria-hidden="true">📍</span>
+            <span class="lang-en">Shenzhen, China</span><span class="lang-zh">中国·深圳</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-section-title">
+          <span class="lang-en">Affiliations</span><span class="lang-zh">隶属</span>
+        </h3>
+        <ul class="sidebar-list">
+          <li>
+            <a href="https://www.sztu.edu.cn/" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">🏫</span>
+              <span class="lang-en">Shenzhen Technology University</span><span class="lang-zh">深圳技术大学</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon" aria-hidden="true">🔧</span>
+              <span class="lang-en">Tsinghua University Tsien Program · Shenzhen X-Institute</span>
+              <span class="lang-zh">清华大学钱学森班 · 深圳零一学院</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
 
     <header>
       <div class="profile-container" id="profileBox">
