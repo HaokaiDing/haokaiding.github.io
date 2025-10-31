@@ -140,30 +140,28 @@
     /* 主体链接可读性 */
     .main-content a{
       color:var(--brand);
-      text-decoration-color:rgba(11,99,199,.4);
-      text-decoration-thickness:2px;
-      text-underline-offset:3px;
+      text-decoration:none;
     }
     .main-content a:hover{
       color:#094a99;
-      text-decoration-color:#094a99;
+      text-decoration:none;
     }
     .main-content a:visited{
       color:#6a4cc7;
-      text-decoration-color:rgba(106,76,199,.6);
+      text-decoration:none;
     }
 
     body.dark-mode .main-content a{
       color:#a8c3ff;
-      text-decoration-color:rgba(168,195,255,.7);
+      text-decoration:none;
     }
     body.dark-mode .main-content a:hover{
       color:#c7d8ff;
-      text-decoration-color:#c7d8ff;
+      text-decoration:none;
     }
     body.dark-mode .main-content a:visited{
       color:#d0beff;
-      text-decoration-color:rgba(208,190,255,.7);
+      text-decoration:none;
     }
 
     /* 教育 */
