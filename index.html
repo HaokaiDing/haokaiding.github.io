@@ -14,16 +14,21 @@
 </head>
 <body>
   <div class="container" id="top">
-    <div class="top-controls">
-      <button id="sidebarToggle" class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false">
-        <span aria-hidden="true">🍉</span>
-        <span class="menu-toggle-label lang-en">Menu</span>
-        <span class="menu-toggle-label lang-zh">菜单</span>
-      </button>
-      <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
-      <div id="lang-switcher" aria-label="Language switcher">
-        <button data-lang="en" class="lang-link active">English</button> /
-        <button data-lang="zh" class="lang-link">中文</button>
+    <div class="top-bar">
+      <div class="top-pill menu-pill">
+        <button id="sidebarToggle" class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+          <span aria-hidden="true">🍉</span>
+          <span class="menu-toggle-label lang-en">Menu</span>
+          <span class="menu-toggle-label lang-zh">菜单</span>
+        </button>
+      </div>
+      <div class="top-pill utility-pill" aria-label="Display and language controls">
+        <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
+        <div id="lang-switcher" aria-label="Language switcher">
+          <button data-lang="en" class="lang-link active">English</button>
+          <span class="lang-separator">/</span>
+          <button data-lang="zh" class="lang-link">中文</button>
+        </div>
       </div>
     </div>
 
