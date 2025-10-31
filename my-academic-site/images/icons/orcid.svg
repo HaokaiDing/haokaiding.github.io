@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="12" cy="12" r="10"/>
-  <line x1="9" y1="9" x2="9" y2="15"/>
-  <circle cx="9" cy="7" r="1"/>
-  <path d="M14 9h2a4 4 0 0 1 0 8h-2z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title">
+  <title>ORCID</title>
+  <circle cx="12" cy="12" r="11.5" fill="#a6ce39"/>
+  <circle cx="9.2" cy="7" r="1.2" fill="#ffffff"/>
+  <rect x="8.2" y="8.6" width="2.1" height="7.8" rx="1.05" fill="#ffffff"/>
+  <path fill="#ffffff" d="M13.5 8.6h2.4c3.1 0 5.6 2.4 5.6 5.4s-2.5 5.4-5.6 5.4h-2.4z"/>
+  <circle cx="16.5" cy="14" r="2.2" fill="#a6ce39"/>
 </svg>
