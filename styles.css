@@ -9,11 +9,17 @@
     body{
 
       font-family:'Source Serif Pro',serif;background:#fff;color:#333;line-height:1.6;
-      margin:0;padding:0;display:flex;justify-content:center;transition:background-color .3s,color .3s;
+      margin:0;padding:0;min-height:100vh;transition:background-color .3s,color .3s;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     img{max-width:100%;height:auto;}
-    .container{max-width:900px;width:100%;margin:40px 20px;}
+    .container{
+      width:100%;
+      max-width:1200px;
+      margin:40px auto;
+      padding:0 clamp(20px,5vw,60px);
+      box-sizing:border-box;
+    }
 
     /* 顶部控件 */
     .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
