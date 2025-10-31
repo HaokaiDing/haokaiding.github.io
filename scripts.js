@@ -27,13 +27,15 @@ const sidebar = $('#siteSidebar');
 const sidebarToggle = $('#sidebarToggle');
 const sidebarOverlay = $('#sidebarOverlay');
 const sidebarClose = $('#sidebarClose');
+const DESKTOP_BREAKPOINT = 1024;
+const isStaticSidebar = () => document.body.classList.contains('sidebar-static');
 let sidebarLastFocused = null;
 const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
 
 const openSidebar = () => {
-  if (!sidebar || !sidebarToggle) return;
+  if (!sidebar || !sidebarToggle || isStaticSidebar()) return;
   sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
@@ -48,7 +50,7 @@ const openSidebar = () => {
 };
 
 const closeSidebar = () => {
-  if (!sidebar || !sidebarToggle) return;
+  if (!sidebar || !sidebarToggle || isStaticSidebar()) return;
   sidebar.classList.remove('open');
   sidebar.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('no-scroll');
@@ -61,7 +63,7 @@ const closeSidebar = () => {
 };
 
 const handleSidebarTrap = event => {
-  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab') return;
+  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab' || isStaticSidebar()) return;
   const focusables = getSidebarFocusable();
   if (focusables.length === 0) return;
   const first = focusables[0];
@@ -72,6 +74,29 @@ const handleSidebarTrap = event => {
   } else if (!event.shiftKey && document.activeElement === last) {
     event.preventDefault();
     first.focus();
+  }
+};
+
+const applySidebarMode = () => {
+  if (!sidebar) return;
+  const isDesktop = window.innerWidth >= DESKTOP_BREAKPOINT;
+  document.body.classList.toggle('sidebar-static', isDesktop);
+
+  if (isDesktop) {
+    sidebar.classList.remove('open');
+    sidebar.setAttribute('aria-hidden', 'false');
+    document.body.classList.remove('no-scroll');
+    if (sidebarOverlay) {
+      sidebarOverlay.classList.remove('open');
+      sidebarOverlay.hidden = true;
+    }
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+  } else {
+    sidebar.setAttribute('aria-hidden', sidebar.classList.contains('open') ? 'false' : 'true');
+    if (sidebarOverlay && !sidebar.classList.contains('open')) {
+      sidebarOverlay.classList.remove('open');
+      sidebarOverlay.hidden = true;
+    }
   }
 };
 
@@ -90,6 +115,12 @@ if (sidebar && sidebarToggle && sidebarClose) {
   });
   document.addEventListener('keydown', handleSidebarTrap);
 }
+
+window.addEventListener('resize', () => {
+  window.requestAnimationFrame(applySidebarMode);
+});
+document.addEventListener('DOMContentLoaded', applySidebarMode, { once: true });
+applySidebarMode();
 
 /* 语言切换 */
 function setLanguage(lang) {
