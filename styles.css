@@ -21,7 +21,16 @@
     }
 
     /* 顶部控件 */
-    .top-controls{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;font-family:'Lato',sans-serif;font-size:.9em}
+    .top-controls{
+      display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:12px;
+      font-family:'Lato',sans-serif;font-size:.9em;
+      position:sticky;top:16px;z-index:1200;
+      padding:10px 16px;border-radius:999px;border:1px solid #e7f1ff;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(6px);
+      box-shadow:0 8px 20px rgba(15,36,74,.08);
+      box-sizing:border-box;
+    }
     .menu-toggle{
       display:inline-flex;align-items:center;gap:6px;
       background:#fff;border:1px solid #e7f1ff;border-radius:999px;padding:6px 14px;
@@ -231,6 +240,11 @@
 .dark-mode .contact-list li,.dark-mode .contact-list li a{color:#e0e0e0}
 .dark-mode .contact-list .contact-icon{color:#c2c2c2}
 .dark-mode hr{background:#444}
+    .dark-mode .top-controls{
+      background:rgba(26,26,26,.9);
+      border-color:#2d3b55;
+      box-shadow:0 12px 28px rgba(0,0,0,.45);
+    }
     .dark-mode .menu-toggle{background:#2a2a2a;border-color:#3a4a68;color:#a5c7ff}
     .dark-mode .menu-toggle:hover,.dark-mode .menu-toggle:focus{background:#2d3b55}
     .dark-mode .sidebar{background:#1f1f1f;color:#f1f1f1;box-shadow:6px 0 24px rgba(0,0,0,.4)}
