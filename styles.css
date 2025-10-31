@@ -24,8 +24,8 @@
     .top-bar{
       position:fixed;
       top:20px;
-      left:50%;
-      transform:translateX(-50%);
+      left:20px;
+      transform:none;
       width:min(900px,calc(100% - 40px));
       display:flex;
       align-items:center;
@@ -138,7 +138,7 @@
       .menu-toggle{padding:6px 12px}
     }
     @media (max-width:600px){
-      .top-bar{top:16px;width:min(900px,calc(100% - 32px))}
+      .top-bar{top:16px;left:16px;transform:none;width:min(900px,calc(100% - 32px))}
     }
     @media (min-width: 940px){
       .top-bar{
