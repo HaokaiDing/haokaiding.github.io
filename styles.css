@@ -1,10 +1,32 @@
     :root{
       --brand:#0b63c7;
-    --sci-color:#2e9e44; --jcrq1-color:#6a4cc7;
-      --accepted-color:#56606a; --published-color:#3f4954;
+      --sci-color:#2e9e44;
+      --jcrq1-color:#6a4cc7;
+      --accepted-color:#56606a;
+      --published-color:#3f4954;
       --author-color:#0d6efd;           /* Co-first */
       --advisor-color:#ff9800;          /* Advisor */
+      --theme-transition-duration:0.4s;
+      --theme-transition-timing:ease;
       --font-sans:'Noto Sans SC','Source Han Sans SC','PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+    }
+
+    html.theme-transition body,
+    html.theme-transition body *,
+    html.theme-transition body *::before,
+    html.theme-transition body *::after{
+      transition-property:background-color,color,border-color,box-shadow,fill,stroke,opacity,transform;
+      transition-duration:var(--theme-transition-duration) !important;
+      transition-timing-function:var(--theme-transition-timing) !important;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html.theme-transition body,
+      html.theme-transition body *,
+      html.theme-transition body *::before,
+      html.theme-transition body *::after{
+        transition-duration:0.01ms !important;
+      }
     }
     html{scroll-behavior:smooth;font-size:clamp(15px, 0.9rem + 0.2vw, 17px);}
     body{

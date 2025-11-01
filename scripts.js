@@ -35,7 +35,16 @@ const safeStorage = (() => {
 })();
 
 const themeSwitcher = $('#theme-switcher');
-const applyTheme = theme => {
+let themeTransitionTimeout = null;
+const runThemeTransition = () => {
+  document.documentElement.classList.add('theme-transition');
+  if (themeTransitionTimeout) window.clearTimeout(themeTransitionTimeout);
+  themeTransitionTimeout = window.setTimeout(() => {
+    document.documentElement.classList.remove('theme-transition');
+  }, 450);
+};
+const applyTheme = (theme, { animate = true } = {}) => {
+  if (animate) runThemeTransition();
   if (theme === 'dark') {
     document.body.classList.add('dark-mode');
     if (themeSwitcher) themeSwitcher.textContent = '☀️';
@@ -44,7 +53,7 @@ const applyTheme = theme => {
     if (themeSwitcher) themeSwitcher.textContent = '🌙';
   }
 };
-applyTheme(safeStorage.get('theme') || 'light');
+applyTheme(safeStorage.get('theme') || 'light', { animate: false });
 if (themeSwitcher) {
   themeSwitcher.addEventListener('click', () => {
     const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
