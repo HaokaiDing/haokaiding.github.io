@@ -8,7 +8,8 @@
       --advisor-color:#ff9800;          /* Advisor */
       --theme-transition-duration:0.4s;
       --theme-transition-timing:ease;
-      --font-sans:'Noto Sans SC','Source Han Sans SC','PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;
+      --font-sans:'Segoe UI','Helvetica Neue',Arial,'Noto Sans',sans-serif;
+      --font-sans-cjk:'Noto Sans SC','Source Han Sans SC','PingFang SC','Microsoft YaHei',var(--font-sans);
     }
 
     html.theme-transition body,
@@ -35,6 +36,10 @@
       margin:0;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;transition:background-color .3s,color .3s;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
       width:100%;
+    }
+    :lang(zh),
+    .lang-zh{
+      font-family:var(--font-sans-cjk);
     }
     img{max-width:100%;height:auto;}
     .container{
