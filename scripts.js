@@ -59,14 +59,13 @@ const sidebar = $('#siteSidebar');
 const sidebarToggle = $('#sidebarToggle');
 const sidebarOverlay = $('#sidebarOverlay');
 const sidebarClose = $('#sidebarClose');
-const isStaticSidebar = () => document.body.classList.contains('sidebar-static');
 let sidebarLastFocused = null;
 const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
 
 const openSidebar = () => {
-  if (!sidebar || !sidebarToggle || isStaticSidebar()) return;
+  if (!sidebar || !sidebarToggle) return;
   sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   sidebar.classList.add('open');
   sidebar.setAttribute('aria-hidden', 'false');
@@ -81,7 +80,7 @@ const openSidebar = () => {
 };
 
 const closeSidebar = () => {
-  if (!sidebar || !sidebarToggle || isStaticSidebar()) return;
+  if (!sidebar || !sidebarToggle) return;
   sidebar.classList.remove('open');
   sidebar.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('no-scroll');
@@ -94,7 +93,7 @@ const closeSidebar = () => {
 };
 
 const handleSidebarTrap = event => {
-  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab' || isStaticSidebar()) return;
+  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab') return;
   const focusables = getSidebarFocusable();
   if (focusables.length === 0) return;
   const first = focusables[0];
@@ -110,24 +109,8 @@ const handleSidebarTrap = event => {
 
 const applySidebarMode = () => {
   if (!sidebar) return;
-  const shouldBeStatic = window.matchMedia('(min-width: 1024px)').matches;
 
-  if (shouldBeStatic) {
-    document.body.classList.add('sidebar-static');
-    sidebar.classList.add('open');
-    sidebar.setAttribute('aria-hidden', 'false');
-    document.body.classList.remove('no-scroll');
-    if (sidebarOverlay) {
-      sidebarOverlay.classList.remove('open');
-      sidebarOverlay.hidden = true;
-    }
-    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
-    return;
-  }
-
-  const wasStatic = isStaticSidebar();
   document.body.classList.remove('sidebar-static');
-  if (wasStatic) sidebar.classList.remove('open');
 
   if (!sidebar.classList.contains('open')) {
     sidebar.setAttribute('aria-hidden', 'true');
@@ -139,6 +122,12 @@ const applySidebarMode = () => {
     if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
   } else {
     sidebar.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    if (sidebarOverlay) {
+      sidebarOverlay.hidden = false;
+      sidebarOverlay.classList.add('open');
+    }
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
   }
 };
 
