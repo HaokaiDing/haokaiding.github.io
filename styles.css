@@ -17,8 +17,8 @@
     img{max-width:100%;height:auto;}
     .container{
       width:min(100%,900px);
-      margin:clamp(24px,6vw,48px) auto;
-      padding:clamp(16px,4vw,32px);
+      margin:clamp(12px,3vw,24px) auto;
+      padding:clamp(12px,3vw,24px);
       box-sizing:border-box;
     }
 
