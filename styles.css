@@ -143,9 +143,19 @@
     .sidebar-section:last-of-type{margin-bottom:28px}
     .sidebar-section-title{font-family:'Lato',sans-serif;font-size:1em;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:0 0 10px}
     .sidebar-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-family:'Lato',sans-serif;font-size:.95em}
-    .sidebar-list a{text-decoration:none;color:#1a1a1a;display:flex;align-items:center;gap:12px;padding:6px 0;transition:color .2s}
+    .sidebar-list a{
+      text-decoration:none;
+      color:#1a1a1a;
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:6px 0;
+      transition:color .2s;
+      line-height:1.55;
+      flex-wrap:wrap;
+    }
     .sidebar-list a:hover,.sidebar-list a:focus{color:var(--brand);outline:none}
-    .sidebar-list li{display:flex;align-items:center;gap:12px;color:#444}
+    .sidebar-list li{display:flex;align-items:flex-start;gap:12px;color:#444}
 
     body.no-scroll{overflow:hidden}
 
