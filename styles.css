@@ -63,12 +63,12 @@
     .menu-toggle:hover,.menu-toggle:focus{background:#e7f1ff;transform:translateY(-1px)}
     .menu-toggle:focus{outline:2px solid var(--brand);outline-offset:2px}
     .menu-toggle-icon{
-      position:relative;display:inline-block;width:20px;height:3px;border-radius:999px;background:currentColor;
+      position:relative;display:inline-block;width:20px;height:2px;border-radius:999px;background:currentColor;
     }
     .menu-toggle-icon::before,.menu-toggle-icon::after{
       content:"";position:absolute;left:0;width:100%;border-radius:999px;background:currentColor;
     }
-    .menu-toggle-icon::before{top:-7px;height:2px}
+    .menu-toggle-icon::before{top:-8px;height:3px}
     .menu-toggle-icon::after{top:7px;height:1px}
 
     .sidebar-overlay{
