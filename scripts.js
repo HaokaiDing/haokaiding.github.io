@@ -54,110 +54,6 @@ if (themeSwitcher) {
   });
 }
 
-/* 侧边栏菜单 */
-const sidebar = $('#siteSidebar');
-const sidebarToggle = $('#sidebarToggle');
-const sidebarOverlay = $('#sidebarOverlay');
-const sidebarClose = $('#sidebarClose');
-let sidebarLastFocused = null;
-const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
-
-const openSidebar = () => {
-  if (!sidebar || !sidebarToggle) return;
-  sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-  sidebar.classList.add('open');
-  sidebar.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('no-scroll');
-  if (sidebarOverlay) {
-    sidebarOverlay.hidden = false;
-    sidebarOverlay.classList.add('open');
-  }
-  sidebarToggle.setAttribute('aria-expanded', 'true');
-  const focusables = getSidebarFocusable();
-  if (focusables.length) focusables[0].focus();
-};
-
-const closeSidebar = () => {
-  if (!sidebar || !sidebarToggle) return;
-  sidebar.classList.remove('open');
-  sidebar.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('no-scroll');
-  if (sidebarOverlay) sidebarOverlay.classList.remove('open');
-  sidebarToggle.setAttribute('aria-expanded', 'false');
-  window.setTimeout(() => {
-    if (sidebarOverlay && !sidebar.classList.contains('open')) sidebarOverlay.hidden = true;
-  }, 250);
-  if (sidebarLastFocused && typeof sidebarLastFocused.focus === 'function') sidebarLastFocused.focus();
-};
-
-const handleSidebarTrap = event => {
-  if (!sidebar || !sidebar.classList.contains('open') || event.key !== 'Tab') return;
-  const focusables = getSidebarFocusable();
-  if (focusables.length === 0) return;
-  const first = focusables[0];
-  const last = focusables[focusables.length - 1];
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault();
-    last.focus();
-  } else if (!event.shiftKey && document.activeElement === last) {
-    event.preventDefault();
-    first.focus();
-  }
-};
-
-const applySidebarMode = () => {
-  if (!sidebar) return;
-
-  document.body.classList.remove('sidebar-static');
-
-  if (!sidebar.classList.contains('open')) {
-    sidebar.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
-    if (sidebarOverlay) {
-      sidebarOverlay.classList.remove('open');
-      sidebarOverlay.hidden = true;
-    }
-    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
-  } else {
-    sidebar.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('no-scroll');
-    if (sidebarOverlay) {
-      sidebarOverlay.hidden = false;
-      sidebarOverlay.classList.add('open');
-    }
-    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
-  }
-};
-
-if (sidebar && sidebarToggle && sidebarClose) {
-  sidebarToggle.addEventListener('click', () => {
-    if (sidebar.classList.contains('open')) {
-      closeSidebar();
-    } else {
-      openSidebar();
-    }
-  });
-  sidebarClose.addEventListener('click', closeSidebar);
-  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
-  sidebar.addEventListener('click', event => {
-    if (event.target.closest('.sidebar-link')) {
-      window.requestAnimationFrame(() => closeSidebar());
-    }
-  });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
-  });
-  document.addEventListener('keydown', handleSidebarTrap);
-}
-
-window.addEventListener('resize', () => {
-  window.requestAnimationFrame(applySidebarMode);
-});
-document.addEventListener('DOMContentLoaded', applySidebarMode, { once: true });
-applySidebarMode();
-
 /* 语言切换 */
 function setLanguage(lang) {
   document.documentElement.setAttribute('data-lang', lang);
@@ -248,7 +144,6 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     closePdfModal();
     closeVideoModal();
-    closeSidebar();
   }
 });
 window.addEventListener('click', event => {
