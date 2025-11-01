@@ -22,21 +22,24 @@
 
     /* 顶部控件 */
     .top-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      font-family:'Lato',sans-serif;
+      font-size:.9em;
+      width:100%;
+      box-sizing:border-box;
+      margin:0 0 20px;
+      padding:0;
+    }
+    .menu-pill{
       position:fixed;
       top:20px;
       left:20px;
-      transform:none;
-      width:min(900px,calc(100% - 40px));
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:12px;
-      flex-wrap:wrap;
       z-index:1250;
-      font-family:'Lato',sans-serif;
-      font-size:.9em;
-      pointer-events:none;
-      box-sizing:border-box;
+      pointer-events:auto;
     }
     .top-pill{
       display:flex;align-items:center;gap:10px;margin-bottom:0;
@@ -138,8 +141,8 @@
       .menu-toggle{padding:6px 12px}
     }
     @media (max-width:600px){
-      .top-bar{top:16px;left:16px;transform:none;width:min(900px,calc(100% - 32px))}
-      .utility-pill{top:16px;right:16px}
+      .top-bar{padding-top:56px}
+      .menu-pill{top:16px;left:16px}
     }
     @media (min-width: 940px){
       .top-bar{
@@ -171,9 +174,6 @@
       padding:0;
       margin-bottom:0;
       margin-left:auto;
-      position:fixed;
-      top:20px;
-      right:20px;
       pointer-events:auto;
     }
     #lang-switcher{display:flex;align-items:center;gap:8px;font-weight:700}
