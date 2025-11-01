@@ -111,7 +111,7 @@
     nav.site-nav a:hover::after,nav.site-nav a:focus::after{opacity:1;transform:scaleX(1)}
     nav.site-nav a:focus{outline:none}
     nav.site-nav .lang-en{text-transform:lowercase;letter-spacing:.04em}
-    nav.site-nav .lang-zh{font-size:.98em}
+    nav.site-nav .lang-zh{font-size:inherit}
     nav.site-nav #theme-switcher{justify-self:end}
     nav.site-nav .nav-language{justify-self:start}
 
