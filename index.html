@@ -8,13 +8,18 @@
   <meta name="color-scheme" content="light dark" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container" id="top">
     <div class="top-bar">
+      <div class="top-pill menu-pill">
+        <button id="sidebarToggle" class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
       <div class="top-pill utility-pill" aria-label="Display and language controls">
         <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
         <div id="lang-switcher" aria-label="Language switcher">
@@ -31,52 +36,107 @@
         <div class="sidebar-title" aria-hidden="true">
           <span class="sidebar-title-icon"></span>
         </div>
-        <span class="sidebar-heading">Menu</span>
         <button id="sidebarClose" class="sidebar-close" type="button" aria-label="Close menu">✕</button>
       </div>
 
-      <nav class="sidebar-nav" aria-label="Section navigation">
-        <ul class="sidebar-nav-list">
+      <nav class="sidebar-nav" aria-label="Quick links">
+        <a class="sidebar-link" href="#top">
+          <span class="sidebar-icon" aria-hidden="true">🍅</span>
+          <span class="lang-en">Home</span><span class="lang-zh">首页</span>
+        </a>
+        <a class="sidebar-link" href="pdfs/Haokai_CV_EN.pdf" target="_blank" rel="noopener noreferrer">
+          <span class="sidebar-icon icon-image" aria-hidden="true">
+            <img src="my-academic-site/images/icons/resume.svg" alt="">
+          </span>
+          <span class="lang-en">Résumé</span><span class="lang-zh">简历</span>
+        </a>
+        <a class="sidebar-link" href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+          <span class="sidebar-icon icon-image" aria-hidden="true">
+            <img src="my-academic-site/images/icons/google-scholar.svg" alt="">
+          </span>
+          Google Scholar
+        </a>
+        <a class="sidebar-link" href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">
+          <span class="sidebar-icon icon-image" aria-hidden="true">
+            <img src="my-academic-site/images/icons/orcid.svg" alt="">
+          </span>
+          ORCID
+        </a>
+        <a class="sidebar-link" href="https://www.researchgate.net/profile/Haokai-Ding?ev=prf_overview" target="_blank" rel="noopener noreferrer">
+          <span class="sidebar-icon icon-image" aria-hidden="true">
+            <img src="my-academic-site/images/icons/researchgate.svg" alt="" loading="lazy">
+          </span>
+          ResearchGate
+        </a>
+        <a class="sidebar-link" href="#about">
+          <span class="sidebar-icon" aria-hidden="true">👤</span>
+          <span class="lang-en">About</span><span class="lang-zh">简介</span>
+        </a>
+        <a class="sidebar-link" href="#education">
+          <span class="sidebar-icon" aria-hidden="true">🎓</span>
+          <span class="lang-en">Education</span><span class="lang-zh">教育</span>
+        </a>
+        <a class="sidebar-link" href="#publications">
+          <span class="sidebar-icon" aria-hidden="true">📚</span>
+          <span class="lang-en">Publications</span><span class="lang-zh">出版</span>
+        </a>
+        <a class="sidebar-link" href="#service">
+          <span class="sidebar-icon" aria-hidden="true">🧑‍⚖️</span>
+          <span class="lang-en">Service</span><span class="lang-zh">服务</span>
+        </a>
+        <a class="sidebar-link" href="#awards">
+          <span class="sidebar-icon" aria-hidden="true">🏅</span>
+          <span class="lang-en">Awards</span><span class="lang-zh">荣誉</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-section-title">
+          <span class="lang-en">Profiles</span><span class="lang-zh">主页</span>
+        </h3>
+        <ul class="sidebar-list">
           <li>
-            <a class="sidebar-nav-link active" href="#top">
-              <span class="sidebar-nav-icon" aria-hidden="true">🍅</span>
-              <span class="sidebar-nav-text">Home</span>
+            <a href="https://github.com/hkding0125" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon icon-image" aria-hidden="true">
+                <img src="my-academic-site/images/icons/github.svg" alt="">
+              </span>
+              GitHub
             </a>
           </li>
           <li>
-            <a class="sidebar-nav-link" href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
-              <span class="sidebar-nav-icon icon-image" aria-hidden="true">
+            <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon icon-image" aria-hidden="true">
                 <img src="my-academic-site/images/icons/google-scholar.svg" alt="">
               </span>
-              <span class="sidebar-nav-text">Google Scholar</span>
+              Google Scholar
             </a>
           </li>
           <li>
-            <a class="sidebar-nav-link" href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">
-              <span class="sidebar-nav-icon icon-image" aria-hidden="true">
+            <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon icon-image" aria-hidden="true">
                 <img src="my-academic-site/images/icons/orcid.svg" alt="">
               </span>
-              <span class="sidebar-nav-text">ORCID</span>
+              ORCID
             </a>
           </li>
           <li>
-            <a class="sidebar-nav-link" href="https://www.researchgate.net/profile/Haokai-Ding?ev=prf_overview" target="_blank" rel="noopener noreferrer">
-              <span class="sidebar-nav-icon icon-image" aria-hidden="true">
+            <a href="https://www.researchgate.net/profile/Haokai-Ding?ev=prf_overview" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon icon-image" aria-hidden="true">
                 <img src="my-academic-site/images/icons/researchgate.svg" alt="" loading="lazy">
               </span>
-              <span class="sidebar-nav-text">ResearchGate</span>
+              ResearchGate
             </a>
           </li>
           <li>
-            <a class="sidebar-nav-link" href="pdfs/Haokai_CV_EN.pdf" target="_blank" rel="noopener noreferrer">
-              <span class="sidebar-nav-icon icon-image" aria-hidden="true">
+            <a href="pdfs/Haokai_CV_EN.pdf" target="_blank" rel="noopener noreferrer">
+              <span class="sidebar-icon icon-image" aria-hidden="true">
                 <img src="my-academic-site/images/icons/resume.svg" alt="">
               </span>
-              <span class="sidebar-nav-text"><span class="lang-en">Résumé</span><span class="lang-zh">简历</span></span>
+              <span class="lang-en">Résumé</span><span class="lang-zh">简历</span>
             </a>
           </li>
         </ul>
-      </nav>
+      </div>
 
       <div class="sidebar-section">
         <h3 class="sidebar-section-title">
@@ -111,7 +171,7 @@
 
       <div class="sidebar-section">
         <h3 class="sidebar-section-title">
-          <span class="lang-en">Organizations</span><span class="lang-zh">隶属</span>
+          <span class="lang-en">Affiliations</span><span class="lang-zh">隶属</span>
         </h3>
         <ul class="sidebar-list">
           <li>
@@ -130,8 +190,7 @@
     </aside>
 
     <header>
-      <div class="profile-stack">
-        <div class="profile-container" id="profileBox">
+      <div class="profile-container" id="profileBox">
         <img class="profile-image default" loading="lazy" crossorigin="anonymous"
              src="my-academic-site/images/haokai_DING_photo_cartoon.png"
              alt="Anime style profile photo of Haokai Ding"
@@ -140,15 +199,6 @@
              src="my-academic-site/images/hkding.png"
              alt="Profile photo of Haokai Ding"
              onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';">
-        </div>
-        <div class="menu-control">
-          <div class="menu-pill">
-            <button id="sidebarToggle" class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="menu-toggle-icon" aria-hidden="true"></span>
-            </button>
-            <span class="menu-label">Menu</span>
-          </div>
-        </div>
       </div>
       <div class="header-info">
         <h1>Haokai Ding (丁浩剀)</h1>

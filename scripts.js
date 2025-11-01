@@ -63,47 +63,18 @@ let sidebarLastFocused = null;
 const sidebarFocusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const getSidebarFocusable = () => sidebar ? $$(sidebarFocusableSelector, sidebar).filter(el => !el.hasAttribute('hidden')) : [];
-const mobileQuery = window.matchMedia('(max-width: 767px)');
-
-const updateScrollLock = () => {
-  if (!sidebar) return;
-  const shouldLock = sidebar.classList.contains('open') && mobileQuery.matches;
-  document.body.classList.toggle('no-scroll', shouldLock);
-};
-
-const updateOverlay = () => {
-  if (!sidebarOverlay) return;
-  const isOpen = sidebar && sidebar.classList.contains('open');
-  const useOverlay = Boolean(isOpen && mobileQuery.matches);
-  if (useOverlay) {
-    sidebarOverlay.hidden = false;
-    requestAnimationFrame(() => sidebarOverlay.classList.add('open'));
-  } else {
-    sidebarOverlay.classList.remove('open');
-    const delay = mobileQuery.matches ? 250 : 0;
-    window.setTimeout(() => {
-      if (!sidebar || !sidebar.classList.contains('open') || !mobileQuery.matches) {
-        sidebarOverlay.hidden = true;
-      }
-    }, delay);
-  }
-};
-
-const syncSidebarState = () => {
-  if (!sidebar) return;
-  const isOpen = sidebar.classList.contains('open');
-  sidebar.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-  document.body.classList.toggle('sidebar-open', isOpen);
-  if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  updateScrollLock();
-  updateOverlay();
-};
 
 const openSidebar = () => {
   if (!sidebar || !sidebarToggle) return;
   sidebarLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   sidebar.classList.add('open');
-  syncSidebarState();
+  sidebar.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('no-scroll');
+  if (sidebarOverlay) {
+    sidebarOverlay.hidden = false;
+    sidebarOverlay.classList.add('open');
+  }
+  sidebarToggle.setAttribute('aria-expanded', 'true');
   const focusables = getSidebarFocusable();
   if (focusables.length) focusables[0].focus();
 };
@@ -111,7 +82,13 @@ const openSidebar = () => {
 const closeSidebar = () => {
   if (!sidebar || !sidebarToggle) return;
   sidebar.classList.remove('open');
-  syncSidebarState();
+  sidebar.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('no-scroll');
+  if (sidebarOverlay) sidebarOverlay.classList.remove('open');
+  sidebarToggle.setAttribute('aria-expanded', 'false');
+  window.setTimeout(() => {
+    if (sidebarOverlay && !sidebar.classList.contains('open')) sidebarOverlay.hidden = true;
+  }, 250);
   if (sidebarLastFocused && typeof sidebarLastFocused.focus === 'function') sidebarLastFocused.focus();
 };
 
@@ -134,7 +111,24 @@ const applySidebarMode = () => {
   if (!sidebar) return;
 
   document.body.classList.remove('sidebar-static');
-  syncSidebarState();
+
+  if (!sidebar.classList.contains('open')) {
+    sidebar.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    if (sidebarOverlay) {
+      sidebarOverlay.classList.remove('open');
+      sidebarOverlay.hidden = true;
+    }
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+  } else {
+    sidebar.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    if (sidebarOverlay) {
+      sidebarOverlay.hidden = false;
+      sidebarOverlay.classList.add('open');
+    }
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
+  }
 };
 
 if (sidebar && sidebarToggle && sidebarClose) {
@@ -147,6 +141,11 @@ if (sidebar && sidebarToggle && sidebarClose) {
   });
   sidebarClose.addEventListener('click', closeSidebar);
   if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+  sidebar.addEventListener('click', event => {
+    if (event.target.closest('.sidebar-link')) {
+      window.requestAnimationFrame(() => closeSidebar());
+    }
+  });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
   });
@@ -156,38 +155,8 @@ if (sidebar && sidebarToggle && sidebarClose) {
 window.addEventListener('resize', () => {
   window.requestAnimationFrame(applySidebarMode);
 });
-const handleMobileQueryChange = () => {
-  window.requestAnimationFrame(syncSidebarState);
-};
-if (typeof mobileQuery.addEventListener === 'function') {
-  mobileQuery.addEventListener('change', handleMobileQueryChange);
-} else if (typeof mobileQuery.addListener === 'function') {
-  mobileQuery.addListener(handleMobileQueryChange);
-}
 document.addEventListener('DOMContentLoaded', applySidebarMode, { once: true });
 applySidebarMode();
-
-/* 菜单导航激活状态 */
-const sidebarNavLinks = $$('.sidebar-nav-link');
-if (sidebarNavLinks.length) {
-  const setActiveNavLink = active => {
-    sidebarNavLinks.forEach(link => {
-      link.classList.toggle('active', link === active);
-    });
-  };
-
-  const initialActive = sidebarNavLinks.find(link => link.classList.contains('active')) || null;
-  if (initialActive) setActiveNavLink(initialActive);
-
-  sidebarNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      setActiveNavLink(link);
-      if (sidebar && sidebar.classList.contains('open')) {
-        window.requestAnimationFrame(() => closeSidebar());
-      }
-    });
-  });
-}
 
 /* 语言切换 */
 function setLanguage(lang) {
