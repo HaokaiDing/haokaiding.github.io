@@ -8,7 +8,7 @@
       --advisor-color:#ff9800;          /* Advisor */
       --theme-transition-duration:0.4s;
       --theme-transition-timing:ease;
-      --font-sans:'Segoe UI','Helvetica Neue',Arial,'Noto Sans',sans-serif;
+      --font-sans:'Inter','Segoe UI','Helvetica Neue',Arial,'Noto Sans',sans-serif;
       --font-sans-cjk:'Noto Sans SC','Source Han Sans SC','PingFang SC','Microsoft YaHei',var(--font-sans);
     }
 
