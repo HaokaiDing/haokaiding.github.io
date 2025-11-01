@@ -2,6 +2,38 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
 /* 主题切换 */
+const safeStorage = (() => {
+  try {
+    const storage = window.localStorage;
+    const testKey = '__storage_test__';
+    storage.setItem(testKey, testKey);
+    storage.removeItem(testKey);
+    return {
+      get(key) {
+        try {
+          return storage.getItem(key);
+        } catch (error) {
+          console.warn('Failed to read from localStorage', error);
+          return null;
+        }
+      },
+      set(key, value) {
+        try {
+          storage.setItem(key, value);
+        } catch (error) {
+          console.warn('Failed to write to localStorage', error);
+        }
+      },
+    };
+  } catch (error) {
+    console.warn('Local storage is not accessible; preferences will not persist.', error);
+    return {
+      get: () => null,
+      set: () => {},
+    };
+  }
+})();
+
 const themeSwitcher = $('#theme-switcher');
 const applyTheme = theme => {
   if (theme === 'dark') {
@@ -12,12 +44,12 @@ const applyTheme = theme => {
     if (themeSwitcher) themeSwitcher.textContent = '🌙';
   }
 };
-applyTheme(localStorage.getItem('theme') || 'light');
+applyTheme(safeStorage.get('theme') || 'light');
 if (themeSwitcher) {
   themeSwitcher.addEventListener('click', () => {
     const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
     const next = current === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', next);
+    safeStorage.set('theme', next);
     applyTheme(next);
   });
 }
@@ -121,17 +153,13 @@ function setLanguage(lang) {
   $$('#lang-switcher .lang-link').forEach(button => {
     button.classList.toggle('active', button.dataset.lang === lang);
   });
-  try {
-    localStorage.setItem('preferredLanguage', lang);
-  } catch (err) {
-    console.error('Failed to persist preferred language', err);
-  }
+  safeStorage.set('preferredLanguage', lang);
 }
 $$('#lang-switcher .lang-link').forEach(button => {
   button.addEventListener('click', () => setLanguage(button.dataset.lang));
 });
 document.addEventListener('DOMContentLoaded', () => {
-  setLanguage(localStorage.getItem('preferredLanguage') || 'en');
+  setLanguage(safeStorage.get('preferredLanguage') || 'en');
 });
 
 /* 触摸头像切换 */
