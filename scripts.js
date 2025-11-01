@@ -153,6 +153,25 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', applySidebarMode, { once: true });
 applySidebarMode();
 
+/* 菜单导航激活状态 */
+const sidebarNavLinks = $$('.sidebar-nav-link');
+if (sidebarNavLinks.length) {
+  const setActiveNavLink = active => {
+    sidebarNavLinks.forEach(link => {
+      link.classList.toggle('active', link === active);
+    });
+  };
+
+  const initialActive = sidebarNavLinks.find(link => link.classList.contains('active')) || null;
+  if (initialActive) setActiveNavLink(initialActive);
+
+  sidebarNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      setActiveNavLink(link);
+    });
+  });
+}
+
 /* 语言切换 */
 function setLanguage(lang) {
   document.documentElement.setAttribute('data-lang', lang);
