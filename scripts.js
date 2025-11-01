@@ -110,7 +110,24 @@ const handleSidebarTrap = event => {
 
 const applySidebarMode = () => {
   if (!sidebar) return;
+  const shouldBeStatic = window.matchMedia('(min-width: 1024px)').matches;
+
+  if (shouldBeStatic) {
+    document.body.classList.add('sidebar-static');
+    sidebar.classList.add('open');
+    sidebar.setAttribute('aria-hidden', 'false');
+    document.body.classList.remove('no-scroll');
+    if (sidebarOverlay) {
+      sidebarOverlay.classList.remove('open');
+      sidebarOverlay.hidden = true;
+    }
+    if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'true');
+    return;
+  }
+
+  const wasStatic = isStaticSidebar();
   document.body.classList.remove('sidebar-static');
+  if (wasStatic) sidebar.classList.remove('open');
 
   if (!sidebar.classList.contains('open')) {
     sidebar.setAttribute('aria-hidden', 'true');
