@@ -101,9 +101,9 @@
     }
 
     body.dark-mode nav.site-nav{
-      background:rgba(15,23,42,.88);
-      border-bottom:1px solid rgba(148,163,184,.35);
-      box-shadow:0 1px 0 rgba(15,23,42,.5);
+      background:rgba(26,26,26,.94);
+      border-bottom:1px solid rgba(248,250,252,.08);
+      box-shadow:0 1px 0 rgba(15,23,42,.45);
     }
     body.dark-mode .nav-links a{color:#e2e8f0}
     body.dark-mode .nav-links a::after{background:#a8c3ff}
