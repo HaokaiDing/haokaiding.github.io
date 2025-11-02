@@ -8,8 +8,22 @@
   <meta name="color-scheme" content="light dark" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </noscript>
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -367,7 +381,7 @@
           referrerpolicy="no-referrer-when-downgrade"
         ></script>
       </div>
-      <p class="footer-meta">&copy; 2025 Haokai Ding · Last updated <span id="lastUpdated">2025-09-09</span></p>
+      <p class="footer-meta">&copy; 2025 Haokai Ding · Last updated <time id="lastUpdated" datetime="">—</time></p>
     </footer>
   </div>
 
