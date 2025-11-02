@@ -65,7 +65,9 @@ if (themeSwitcher) {
 
 /* 语言切换 */
 function setLanguage(lang) {
+  const languageTag = lang === 'zh' ? 'zh-CN' : 'en';
   document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.setAttribute('lang', languageTag);
   $$('#lang-switcher .lang-link').forEach(button => {
     button.classList.toggle('active', button.dataset.lang === lang);
   });
@@ -74,8 +76,28 @@ function setLanguage(lang) {
 $$('#lang-switcher .lang-link').forEach(button => {
   button.addEventListener('click', () => setLanguage(button.dataset.lang));
 });
+const updateLastUpdated = () => {
+  const lastUpdatedElement = $('#lastUpdated');
+  if (!lastUpdatedElement) return;
+
+  const lastModified = new Date(document.lastModified);
+  if (Number.isNaN(lastModified.getTime())) {
+    lastUpdatedElement.textContent = document.lastModified || '';
+    lastUpdatedElement.removeAttribute('datetime');
+    return;
+  }
+
+  const year = lastModified.getFullYear();
+  const month = String(lastModified.getMonth() + 1).padStart(2, '0');
+  const day = String(lastModified.getDate()).padStart(2, '0');
+  const formatted = `${year}-${month}-${day}`;
+  lastUpdatedElement.textContent = formatted;
+  lastUpdatedElement.setAttribute('datetime', formatted);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   setLanguage(safeStorage.get('preferredLanguage') || 'en');
+  updateLastUpdated();
 });
 
 /* 触摸头像切换 */
