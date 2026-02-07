@@ -191,6 +191,24 @@ if (backBtn) {
   backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
+/* 汉堡菜单 */
+const hamburger = $('#nav-hamburger');
+const navLinksEl = $('#navLinks');
+if (hamburger && navLinksEl) {
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!expanded));
+    navLinksEl.classList.toggle('open', !expanded);
+  });
+  /* 点击导航链接后自动收起 */
+  navLinksEl.addEventListener('click', e => {
+    if (e.target.closest('a[href^="#"]')) {
+      hamburger.setAttribute('aria-expanded', 'false');
+      navLinksEl.classList.remove('open');
+    }
+  });
+}
+
 /* 导航当前 section 高亮 */
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = $$('nav.site-nav .nav-links a[href^="#"]');
@@ -266,11 +284,13 @@ document.addEventListener('DOMContentLoaded', () => {
   target.textContent = `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}`;
 });
 
-/* 访客地图加载状态与降级处理 */
+/* 访客地图加载状态与降级处理 — 失败时隐藏整个板块 */
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('visitorMap');
   const fallback = document.getElementById('visitorMapFallback');
   const scriptEl = document.getElementById('clustrmaps');
+  const footer = container ? container.closest('footer') : null;
+  const footerHeading = footer ? footer.querySelector('.footer-heading') : null;
   if (!container || !fallback || !scriptEl) return;
 
   fallback.dataset.state = 'loading';
@@ -283,9 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fallback.classList.remove('show-help');
   };
 
-  const showHelp = state => {
-    fallback.dataset.state = state;
-    fallback.classList.add('show-help');
+  const hideMap = () => {
+    container.style.display = 'none';
+    if (footerHeading) footerHeading.style.display = 'none';
   };
 
   if (hasWidget()) {
@@ -293,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  scriptEl.addEventListener('error', () => showHelp('error'));
+  scriptEl.addEventListener('error', () => hideMap());
   scriptEl.addEventListener('load', () => {
     window.setTimeout(() => {
       if (fallback.dataset.state === 'loaded') return;
@@ -309,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
   observer.observe(container, { childList: true, subtree: true });
 
   window.setTimeout(() => {
-    if (fallback.dataset.state === 'loaded' || fallback.dataset.state === 'error') return;
-    if (!hasWidget()) showHelp('timeout');
+    if (fallback.dataset.state === 'loaded' || container.style.display === 'none') return;
+    if (!hasWidget()) hideMap();
   }, 6000);
 });
