@@ -1,4 +1,4 @@
-    :root{
+:root{
       --brand:#0b63c7;
       --sci-color:#2e9e44;
       --jcrq1-color:#6a4cc7;
@@ -261,6 +261,27 @@
     }
     .pub-authors .author-badge,.pub-authors .advisor-badge{font-size:.74em;padding:2px 6px;margin-left:6px}
 
+    /* 导航 active 高亮 */
+    nav.site-nav a.nav-active{color:var(--brand)}
+    nav.site-nav a.nav-active::after{opacity:1;transform:scaleX(1)}
+    body.dark-mode .nav-links a.nav-active{color:#a8c3ff}
+
+    /* News 板块 */
+    .news-list{list-style:none;padding:0;margin:0}
+    .news-item{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:.95em;line-height:1.55}
+    .news-item:last-child{border-bottom:none}
+    .news-date{flex-shrink:0;width:70px;font-weight:700;font-family:var(--font-sans);color:#555;font-size:.9em;padding-top:1px}
+    .news-text{flex:1}
+    .news-text a{color:var(--brand);text-decoration:none}
+    .news-text a:hover{text-decoration:underline}
+    body.dark-mode .news-item{border-color:#444}
+    body.dark-mode .news-date{color:#bbb}
+    body.dark-mode .news-text a{color:#a8c3ff}
+
+    /* 内联 SVG 图标适配 */
+    .contact-icon.icon-image svg{display:block;width:20px;height:20px;color:#666}
+    body.dark-mode .contact-icon.icon-image svg{color:#c2c2c2}
+
     /* 奖项 */
     .awards-list{list-style:none;padding:0}
     .award-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:1em}
@@ -433,4 +454,3 @@
     @media (max-width: 400px){
       nav.site-nav{grid-template-columns:1fr;}
     }
-
