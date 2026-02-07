@@ -191,6 +191,25 @@ if (backBtn) {
   backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
+/* 导航当前 section 高亮 */
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = $$('nav.site-nav .nav-links a[href^="#"]');
+  const sections = navLinks.map(link => $(link.getAttribute('href'))).filter(Boolean);
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('nav-active', link.getAttribute('href') === `#${id}`);
+      });
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+  sections.forEach(section => observer.observe(section));
+});
+
 /* 作者徽章自动化：†=Co-first；*=Advisor；不自动判定 First Author */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.pub-authors').forEach(el => {
