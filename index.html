@@ -6,6 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
   <meta name="color-scheme" content="light dark" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Haokai Ding — Robotics Researcher" />
+  <meta property="og:description" content="Underactuated grippers · Mechanism design · 8 publications in 2025 · IROS Session Chair" />
+  <meta property="og:image" content="my-academic-site/images/hkding.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <!-- Favicon (inline SVG, initials) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a6dd4'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='28' fill='white'%3EHD%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -44,9 +52,15 @@
           <button data-lang="zh" class="lang-link">中文</button>
         </div>
       </div>
-      <div class="nav-links">
+      <button id="nav-hamburger" class="nav-hamburger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-links" id="navLinks">
         <a href="#news"><span class="lang-en">News</span><span class="lang-zh">News</span></a>
         <a href="#about"><span class="lang-en">About</span><span class="lang-zh">About</span></a>
+        <a href="#research"><span class="lang-en">Research</span><span class="lang-zh">Research</span></a>
         <a href="#education"><span class="lang-en">Education</span><span class="lang-zh">Education</span></a>
         <a href="#publications"><span class="lang-en">Publications</span><span class="lang-zh">Publications</span></a>
         <a href="#service"><span class="lang-en">Service</span><span class="lang-zh">Service</span></a>
@@ -177,6 +191,52 @@
         </p>
       </section>
 
+      <!-- Research Interests -->
+      <section id="research" class="page-avoid">
+        <h2><span class="lang-en">Research Interests</span><span class="lang-zh">研究方向</span></h2><hr>
+        <div class="research-grid">
+          <div class="research-card">
+            <div class="research-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+            </div>
+            <h4 class="research-title">
+              <span class="lang-en">Underactuated Grippers</span>
+              <span class="lang-zh">欠驱动抓手</span>
+            </h4>
+            <p class="research-desc">
+              <span class="lang-en">Peaucellier linkages, idle-stroke mechanisms, and adaptive grasping strategies for dexterous manipulation with minimal actuators.</span>
+              <span class="lang-zh">基于佩索利耶连杆与空行程机构的自适应抓取策略，以最少驱动实现灵巧操作。</span>
+            </p>
+          </div>
+          <div class="research-card">
+            <div class="research-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 8c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+            </div>
+            <h4 class="research-title">
+              <span class="lang-en">SpiRobs (Spiral Soft Robots)</span>
+              <span class="lang-zh">螺旋软体机器人 (SpiRobs)</span>
+            </h4>
+            <p class="research-desc">
+              <span class="lang-en">Continuum robots with spiral architecture for confined-space navigation, integrating suction capabilities for enhanced interaction.</span>
+              <span class="lang-zh">基于螺旋结构的连续体机器人，融合吸附功能实现狭窄空间导航与增强交互。</span>
+            </p>
+          </div>
+          <div class="research-card">
+            <div class="research-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+            </div>
+            <h4 class="research-title">
+              <span class="lang-en">Aerial Manipulation</span>
+              <span class="lang-zh">空中操作</span>
+            </h4>
+            <p class="research-desc">
+              <span class="lang-en">UAV perching mechanisms with electromagnetic adhesion systems for stable attachment and manipulation on varied surfaces.</span>
+              <span class="lang-zh">基于电磁吸附的无人机降落与操作机构，实现多种表面的稳定附着。</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- Education -->
       <section id="education" class="page-avoid">
         <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2><hr>
@@ -230,6 +290,27 @@
       <!-- Publications -->
       <section id="publications" class="page-avoid">
         <h2><span class="lang-en">Publications</span><span class="lang-zh">论文成果</span></h2><hr>
+
+        <div class="pub-stats">
+          <div class="pub-stat-item">
+            <span class="pub-stat-number">8</span>
+            <span class="pub-stat-label"><span class="lang-en">Papers</span><span class="lang-zh">论文</span></span>
+          </div>
+          <span class="pub-stat-sep">·</span>
+          <div class="pub-stat-item">
+            <span class="pub-stat-number">7</span>
+            <span class="pub-stat-label"><span class="lang-en">Conference</span><span class="lang-zh">会议</span></span>
+          </div>
+          <span class="pub-stat-sep">·</span>
+          <div class="pub-stat-item">
+            <span class="pub-stat-number">1</span>
+            <span class="pub-stat-label"><span class="lang-en">Journal (SCI Q1)</span><span class="lang-zh">期刊 (SCI Q1)</span></span>
+          </div>
+          <span class="pub-stat-sep">·</span>
+          <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="pub-stat-link">
+            Google Scholar ↗
+          </a>
+        </div>
 
         <h3><span class="lang-en">2025</span><span class="lang-zh">2025年</span></h3>
 
