@@ -310,7 +310,7 @@ body.dark-mode .main-content a:visited{color:#a8c3ff;text-decoration:none}
 
 /* ===== Research Interests ===== */
 .research-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px;
 }
 .research-card{
   padding:22px 20px;
