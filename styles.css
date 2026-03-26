@@ -844,7 +844,13 @@ p {
 }
 
 .video-panel {
-  max-width: 840px;
+  width: min(96vw, 1280px);
+  height: min(88vh, 820px);
+  max-width: none;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .video-panel video,
@@ -854,7 +860,11 @@ p {
 }
 
 .video-panel video {
-  max-height: calc(90vh - 48px);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  max-height: none;
 }
 
 .pdf-panel {
@@ -896,59 +906,130 @@ body.dark-mode {
 
 @media (max-width: 480px) {
   .container {
-    padding: 16px 14px 32px;
+    padding: 14px 16px 28px;
   }
 
   .site-nav {
-    gap: 8px;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 30px;
   }
 
   .site-brand {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
-    row-gap: 4px;
-    font-size: 0.9rem;
+    row-gap: 2px;
+    font-size: 0.92rem;
     overflow-x: visible;
   }
 
+  .site-mark {
+    gap: 0.08ch;
+  }
+
   .site-path {
-    display: block;
-    margin-left: 0;
-    width: 100%;
+    display: inline;
+    width: auto;
+    margin-left: 0.2ch;
   }
 
   .site-brand::after {
-    width: 0.72ch;
-    height: 0.9em;
+    width: 0.62ch;
+    height: 0.88em;
+    margin-left: 0.08ch;
   }
 
   .nav-links {
-    gap: 0.65rem 1rem;
+    width: 100%;
+    gap: 0.95rem 1.15rem;
     font-size: 0.9rem;
+    line-height: 1.2;
   }
 
-  .profile-container {
-    width: 118px;
+  #theme-switcher {
+    align-self: flex-start;
+    font-size: 1.05rem;
   }
 
   .hero {
-    gap: 18px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+
+  .hero-media {
+    display: none;
+  }
+
+  .hero-intro {
+    padding-top: 0;
+  }
+
+  .intro-title {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+  }
+
+  .intro-rule {
+    margin: -2px 0 10px;
   }
 
   .hero-intro p {
-    margin-bottom: 18px;
-    line-height: 1.7;
+    margin-bottom: 16px;
+    line-height: 1.62;
+    font-size: 0.98rem;
+  }
+
+  .intro-highlight {
+    line-height: 1.56;
+  }
+
+  .main-content {
+    gap: 34px;
+  }
+
+  .content-section {
+    padding-top: 6px;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+
+  .latest-heading {
+    margin-bottom: 10px;
+  }
+
+  .latest-heading h2 {
+    font-size: 1rem;
+  }
+
+  .latest-heading-rule {
+    margin-top: -2px;
+    line-height: 1;
+  }
+
+  .selected-list {
+    gap: 18px;
   }
 
   .pub-title-line {
     display: block;
+    line-height: 1.52;
+  }
+
+  .selected-list .pub-title,
+  .pub-title {
+    font-size: 0.98rem;
   }
 
   .inline-links {
     display: block;
     margin-left: 0;
-    margin-top: 6px;
+    margin-top: 4px;
+    line-height: 1.45;
   }
 
   .inline-links .inline-link,
@@ -957,8 +1038,35 @@ body.dark-mode {
     margin-right: 0.45rem;
   }
 
+  .pub-authors-line,
+  .pub-venue-line {
+    line-height: 1.45;
+  }
+
+  .news-item {
+    gap: 4px;
+  }
+
+  .news-date {
+    font-size: 0.92rem;
+  }
+
+  .detail-item,
+  .award-list li,
+  .news-item {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-item p,
+  .news-text,
+  .stack-item p,
+  .content-section > p,
+  .content-section > .section-intro,
+  .contact-lead,
   .contact-block li {
-    line-height: 1.65;
+    text-align: left;
+    text-justify: auto;
+    hyphens: none;
   }
 
   .logo-row {
@@ -969,12 +1077,29 @@ body.dark-mode {
 
   .logo-stack {
     flex-direction: row;
-    gap: 10px;
+    gap: 8px;
   }
 
+  .entry-logo,
   .entry-logo-sjtu {
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .contact-block li {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .modal-panel {
+    width: 95vw;
+    margin: 18px auto;
+  }
+
+  .video-panel {
+    height: min(62vh, 420px);
   }
 }
+
 
