@@ -214,6 +214,7 @@ body.dark-mode .main-content a:visited{color:#a8c3ff;text-decoration:none}
 .entry-line-2{text-align:right;margin-top:4px}
 .entry-role{font-family:var(--font-sans);font-weight:700;margin-right:10px;font-size:1em;flex-shrink:0}
 .entry-logo{width:56px;height:56px;margin-right:14px;object-fit:contain;border-radius:6px}
+.entry-logo--sjtu{width:72px;height:72px}
 .entry-details{font-size:1em}
 .entry-details a{color:var(--brand);text-decoration:none}
 .entry-details a:hover{text-decoration:underline}
