@@ -136,7 +136,8 @@ a:hover {
   align-self: center;
   background: var(--accent);
   border-radius: 2px;
-  animation: hero-cursor-blink 1.05s steps(1) infinite;
+  box-shadow: 0 0 0.55rem color-mix(in srgb, var(--accent) 28%, transparent);
+  animation: hero-cursor-fade 1.6s ease-in-out infinite;
 }
 
 .nav-links {
@@ -245,6 +246,11 @@ a:hover {
     opacity: 1;
     animation: none;
   }
+
+  .site-brand::after {
+    animation: none;
+    opacity: 0.82;
+  }
 }
 
 .prompt-line {
@@ -277,13 +283,17 @@ h1 {
   line-height: 1;
 }
 
-@keyframes hero-cursor-blink {
-  0%, 49% {
-    opacity: 1;
+@keyframes hero-cursor-fade {
+  0%, 18% {
+    opacity: 0.18;
   }
 
-  50%, 100% {
-    opacity: 0;
+  50% {
+    opacity: 0.92;
+  }
+
+  100% {
+    opacity: 0.18;
   }
 }
 
@@ -821,11 +831,13 @@ p {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(10, 12, 16, 0.72);
+  background: rgba(10, 12, 16, 0.68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
   z-index: 1000;
 }
 
@@ -839,8 +851,11 @@ p {
   position: relative;
   width: min(92vw, 900px);
   margin: 40px auto;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--line) 86%, transparent);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
 }
 
 .video-panel {
@@ -878,18 +893,21 @@ p {
 
 .close-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--line);
-  background: var(--bg);
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   color: var(--text);
+  border-radius: 10px;
   cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .close-button:hover {
-  background: var(--surface-soft);
+  background: color-mix(in srgb, var(--surface-soft) 92%, transparent);
 }
 
 body.dark-mode {
@@ -902,6 +920,12 @@ body.dark-mode {
   --line: #394354;
   --accent: #9dbdff;
   --accent-soft: rgba(157, 189, 255, 0.1);
+}
+
+@media (max-width: 760px) {
+  .hero-media {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {

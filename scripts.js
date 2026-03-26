@@ -45,7 +45,20 @@ const applyTheme = (theme, { animate = true } = {}) => {
   if (themeSwitcher) themeSwitcher.textContent = theme === 'dark' ? '☀︎' : '☾';
 };
 
-applyTheme(safeStorage.get('theme') || 'light', { animate: false });
+const inferInitialTheme = () => {
+  const storedTheme = safeStorage.get('theme');
+  if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+
+  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+  const prefersLight = window.matchMedia?.('(prefers-color-scheme: light)').matches;
+  if (prefersDark) return 'dark';
+  if (prefersLight) return 'light';
+
+  const hour = new Date().getHours();
+  return hour >= 19 || hour < 7 ? 'dark' : 'light';
+};
+
+applyTheme(inferInitialTheme(), { animate: false });
 
 themeSwitcher?.addEventListener('click', () => {
   const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
