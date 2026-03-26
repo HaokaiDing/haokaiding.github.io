@@ -902,11 +902,32 @@ body.dark-mode {
   .site-nav {
     align-items: flex-start;
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .site-brand {
+    font-size: 0.96rem;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .nav-links {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.2rem;
+    margin-left: 0;
+    font-size: 0.95rem;
+  }
+
+  #theme-switcher {
+    align-self: flex-end;
   }
 
   .hero {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 22px;
   }
 
   .hero-media {
@@ -914,24 +935,38 @@ body.dark-mode {
   }
 
   .profile-container {
-    width: 120px;
+    width: 132px;
   }
 
-  .contact-list {
-    flex-direction: column;
-    gap: 2px;
+  .hero-intro p,
+  .content-section > p,
+  .content-section > .section-intro,
+  .contact-lead,
+  .contact-block li,
+  .news-text,
+  .detail-item p,
+  .stack-item p {
+    text-align: left;
+    text-justify: auto;
+    hyphens: none;
   }
 
-  .contact-list li::after {
-    content: "";
-    margin-left: 0;
+  .contact-block li {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .detail-item,
   .award-list li,
   .news-item {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: 6px;
+  }
+
+  .news-date,
+  .detail-side,
+  .award-year {
+    white-space: normal;
   }
 
   .full-list .publication-item,
@@ -946,9 +981,26 @@ body.dark-mode {
     margin-bottom: 4px;
   }
 
+  .pub-title-line {
+    line-height: 1.6;
+  }
+
+  .inline-links {
+    display: inline;
+  }
+
   .section-heading {
     flex-direction: column;
     align-items: flex-start;
+    gap: 6px;
+  }
+
+  .logo-row {
+    gap: 10px;
+  }
+
+  .logo-stack {
+    gap: 6px;
   }
 
   .modal-panel {
@@ -956,3 +1008,4 @@ body.dark-mode {
     margin: 24px auto;
   }
 }
+
