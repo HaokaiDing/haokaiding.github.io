@@ -978,23 +978,28 @@ body.dark-mode {
 
   .nav-links {
     grid-area: links;
-    width: auto;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
     min-width: 0;
     display: flex;
     flex-wrap: nowrap;
+    justify-content: flex-start;
     gap: 0.95rem;
     font-size: 0.88rem;
     line-height: 1.2;
     overflow-x: auto;
     white-space: nowrap;
     margin-left: 0;
+    padding-left: 0;
   }
 
   #theme-switcher {
     grid-area: theme;
     justify-self: end;
     align-self: center;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    color: var(--text-soft);
   }
 
   .hero {
