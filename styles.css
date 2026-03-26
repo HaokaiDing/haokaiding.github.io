@@ -894,118 +894,87 @@ body.dark-mode {
   --accent-soft: rgba(157, 189, 255, 0.1);
 }
 
-@media (max-width: 760px) {
+@media (max-width: 480px) {
   .container {
-    padding: 20px 18px 40px;
+    padding: 16px 14px 32px;
   }
 
   .site-nav {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .site-brand {
-    font-size: 0.96rem;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 4px;
+    font-size: 0.9rem;
+    overflow-x: visible;
+  }
+
+  .site-path {
+    display: block;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .site-brand::after {
+    width: 0.72ch;
+    height: 0.9em;
   }
 
   .nav-links {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.9rem 1.2rem;
-    margin-left: 0;
-    font-size: 0.95rem;
-  }
-
-  #theme-switcher {
-    align-self: flex-end;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .hero-media {
-    align-items: flex-start;
+    gap: 0.65rem 1rem;
+    font-size: 0.9rem;
   }
 
   .profile-container {
-    width: 132px;
+    width: 118px;
   }
 
-  .hero-intro p,
-  .content-section > p,
-  .content-section > .section-intro,
-  .contact-lead,
-  .contact-block li,
-  .news-text,
-  .detail-item p,
-  .stack-item p {
-    text-align: left;
-    text-justify: auto;
-    hyphens: none;
+  .hero {
+    gap: 18px;
   }
 
-  .contact-block li {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  .detail-item,
-  .award-list li,
-  .news-item {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .news-date,
-  .detail-side,
-  .award-year {
-    white-space: normal;
-  }
-
-  .full-list .publication-item,
-  .selected-list .publication-item {
-    padding-left: 0;
-  }
-
-  .full-list .publication-item::before,
-  .selected-list .publication-item::before {
-    position: static;
-    display: block;
-    margin-bottom: 4px;
+  .hero-intro p {
+    margin-bottom: 18px;
+    line-height: 1.7;
   }
 
   .pub-title-line {
-    line-height: 1.6;
+    display: block;
   }
 
   .inline-links {
-    display: inline;
+    display: block;
+    margin-left: 0;
+    margin-top: 6px;
   }
 
-  .section-heading {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+  .inline-links .inline-link,
+  .inline-links a {
+    margin-left: 0;
+    margin-right: 0.45rem;
+  }
+
+  .contact-block li {
+    line-height: 1.65;
   }
 
   .logo-row {
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .logo-stack {
-    gap: 6px;
+    flex-direction: row;
+    gap: 10px;
   }
 
-  .modal-panel {
-    width: 94vw;
-    margin: 24px auto;
+  .entry-logo-sjtu {
+    width: 68px;
+    height: 68px;
   }
 }
 
