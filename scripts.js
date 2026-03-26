@@ -209,6 +209,78 @@ if (hamburger && navLinksEl) {
   });
 }
 
+/* 导航分页（中小屏） */
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinksContainer = $('#navLinks');
+  const pager = $('#navPager');
+  const prevButton = $('#navPagePrev');
+  const nextButton = $('#navPageNext');
+  const indicator = $('#navPageIndicator');
+  if (!navLinksContainer || !pager || !prevButton || !nextButton || !indicator) return;
+
+  const navLinks = $$('a[href^="#"]', navLinksContainer);
+  if (!navLinks.length) return;
+
+  let currentPage = 0;
+  let totalPages = 1;
+
+  const getPageSize = () => {
+    if (window.innerWidth <= 600) return 2;
+    if (window.innerWidth <= 840) return 3;
+    return 4;
+  };
+
+  const applyNavigationPage = () => {
+    if (window.innerWidth > 1024) {
+      pager.hidden = true;
+      navLinksContainer.classList.remove('nav-links-paged');
+      navLinks.forEach(link => link.classList.remove('nav-page-visible'));
+      return;
+    }
+
+    const pageSize = getPageSize();
+    totalPages = Math.ceil(navLinks.length / pageSize);
+    currentPage = Math.min(currentPage, totalPages - 1);
+
+    navLinksContainer.classList.add('nav-links-paged');
+    navLinks.forEach((link, index) => {
+      const start = currentPage * pageSize;
+      const end = start + pageSize;
+      link.classList.toggle('nav-page-visible', index >= start && index < end);
+    });
+
+    indicator.textContent = `${currentPage + 1}/${totalPages}`;
+    prevButton.disabled = currentPage === 0;
+    nextButton.disabled = currentPage >= totalPages - 1;
+    pager.hidden = false;
+  };
+
+  prevButton.addEventListener('click', () => {
+    if (currentPage === 0) return;
+    currentPage -= 1;
+    applyNavigationPage();
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentPage >= totalPages - 1) return;
+    currentPage += 1;
+    applyNavigationPage();
+  });
+
+  navLinksContainer.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link || window.innerWidth > 1024) return;
+    const index = navLinks.indexOf(link);
+    if (index < 0) return;
+    const pageSize = getPageSize();
+    currentPage = Math.floor(index / pageSize);
+    applyNavigationPage();
+  });
+
+  applyNavigationPage();
+  window.addEventListener('resize', applyNavigationPage, { passive: true });
+});
+
 /* 导航当前 section 高亮 */
 document.addEventListener('DOMContentLoaded', () => {
   const navLinks = $$('nav.site-nav .nav-links a[href^="#"]');
