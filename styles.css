@@ -934,18 +934,30 @@ body.dark-mode {
   }
 
   .site-nav {
-    align-items: flex-start;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 12px;
     margin-bottom: 30px;
   }
 
   .site-brand {
+    grid-column: 1 / -1;
     display: inline-flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    row-gap: 2px;
+    row-gap: 0;
+    width: auto;
+    max-width: 100%;
     font-size: 0.92rem;
-    overflow-x: visible;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .site-brand::-webkit-scrollbar,
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .site-mark {
@@ -965,14 +977,22 @@ body.dark-mode {
   }
 
   .nav-links {
-    width: 100%;
-    gap: 0.95rem 1.15rem;
-    font-size: 0.9rem;
+    grid-column: 1;
+    width: auto;
+    min-width: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.05rem;
+    font-size: 0.88rem;
     line-height: 1.2;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
   #theme-switcher {
-    align-self: flex-start;
+    grid-column: 2;
+    justify-self: end;
+    align-self: center;
     font-size: 1.05rem;
   }
 
