@@ -118,10 +118,11 @@ nav.site-nav .nav-language{justify-self:start}
 #theme-switcher:hover,#theme-switcher:focus{transform:translateY(-1px);outline:none;color:var(--brand);background:rgba(15,99,199,.08)}
 #theme-switcher:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 
-#lang-switcher{display:flex;align-items:center;gap:8px;font-family:var(--font-nav);font-weight:600;font-size:.88em}
+#lang-switcher{display:flex;align-items:center;gap:8px;font-family:var(--font-nav);font-weight:600;font-size:.88em;white-space:nowrap;flex-wrap:nowrap}
 #lang-switcher button{
   color:#6b7280;text-decoration:none;padding:0;
   background:none;border:none;cursor:pointer;font:inherit;transition:color .2s;
+  white-space:nowrap;line-height:1.1;
 }
 #lang-switcher button:hover,#lang-switcher button:focus{color:#1f2937;outline:none}
 #lang-switcher button:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
