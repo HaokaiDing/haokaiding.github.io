@@ -105,9 +105,17 @@ a:hover {
   gap: 0.12ch;
 }
 
-.site-mark-name,
+.site-mark-link,
 .site-path {
   color: var(--accent);
+}
+
+.site-mark-link {
+  text-decoration: none;
+}
+
+.site-mark-link:hover {
+  text-decoration: none;
 }
 
 .site-mark-prompt {
