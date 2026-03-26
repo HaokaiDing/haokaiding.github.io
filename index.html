@@ -1,414 +1,254 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Haokai Ding(丁浩剀)</title>
+  <title>Haokai Ding</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Academic CV of Haokai Ding (丁浩剀): education, publications, awards, and contact info." />
+  <meta name="description" content="Haokai Ding is an undergraduate researcher working on underactuated robotic grippers, mechanism design, and adaptive grasping." />
   <meta name="color-scheme" content="light dark" />
-  <!-- Open Graph -->
-  <meta property="og:title" content="Haokai Ding — Robotics Researcher" />
-  <meta property="og:description" content="Underactuated grippers · Mechanism design · 8 publications in 2025 · IROS Session Chair" />
+  <meta property="og:title" content="Haokai Ding" />
+  <meta property="og:description" content="Undergraduate researcher in robotics, underactuated grippers, and mechanism design." />
   <meta property="og:image" content="my-academic-site/images/hkding.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <!-- Favicon (inline SVG, initials) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a6dd4'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='700' font-size='28' fill='white'%3EHD%3C/text%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'"
-  />
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
-  </noscript>
-
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23161b22'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='26' fill='%23f6f7f9'%3EHD%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container" id="top">
+  <div class="container">
     <nav class="site-nav" aria-label="Primary">
-      <div class="nav-language" aria-label="Language controls">
-        <div id="lang-switcher" aria-label="Language switcher">
-          <button data-lang="en" class="lang-link active">English</button>
-          <span class="lang-separator">/</span>
-          <button data-lang="zh" class="lang-link">中文</button>
-        </div>
+      <div class="site-brand" aria-label="site mark"><span class="site-mark"><span class="site-mark-name">Haokai Ding</span><span class="site-mark-prompt">:~#</span></span></div>
+      <div class="nav-links">
+        <a href="publications.html">Publications/</a>
+        <a href="contact.html">Contact/</a>
+        <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar/</a>
       </div>
-      <button id="nav-hamburger" class="nav-hamburger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
-      <div class="nav-links" id="navLinks">
-        <a href="#news"><span class="lang-en">News</span><span class="lang-zh">动态</span></a>
-        <a href="#about"><span class="lang-en">About</span><span class="lang-zh">简介</span></a>
-        <a href="#research"><span class="lang-en">Research</span><span class="lang-zh">研究</span></a>
-        <a href="#education"><span class="lang-en">Education</span><span class="lang-zh">教育</span></a>
-        <a href="#experience"><span class="lang-en">Experience</span><span class="lang-zh">科研经历</span></a>
-        <a href="publications.html"><span class="lang-en">Publications</span><span class="lang-zh">论文</span></a>
-        <a href="#service"><span class="lang-en">Service</span><span class="lang-zh">服务</span></a>
-        <a href="#awards"><span class="lang-en">Awards</span><span class="lang-zh">奖项</span></a>
-      </div>
-      <button id="theme-switcher" type="button" aria-label="Toggle dark mode">🌙</button>
+      <button id="theme-switcher" type="button" aria-label="Toggle dark mode">☾</button>
     </nav>
 
-    <header>
-      <div class="profile-container" id="profileBox">
-        <img class="profile-image default" loading="lazy" crossorigin="anonymous"
-             src="my-academic-site/images/haokai_DING_photo_cartoon.png"
-             alt="Anime style profile photo of Haokai Ding"
-             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.%20(Anime)';">
-        <img class="profile-image hover" loading="lazy" crossorigin="anonymous"
-             src="my-academic-site/images/hkding.png"
-             alt="Profile photo of Haokai Ding"
-             onerror="this.onerror=null;this.src='https://placehold.co/120x120/EFEFEF/333333?text=H.D.';">
-      </div>
-      <div class="header-info">
-        <h1>Haokai Ding (丁浩剀)</h1>
-        <div class="contact-info">
-          <p>
-            <span class="lang-en">Future Technology School, Shenzhen Technology University (Shenzhen, Guangdong)</span>
-            <span class="lang-zh">深圳技术大学, 未来技术学院 (中国, 深圳)</span>
-            <br>
-            <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute (Shenzhen, Guangdong)</span>
-            <span class="lang-zh">清华大学钱学森力学班 - 深圳零一学院 (中国, 深圳)</span>
-          </p>
-          <ul class="contact-list">
-            <li>
-              <span class="contact-icon icon-image" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </span>
-              <span class="lang-en">Shenzhen, China</span><span class="lang-zh">中国·深圳</span>
-            </li>
-            <li>
-              <a href="pdfs/Haokai_CV_EN.pdf" target="_blank" rel="noopener noreferrer">
-                <span class="contact-icon icon-image" aria-hidden="true">
-                  <img src="my-academic-site/images/icons/resume.svg" alt="">
-                </span>
-                <span class="lang-en">Résumé</span><span class="lang-zh">简历</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">
-                <span class="contact-icon icon-image" aria-hidden="true">
-                  <img src="my-academic-site/images/icons/google-scholar.svg" alt="">
-                </span>
-                <span class="lang-en">Scholar</span><span class="lang-zh">学术主页</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">
-                <span class="contact-icon icon-image" aria-hidden="true">
-                  <img src="my-academic-site/images/icons/orcid.svg" alt="">
-                </span>
-                <span class="lang-en">ORCID</span><span class="lang-zh">ORCID</span>
-              </a>
-            </li>
-            <li>
-              <a href="/cdn-cgi/l/email-protection#523a390d363b3c35123d27263e3d3d397c313d3f">
-                <span class="contact-icon icon-image" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                </span>
-                <span class="lang-en">Email</span><span class="lang-zh">邮箱</span>
-              </a>
-            </li>
-          </ul>
+    <header class="hero" id="top">
+      <div class="hero-media">
+        <div class="profile-container" id="profileBox">
+          <img
+            class="profile-image default"
+            loading="lazy"
+            crossorigin="anonymous"
+            src="my-academic-site/images/haokai_DING_photo_cartoon.png"
+            alt="Illustrated profile photo of Haokai Ding"
+            onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
+          >
+          <img
+            class="profile-image hover"
+            loading="lazy"
+            crossorigin="anonymous"
+            src="my-academic-site/images/hkding.png"
+            alt="Profile photo of Haokai Ding"
+            onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
+          >
         </div>
+      </div>
+
+      <div class="hero-copy hero-intro">
+        <h2 class="intro-title">Hi!</h2>
+        <p class="intro-rule">===</p>
+        <p>
+          I am Haokai Ding, an undergraduate researcher at Shenzhen Technology University and an X Scholar in the joint training program with Tsinghua University and Shenzhen X-Institute. I previously worked with Prof. <a href="https://scholar.google.com/citations?user=n-3doEMAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Wenzeng Zhang</a> and am currently working with Prof. <a href="https://xingxingzuo.github.io/" target="_blank" rel="noopener noreferrer">Xingxing Zuo</a> on aerial manipulation.
+        </p>
+        <p>
+          My research focuses on underactuated robotic grippers, idle-stroke mechanisms, Peaucellier-based linkages, adaptive grasping, and related problems in aerial manipulation.
+        </p>
+        <p class="intro-highlight">
+          I am actively building robotic gripper systems and mechanism designs for publication-oriented research in robotics and embodied manipulation.
+        </p>
       </div>
     </header>
 
-
-    <main class="main-content page-avoid" id="cv-main">
-      <!-- News -->
-      <section id="news" class="page-avoid">
-        <h2><span class="lang-en">News</span><span class="lang-zh">最新动态</span></h2><hr>
-        <ul class="news-list">
-          <li class="news-item">
-            <span class="news-date">2026.02</span>
-            <span class="news-text">
-              <span class="lang-en">Our paper <em>"GLINT: An Idle-Stroke Grasp-and-Lift Hand for In-Hand Manipulation"</em> is now available online on <a href="https://doi.org/10.1109/ICCMA67641.2025.11369602" target="_blank" rel="noopener noreferrer">IEEE Xplore</a>.</span>
-              <span class="lang-zh">论文 <em>"GLINT: An Idle-Stroke Grasp-and-Lift Hand for In-Hand Manipulation"</em> 已在 <a href="https://doi.org/10.1109/ICCMA67641.2025.11369602" target="_blank" rel="noopener noreferrer">IEEE Xplore</a> 上线。</span>
-            </span>
-          </li>
-          <li class="news-item">
-            <span class="news-date">2025.10</span>
-            <span class="news-text">
-              <span class="lang-en">Serving as <strong>Session Chair</strong> at IEEE/RSJ IROS 2025.</span>
-              <span class="lang-zh">担任 IEEE/RSJ IROS 2025 <strong>分会主席 (Session Chair)</strong>。</span>
-            </span>
-          </li>
-          <li class="news-item">
-            <span class="news-date">2025</span>
-            <span class="news-text">
-              <span class="lang-en">Awarded the <strong>National Scholarship</strong> (Ministry of Education, China).</span>
-              <span class="lang-zh">获得<strong>国家奖学金</strong>（教育部）。</span>
-            </span>
-          </li>
-          <li class="news-item">
-            <span class="news-date">2025</span>
-            <span class="news-text">
-              <span class="lang-en"><strong>Undergraduate Champion</strong> at ASME Student Mechanism &amp; Robot Design Competition.</span>
-              <span class="lang-zh">获 ASME 学生机械与机器人设计竞赛<strong>本科组冠军</strong>。</span>
-            </span>
-          </li>
-          <li class="news-item">
-            <span class="news-date">2025</span>
-            <span class="news-text">
-              <span class="lang-en">Our paper <em>"A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping"</em> was accepted by IEEE/RSJ IROS 2025.</span>
-              <span class="lang-zh">论文 <em>“A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping”</em> 被 IEEE/RSJ IROS 2025 录用。</span>
-            </span>
-          </li>
-        </ul>
-      </section>
-
-      <!-- About -->
-      <section id="about" class="page-avoid">
-        <h2><span class="lang-en">About Me</span><span class="lang-zh">个人简介</span></h2><hr>
+    <main class="main-content">
+      <section class="content-section" id="about">
+        <h2>about</h2>
         <p>
-          <span class="lang-en">
-            I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University. Concurrently, as an X Scholar in a joint program with Tsinghua University and Shenzhen X-Institute, I work under the guidance of Prof. <a href="https://scholar.google.com/citations?user=n-3doEMAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Wenzeng Zhang</a>. My research focuses on <strong>underactuated robotic grippers</strong> and <strong>novel mechanism design</strong>, with specific interests in idle-stroke mechanisms, Peaucellier-based linkages, and adaptive grasping strategies. I have published 9 papers in 2025 at venues including RAAI, IROS, CASE, and <em>Polymers</em> (JCR Q1), and served as an IROS 2025 Session Chair.
-          </span>
-          <span class="lang-zh">
-            我是深圳技术大学电子科学与技术专业本科生，并作为清华大学钱学森班–深圳零一学院零一学者，在<a href="https://scholar.google.com/citations?user=n-3doEMAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">张文增</a>教授指导下开展研究。我的研究方向为<strong>欠驱动机器人抓手</strong>与<strong>新型机构设计</strong>，具体涉及空行程机构、佩索利耶连杆及自适应抓取策略。2025 年已在 RAAI、IROS、CASE、<em>Polymers</em>（JCR Q1）等发表 9 篇论文，并担任 IROS 2025 分会主席。
-          </span>
+          I am an undergraduate in Electronic Science and Technology at Shenzhen Technology University and an X Scholar in the joint training program with Tsinghua University and Shenzhen X-Institute. I previously worked with Prof. <a href="https://scholar.google.com/citations?user=n-3doEMAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Wenzeng Zhang</a> on underactuated robotic grippers, idle-stroke mechanisms, Peaucellier-based linkages, and adaptive grasping, and I am currently working with <a href="https://xingxingzuo.github.io/" target="_blank" rel="noopener noreferrer">Xingxing Zuo</a> on aerial manipulation.
         </p>
       </section>
 
-      <!-- Research Experience -->
-      <section id="experience" class="page-avoid">
-        <h2><span class="lang-en">Research Experience</span><span class="lang-zh">科研经历</span></h2><hr>
-
-        <div class="education-entry">
-          <div class="entry-line-1">
-            <img class="entry-logo entry-logo--sjtu" src="my-academic-site/images/sjtulogored.svg" alt="Shanghai Jiao Tong University logo" loading="lazy">
-            <strong class="entry-role"><span class="lang-en">Visiting Student Researcher:</span><span class="lang-zh">访问学生研究员:</span></strong>
-            <div class="entry-details">
-              <span class="lang-en">CIUS Lab, Shanghai Jiao Tong University</span>
-              <span class="lang-zh">上海交通大学 CIUS 实验室</span>
-            </div>
-          </div>
-          <div class="entry-line-2"><div class="entry-date">Present</div></div>
+      <section class="content-section latest-publications" id="publications">
+        <div class="latest-heading">
+          <h2>Latest publications</h2>
+          <p class="latest-heading-rule">===================</p>
         </div>
-      </section>
-
-      <!-- Research Interests -->
-      <section id="research" class="page-avoid">
-        <h2><span class="lang-en">Research Interests</span><span class="lang-zh">研究方向</span></h2><hr>
-        <div class="research-list">
-          <div class="research-row">
-            <span class="research-num">01</span>
-            <div class="research-body">
-              <h4 class="research-title">
-                <span class="lang-en">Underactuated Grippers</span>
-                <span class="lang-zh">欠驱动抓手</span>
-              </h4>
-              <p class="research-desc">
-                <span class="lang-en">Peaucellier linkages, idle-stroke mechanisms, and adaptive grasping strategies for dexterous manipulation with minimal actuators.</span>
-                <span class="lang-zh">基于佩索利耶连杆与空行程机构的自适应抓取策略，以最少驱动实现灵巧操作。</span>
-              </p>
-              <div class="research-tags">
-                <span>Peaucellier Linkage</span><span>Idle-Stroke</span><span>Adaptive Grasping</span>
-              </div>
-            </div>
-          </div>
-          <div class="research-row">
-            <span class="research-num">02</span>
-            <div class="research-body">
-              <h4 class="research-title">
-                <span class="lang-en">Aerial Manipulation</span>
-                <span class="lang-zh">空中操作</span>
-              </h4>
-              <p class="research-desc">
-                <span class="lang-en">UAV perching mechanisms with electromagnetic adhesion systems for stable attachment and manipulation on varied surfaces.</span>
-                <span class="lang-zh">基于电磁吸附的无人机降落与操作机构，实现多种表面的稳定附着。</span>
-              </p>
-              <div class="research-tags">
-                <span>UAV Perching</span><span>Electromagnetic Adhesion</span><span>Aerial Robotics</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education -->
-      <section id="education" class="page-avoid">
-        <h2><span class="lang-en">Education</span><span class="lang-zh">教育背景</span></h2><hr>
-
-        <div class="education-entry">
-          <div class="entry-line-1">
-            <strong class="entry-role"><span class="lang-en">Undergraduate:</span><span class="lang-zh">本科:</span></strong>
-            <img class="entry-logo" loading="lazy" crossorigin="anonymous"
-                 src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="SZTU Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=SZTU';">
-            <div class="entry-details">
-              <a href="https://www.sztu.edu.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Shenzhen Technology University</span><span class="lang-zh">深圳技术大学</span></a>
-              <span class="lang-en">, Future Technology School -- Bachelor of Engineering in Electronic Science and Technology</span>
-              <span class="lang-zh">, 未来技术学院 -- 电子科学与技术 工学学士</span>
-            </div>
-          </div>
-          <div class="entry-line-2"><div class="entry-date">2022.09–2026.07</div></div>
-          <ul>
-            <li><span class="lang-en">Main Courses: C++, Python, Digital Circuits, Sensors and Actuators, Engineering Project Design</span><span class="lang-zh">主修课程: C++, Python, 数字电路, 传感器与执行器, 工程项目设计</span></li>
-            <li><span class="lang-en">Main Research: Laser-Induced Breakdown Spectroscopy (LIBS)</span><span class="lang-zh">主要研究: 激光诱导击穿光谱 (LIBS)</span></li>
-          </ul>
-        </div>
-
-        <div class="education-entry">
-          <div class="entry-line-1">
-            <strong class="entry-role"><span class="lang-en">Joint Training:</span><span class="lang-zh">联合培养:</span></strong>
-            <img class="entry-logo" loading="lazy" crossorigin="anonymous"
-                 src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=Tsinghua';">
-            <img class="entry-logo" loading="lazy" crossorigin="anonymous"
-                 src="my-academic-site/images/x-institute_logo.jpg" alt="X-Institute Logo"
-                 onerror="this.onerror=null;this.src='https://placehold.co/60x60/EFEFEF/333333?text=X-Inst';">
-            <div class="entry-details">
-              <a href="https://www.x-institute.edu.cn/" target="_blank" rel="noopener noreferrer">
-                <span class="lang-en">Tsinghua University Tsien Excellence in Engineering Program - Shenzhen X-Institute</span>
-                <span class="lang-zh">清华大学钱学森班 - 深圳零一学院</span>
-              </a>&nbsp;--&nbsp;
-              <span class="lang-en">X Scholar</span><span class="lang-zh">零一学者</span>
-            </div>
-          </div>
-          <div class="entry-line-2"><div class="entry-date">2023.09–Present</div></div>
-          <ul>
-            <li>
-              <span class="lang-en">Main Research: Underactuated Robotic Grippers, Peaucellier Linkages, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">See Qian Class Step-by-Step Training Program</a></span>
-              <span class="lang-zh">主要研究: 欠驱动机器人抓手, 佩索利耶连杆, <a href="https://www.x-institute.edu.cn/accompany/xidea" target="_blank" rel="noopener noreferrer">见钱班进阶式培养计划</a></span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Academic Service -->
-      <section id="service" class="page-avoid">
-        <h2><span class="lang-en">Academic Service</span><span class="lang-zh">学术任职</span></h2><hr>
-        <ul class="publication-list">
+        <ol class="publication-list selected-list">
           <li class="publication-item">
-            <div class="pub-details">
-              <div class="pub-title"><span class="lang-en">Conference Reviewer</span><span class="lang-zh">会议审稿人</span></div>
-              <div class="pub-venue">
-                <span class="lang-en">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</span>
-                <span class="lang-zh">IEEE/RSJ 国际智能机器人与系统会议 (IROS)</span>
+            <div class="pub-body">
+              <div class="pub-title-line">
+                <span class="pub-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</span>
+                <span class="pub-links inline-links">
+                  <button type="button" class="inline-link pdf-link" data-pdf="pdfs/200534-3633.pdf">[pdf]</button>
+                  <a href="https://doi.org/10.1109/IROS60139.2025.11246057" target="_blank" rel="noopener noreferrer">[doi]</a>
+                  <button type="button" class="inline-link video-link" data-video="videos/SPIDAPT.mp4">[demo]</button>
+                </span>
               </div>
-              <div class="pub-venue">
-                <span class="lang-en">IEEE International Conference on Automation Science and Engineering (CASE)</span>
-                <span class="lang-zh">IEEE 自动化科学与工程国际会议 (CASE)</span>
-              </div>
+              <div class="pub-authors-line"><strong>Haokai Ding</strong><sup>†</sup>, W. Zhang*</div>
+              <div class="pub-venue-line">IROS 2025</div>
             </div>
           </li>
           <li class="publication-item">
-            <div class="pub-details">
-              <div class="pub-title"><span class="lang-en">Conference Session Chair</span><span class="lang-zh">会议分会主席</span></div>
-              <div class="pub-venue">
-                <span class="lang-en">IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2025</span>
-                <span class="lang-zh">IEEE/RSJ 国际智能机器人与系统会议 (IROS), 2025 年</span>
+            <div class="pub-body">
+              <div class="pub-title-line">
+                <span class="pub-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</span>
+                <span class="pub-links inline-links">
+                  <button type="button" class="inline-link pdf-link" data-pdf="pdfs/Semi-Peaucellier_Linkage_and_Differential_Mechanism_for_Linear_Pinching_and_Self-Adaptive_Grasping.pdf">[pdf]</button>
+                  <a href="https://doi.org/10.1109/CASE58245.2025.11163785" target="_blank" rel="noopener noreferrer">[doi]</a>
+                </span>
               </div>
+              <div class="pub-authors-line"><strong>Haokai Ding</strong><sup>†</sup>, Z. Chen, T. Yang*, W. Zhang*</div>
+              <div class="pub-venue-line">CASE 2025</div>
             </div>
           </li>
+        </ol>
+        <p class="latest-publications-more"><a href="publications.html">See full publications list →</a></p>
+      </section>
+
+      <section class="content-section" id="news">
+        <h2>news</h2>
+        <ul class="news-list">
+          <li class="news-item"><span class="news-date">2026.02</span><span class="news-text">"GLINT: An Idle-Stroke Grasp-and-Lift Hand for In-Hand Manipulation" is now available on <a href="https://doi.org/10.1109/ICCMA67641.2025.11369602" target="_blank" rel="noopener noreferrer">IEEE Xplore</a>.</span></li>
+          <li class="news-item"><span class="news-date">2025.10</span><span class="news-text">Served as a <strong>Session Chair</strong> at IEEE/RSJ IROS 2025.</span></li>
+          <li class="news-item"><span class="news-date">2025</span><span class="news-text">Received the <strong>National Scholarship</strong> from the Ministry of Education of China.</span></li>
+          <li class="news-item"><span class="news-date">2025</span><span class="news-text">Won the <strong>Undergraduate Champion</strong> award at the ASME Student Mechanism &amp; Robot Design Competition.</span></li>
+          <li class="news-item"><span class="news-date">2025</span><span class="news-text">Our paper on a semi-Peaucellier linkage and idle-stroke gripper was accepted by IEEE/RSJ IROS 2025.</span></li>
         </ul>
       </section>
 
-      <!-- Awards -->
-      <section id="awards" class="page-avoid">
-        <h2><span class="lang-en">Honors & Awards</span><span class="lang-zh">荣誉奖项</span></h2><hr>
-        <h3><span class="lang-en">Provincial-Level & Above</span><span class="lang-zh">省级及以上</span></h3>
-        <div class="awards-list">
-          <div class="award-item">
-            <span class="award-name"><a href="http://www.moe.gov.cn/srcsite/A05/s7505/202512/t20251225_1424488.html" target="_blank" rel="noopener noreferrer"><span class="lang-en">National Scholarship</span><span class="lang-zh">国家奖学金</span></a></span>
-            <span class="award-year">2025</span>
-          </div>
-          <div class="award-item">
-            <span class="award-name"><a href="https://sites.google.com/site/asmemrc/design-competition-showcase/2025-finalists#h.2oibi1g704mf" target="_blank" rel="noopener noreferrer"><span class="lang-en">Undergraduate Champion, ASME Student Mechanism & Robot Design Competition</span><span class="lang-zh">ASME 学生机械与机器人设计竞赛本科组冠军</span></a></span>
-            <span class="award-year">2025</span>
-          </div>
-          <div class="award-item">
-            <span class="award-name"><a href="https://cy.ncss.cn/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Gold Prize, The 9th China "Internet+" Innovation Competition (Guangdong Division)</span><span class="lang-zh">第九届中国国际“互联网+”大学生创新创业大赛 (广东省分赛金奖)</span></a></span>
-            <span class="award-year">2023</span>
-          </div>
-          <div class="award-item">
-            <span class="award-name"><a href="https://www.tiaozhanbei.net/" target="_blank" rel="noopener noreferrer"><span class="lang-en">Second Prize, The 17th "Challenge Cup" Extracurricular Science Competition (Guangdong Division)</span><span class="lang-zh">第十七届“挑战杯”全国大学生课外学术科技作品竞赛 (广东省分赛二等奖)</span></a></span>
-            <span class="award-year">2023</span>
-          </div>
-        </div>
-
-        <h3><span class="lang-en">University-Level</span><span class="lang-zh">校级</span></h3>
-        <div class="awards-list">
-          <div class="award-item"><span class="award-name"><span class="lang-en">President's Award (Highest Student Honor), Shenzhen Technology University</span><span class="lang-zh">深圳技术大学“校长奖” (学生最高荣誉)</span></span><span class="award-year">2024</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2024</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Research and Innovation Award (First Prize)</span><span class="lang-zh">深圳技术大学“科研创新奖” (一等奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">CHENHSONG Scholarship (Dean's Award & Academic Excellence)</span><span class="lang-zh">震雄奖学金 (院长奖学金, 学业卓越奖)</span></span><span class="award-year">2023</span></div>
-          <div class="award-item"><span class="award-name"><span class="lang-en">Outstanding Student Cadre Award</span><span class="lang-zh">深圳技术大学“优秀学生干部”</span></span><span class="award-year">2024</span></div>
+      <section class="content-section" id="research">
+        <h2>research</h2>
+        <div class="stack-list">
+          <article class="stack-item">
+            <div>
+              <h3>01 · underactuated grippers</h3>
+              <p>Peaucellier linkages, idle-stroke mechanisms, and adaptive grasping strategies for dexterous manipulation with minimal actuators.</p>
+            </div>
+            <p class="stack-tags">Peaucellier linkage · idle-stroke · adaptive grasping</p>
+          </article>
+          <article class="stack-item">
+            <div>
+              <h3>02 · aerial manipulation</h3>
+              <p>UAV perching mechanisms with electromagnetic adhesion systems for stable attachment and manipulation on varied surfaces.</p>
+            </div>
+            <p class="stack-tags">UAV perching · electromagnetic adhesion · aerial robotics</p>
+          </article>
         </div>
       </section>
 
+      <section class="content-section" id="education">
+        <h2>education</h2>
+        <div class="detail-list">
+          <article class="detail-item">
+            <div class="detail-main">
+              <div class="logo-row">
+                <img class="entry-logo" src="my-academic-site/images/深圳技术大学校徽_00.jpg" alt="Shenzhen Technology University logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=SZ';">
+                <div>
+                  <h3>Shenzhen Technology University</h3>
+                  <p>B.Eng. in Electronic Science and Technology, Future Technology School</p>
+                </div>
+              </div>
+            </div>
+            <div class="detail-side">2022.09–2026.07</div>
+          </article>
+          <article class="detail-item">
+            <div class="detail-main">
+              <div class="logo-row">
+                <div class="logo-stack">
+                  <img class="entry-logo" src="my-academic-site/images/Tsinghua_University_Logo.svg" alt="Tsinghua University logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=TH';">
+                  <img class="entry-logo" src="my-academic-site/images/x-institute_logo.jpg" alt="X-Institute logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=X';">
+                </div>
+                <div>
+                  <h3>Tsinghua University Tsien Excellence in Engineering Program · Shenzhen X-Institute</h3>
+                  <p>X Scholar in a joint training program focused on underactuated robotic grippers and linkage design.</p>
+                </div>
+              </div>
+            </div>
+            <div class="detail-side">2023.09–present</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="experience">
+        <h2>experience</h2>
+        <div class="detail-list">
+          <article class="detail-item">
+            <div class="detail-main">
+              <div class="logo-row">
+                <img class="entry-logo entry-logo-sjtu" src="my-academic-site/images/sjtulogored.svg" alt="Shanghai Jiao Tong University logo" loading="lazy">
+                <div>
+                  <h3>Visiting Student Researcher · CIUS Lab, Shanghai Jiao Tong University</h3>
+                  <p>Research experience in robotics and intelligent systems with a focus on mechanism-driven manipulation.</p>
+                </div>
+              </div>
+            </div>
+            <div class="detail-side">present</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="service">
+        <h2>service</h2>
+        <ul class="plain-list">
+          <li>Conference reviewer for IEEE/RSJ IROS and IEEE CASE.</li>
+          <li>Conference session chair for IEEE/RSJ IROS 2025.</li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="awards">
+        <h2>awards</h2>
+        <div class="award-group">
+          <h3>selected honors</h3>
+          <ul class="award-list">
+            <li><span class="award-name"><a href="http://www.moe.gov.cn/srcsite/A05/s7505/202512/t20251225_1424488.html" target="_blank" rel="noopener noreferrer">National Scholarship</a></span><span class="award-year">2025</span></li>
+            <li><span class="award-name"><a href="https://sites.google.com/site/asmemrc/design-competition-showcase/2025-finalists#h.2oibi1g704mf" target="_blank" rel="noopener noreferrer">Undergraduate Champion, ASME Student Mechanism &amp; Robot Design Competition</a></span><span class="award-year">2025</span></li>
+            <li><span class="award-name"><a href="https://cy.ncss.cn/" target="_blank" rel="noopener noreferrer">Gold Prize, 9th China “Internet+” Innovation Competition (Guangdong Division)</a></span><span class="award-year">2023</span></li>
+            <li><span class="award-name"><a href="https://www.tiaozhanbei.net/" target="_blank" rel="noopener noreferrer">Second Prize, 17th “Challenge Cup” Extracurricular Science Competition (Guangdong Division)</a></span><span class="award-year">2023</span></li>
+            <li><span class="award-name">President's Award, Shenzhen Technology University</span><span class="award-year">2024</span></li>
+            <li><span class="award-name">Research and Innovation Award (First Prize)</span><span class="award-year">2024 / 2023</span></li>
+          </ul>
+        </div>
+      </section>
     </main>
 
-    <footer>
-      <h3 class="footer-heading">Visitors</h3>
+    <footer class="site-footer">
+      <h2>visitors</h2>
       <div class="visitor-map" id="visitorMap" aria-label="Visitor distribution map" role="img">
         <noscript>
-          <a href="https://clustrmaps.com/site/1bh9v" title="Visitor map" target="_blank" rel="noopener noreferrer">
-            <span>View the visitor map on ClustrMaps</span>
-          </a>
+          <a href="https://clustrmaps.com/site/1bh9v" title="Visitor map" target="_blank" rel="noopener noreferrer">View the visitor map on ClustrMaps</a>
         </noscript>
         <div id="visitorMapFallback" class="visitor-map-fallback" role="status">
-          <p class="lang-en fallback-loading">Loading visitor map…</p>
-          <p class="lang-zh fallback-loading">访客地图加载中……</p>
-          <p class="lang-en fallback-help">
-            If the map never appears, the ClustrMaps service may be blocked in your region (for example, mainland China).
-            <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">Open the visitor map in a new tab</a>.
-          </p>
-          <p class="lang-zh fallback-help">
-            如果地图始终无法显示，可能是因为 ClustrMaps 服务在您所在的地区（例如中国大陆）被屏蔽。
-            <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">请点击此处在新窗口打开访客地图</a>。
-          </p>
+          <p class="fallback-loading">Loading visitor map…</p>
+          <p class="fallback-help">If the map does not appear, ClustrMaps may be blocked in your region. <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</p>
         </div>
-        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+        <script
           type="text/javascript"
           id="clustrmaps"
           src="https://clustrmaps.com/map_v2.js?d=znvx_TSWEndb_yGiF_u2P2L6hrNLIet55wRIDi6dAVY&amp;cl=ffffff&amp;w=a"
           referrerpolicy="no-referrer-when-downgrade"
         ></script>
       </div>
-      <p class="footer-meta">&copy; 2025–2026 Haokai Ding · Last updated <time id="lastUpdated" datetime="">—</time></p>
+      <p class="footer-meta">© 2025–2026 Haokai Ding · Last updated <time id="lastUpdated" datetime="">—</time></p>
     </footer>
   </div>
 
-  <!-- 视频弹窗 -->
-  <div id="videoModal" class="video-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="video-modal-content">
-      <button class="close-button" id="videoClose" type="button" aria-label="Close video">&times;</button>
-      <video id="videoPlayer" src="videos/SPIDAPT.mp4" controls></video>
+  <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel video-panel">
+      <button class="close-button" id="videoClose" type="button" aria-label="Close video">×</button>
+      <video id="videoPlayer" controls></video>
     </div>
   </div>
 
-  <!-- 论文 PDF 预览弹窗（保留） -->
-  <div id="pdfModal" class="pdf-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="pdf-modal-content">
-      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">&times;</button>
+  <div id="pdfModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel pdf-panel">
+      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">×</button>
       <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
     </div>
   </div>
-
 
   <script src="scripts.js"></script>
 </body>

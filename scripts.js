@@ -1,32 +1,26 @@
 const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-/* 主题切换 */
 const safeStorage = (() => {
   try {
     const storage = window.localStorage;
-    const testKey = '__storage_test__';
-    storage.setItem(testKey, testKey);
-    storage.removeItem(testKey);
+    const key = '__storage_test__';
+    storage.setItem(key, key);
+    storage.removeItem(key);
     return {
-      get(key) {
+      get(name) {
         try {
-          return storage.getItem(key);
-        } catch (error) {
-          console.warn('Failed to read from localStorage', error);
+          return storage.getItem(name);
+        } catch {
           return null;
         }
       },
-      set(key, value) {
+      set(name, value) {
         try {
-          storage.setItem(key, value);
-        } catch (error) {
-          console.warn('Failed to write to localStorage', error);
-        }
+          storage.setItem(name, value);
+        } catch {}
       },
     };
-  } catch (error) {
-    console.warn('Local storage is not accessible; preferences will not persist.', error);
+  } catch {
     return {
       get: () => null,
       set: () => {},
@@ -36,265 +30,136 @@ const safeStorage = (() => {
 
 const themeSwitcher = $('#theme-switcher');
 let themeTransitionTimeout = null;
+
 const runThemeTransition = () => {
   document.documentElement.classList.add('theme-transition');
   if (themeTransitionTimeout) window.clearTimeout(themeTransitionTimeout);
   themeTransitionTimeout = window.setTimeout(() => {
     document.documentElement.classList.remove('theme-transition');
-  }, 450);
+  }, 300);
 };
+
 const applyTheme = (theme, { animate = true } = {}) => {
   if (animate) runThemeTransition();
-  if (theme === 'dark') {
-    document.body.classList.add('dark-mode');
-    if (themeSwitcher) themeSwitcher.textContent = '☀️';
-  } else {
-    document.body.classList.remove('dark-mode');
-    if (themeSwitcher) themeSwitcher.textContent = '🌙';
-  }
+  document.body.classList.toggle('dark-mode', theme === 'dark');
+  if (themeSwitcher) themeSwitcher.textContent = theme === 'dark' ? '☀︎' : '☾';
 };
+
 applyTheme(safeStorage.get('theme') || 'light', { animate: false });
-if (themeSwitcher) {
-  themeSwitcher.addEventListener('click', () => {
-    const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-    const next = current === 'dark' ? 'light' : 'dark';
-    safeStorage.set('theme', next);
-    applyTheme(next);
-  });
-}
 
-/* 语言切换 */
-function setLanguage(lang) {
-  const languageTag = lang === 'zh' ? 'zh-CN' : 'en';
-  document.documentElement.setAttribute('data-lang', lang);
-  document.documentElement.setAttribute('lang', languageTag);
-  $$('#lang-switcher .lang-link').forEach(button => {
-    button.classList.toggle('active', button.dataset.lang === lang);
-  });
-  safeStorage.set('preferredLanguage', lang);
-}
-$$('#lang-switcher .lang-link').forEach(button => {
-  button.addEventListener('click', () => setLanguage(button.dataset.lang));
+themeSwitcher?.addEventListener('click', () => {
+  const next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+  safeStorage.set('theme', next);
+  applyTheme(next);
 });
-const updateLastUpdated = () => {
-  const lastUpdatedElement = $('#lastUpdated');
-  if (!lastUpdatedElement) return;
 
-  const lastModified = new Date(document.lastModified);
-  if (Number.isNaN(lastModified.getTime())) {
-    lastUpdatedElement.textContent = document.lastModified || '';
-    lastUpdatedElement.removeAttribute('datetime');
+const updateLastUpdated = () => {
+  const target = $('#lastUpdated');
+  if (!target) return;
+
+  const parsed = new Date(document.lastModified);
+  if (Number.isNaN(parsed.getTime())) {
+    target.textContent = document.lastModified || '—';
     return;
   }
 
-  const year = lastModified.getFullYear();
-  const month = String(lastModified.getMonth() + 1).padStart(2, '0');
-  const day = String(lastModified.getDate()).padStart(2, '0');
-  const formatted = `${year}-${month}-${day}`;
-  lastUpdatedElement.textContent = formatted;
-  lastUpdatedElement.setAttribute('datetime', formatted);
+  const pad = value => String(value).padStart(2, '0');
+  const formatted = `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}`;
+  target.textContent = formatted;
+  target.setAttribute('datetime', formatted);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  setLanguage(safeStorage.get('preferredLanguage') || 'en');
-  updateLastUpdated();
-});
-
-/* 触摸头像切换 */
 let touchCapable = false;
 window.addEventListener('touchstart', () => {
   touchCapable = true;
 }, { once: true });
-const profileBox = $('#profileBox');
-if (profileBox) {
-  profileBox.addEventListener('click', () => {
-    if (touchCapable) profileBox.classList.toggle('toggled');
-  });
-}
 
-/* 论文 PDF 预览弹窗（简历导出已删除） */
-const modal = $('#pdfModal');
+const profileBox = $('#profileBox');
+profileBox?.addEventListener('click', () => {
+  if (touchCapable) profileBox.classList.toggle('toggled');
+});
+
+const pdfModal = $('#pdfModal');
 const pdfViewer = $('#pdf-viewer');
 const pdfClose = $('#pdfClose');
-let lastFocused = null;
-const openPdfModal = path => {
-  if (!modal || !pdfViewer || !pdfClose) return;
-  lastFocused = document.activeElement;
-  pdfViewer.src = path;
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  pdfClose.focus();
-};
-const closePdfModal = () => {
-  if (!modal || !pdfViewer) return;
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden', 'true');
-  pdfViewer.src = '';
-  if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-};
-if (modal && pdfClose) {
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') closePdfModal();
-  });
-  window.addEventListener('click', event => {
-    if (event.target === modal) closePdfModal();
-  });
-  pdfClose.addEventListener('click', closePdfModal);
-  document.addEventListener('click', event => {
-    const trigger = event.target.closest('.pdf-link');
-    if (!trigger) return;
-    event.preventDefault();
-    openPdfModal(trigger.getAttribute('data-pdf'));
-  });
-}
-
-/* 视频弹窗 */
 const videoModal = $('#videoModal');
 const videoPlayer = $('#videoPlayer');
 const videoClose = $('#videoClose');
-const videoButton = $('#videoButton');
-const openVideoModal = () => {
-  if (!videoModal || !videoPlayer || !videoClose) return;
+let lastFocused = null;
+
+const openPdfModal = path => {
+  if (!pdfModal || !pdfViewer || !path) return;
   lastFocused = document.activeElement;
+  pdfViewer.src = path;
+  pdfModal.classList.add('open');
+  pdfModal.setAttribute('aria-hidden', 'false');
+  pdfClose?.focus();
+};
+
+const closePdfModal = () => {
+  if (!pdfModal || !pdfViewer) return;
+  pdfModal.classList.remove('open');
+  pdfModal.setAttribute('aria-hidden', 'true');
+  pdfViewer.src = '';
+  if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+};
+
+const openVideoModal = path => {
+  if (!videoModal || !videoPlayer || !path) return;
+  lastFocused = document.activeElement;
+  videoPlayer.src = path;
   videoModal.classList.add('open');
   videoModal.setAttribute('aria-hidden', 'false');
-  videoPlayer.play();
-  videoClose.focus();
+  videoPlayer.play().catch(() => {});
+  videoClose?.focus();
 };
+
 const closeVideoModal = () => {
   if (!videoModal || !videoPlayer) return;
   videoModal.classList.remove('open');
   videoModal.setAttribute('aria-hidden', 'true');
   videoPlayer.pause();
-  videoPlayer.currentTime = 0;
+  videoPlayer.removeAttribute('src');
+  videoPlayer.load();
   if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
 };
-if (videoButton) videoButton.addEventListener('click', openVideoModal);
-if (videoClose) videoClose.addEventListener('click', closeVideoModal);
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') {
-    closePdfModal();
-    closeVideoModal();
+
+document.addEventListener('click', event => {
+  const pdfTrigger = event.target.closest('.pdf-link');
+  if (pdfTrigger) {
+    event.preventDefault();
+    openPdfModal(pdfTrigger.getAttribute('data-pdf'));
+    return;
+  }
+
+  const videoTrigger = event.target.closest('.video-link');
+  if (videoTrigger) {
+    event.preventDefault();
+    openVideoModal(videoTrigger.getAttribute('data-video'));
   }
 });
+
+pdfClose?.addEventListener('click', closePdfModal);
+videoClose?.addEventListener('click', closeVideoModal);
+
 window.addEventListener('click', event => {
+  if (event.target === pdfModal) closePdfModal();
   if (event.target === videoModal) closeVideoModal();
 });
 
-/* 返回顶部 */
-const backBtn = $('#backToTop');
-if (backBtn) {
-  const onScroll = () => {
-    backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
-/* 汉堡菜单 */
-const hamburger = $('#nav-hamburger');
-const navLinksEl = $('#navLinks');
-if (hamburger && navLinksEl) {
-  hamburger.addEventListener('click', () => {
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', String(!expanded));
-    navLinksEl.classList.toggle('open', !expanded);
-  });
-  /* 点击导航链接后自动收起 */
-  navLinksEl.addEventListener('click', e => {
-    if (e.target.closest('a[href^="#"]')) {
-      hamburger.setAttribute('aria-expanded', 'false');
-      navLinksEl.classList.remove('open');
-    }
-  });
-}
-
-/* 导航当前 section 高亮 */
-document.addEventListener('DOMContentLoaded', () => {
-  const navLinks = $$('nav.site-nav .nav-links a[href^="#"]');
-  const sections = navLinks.map(link => $(link.getAttribute('href'))).filter(Boolean);
-  if (!sections.length) return;
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.id;
-      navLinks.forEach(link => {
-        link.classList.toggle('nav-active', link.getAttribute('href') === `#${id}`);
-      });
-    });
-  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
-
-  sections.forEach(section => observer.observe(section));
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  closePdfModal();
+  closeVideoModal();
 });
 
-/* 作者徽章自动化：†=Co-first；*=Advisor；不自动判定 First Author */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.pub-authors').forEach(el => {
-    const nodes = [...el.childNodes];
-    const makeBadge = (cls, en, zh) => {
-      const span = document.createElement('span');
-      span.className = cls;
-      span.innerHTML = `<span class="lang-en">${en}</span><span class="lang-zh">${zh}</span>`;
-      return span;
-    };
-    nodes.forEach(node => {
-      if (node.nodeType === 1 && node.tagName === 'SUP') {
-        const marker = node.textContent.trim();
-        el.replaceChild(
-          marker === '†'
-            ? makeBadge('author-badge', 'Co-first Author', '共同第一作者')
-            : makeBadge('advisor-badge', 'Advisor', '导师'),
-          node
-        );
-        return;
-      }
-      if (node.nodeType === 3) {
-        const text = node.nodeValue;
-        if (!text || (!text.includes('†') && !text.includes('*'))) return;
-        const fragment = document.createDocumentFragment();
-        const regex = /[†*]/g;
-        let index = 0;
-        let match;
-        while ((match = regex.exec(text))) {
-          const chunk = text.slice(index, match.index);
-          if (chunk) fragment.appendChild(document.createTextNode(chunk));
-          fragment.appendChild(
-            match[0] === '†'
-              ? makeBadge('author-badge', 'Co-first Author', '共同第一作者')
-              : makeBadge('advisor-badge', 'Advisor', '导师')
-          );
-          index = regex.lastIndex;
-        }
-        const tail = text.slice(index);
-        if (tail) fragment.appendChild(document.createTextNode(tail));
-        el.replaceChild(fragment, node);
-      }
-    });
-  });
-});
-
-/* 页脚自动更新时间 */
-document.addEventListener('DOMContentLoaded', () => {
-  const target = document.getElementById('lastUpdated');
-  if (!target) return;
-  const parsed = new Date(document.lastModified);
-  if (Number.isNaN(parsed.getTime())) return;
-  const pad = value => String(value).padStart(2, '0');
-  target.textContent = `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}`;
-});
-
-/* 访客地图加载状态与降级处理 — 失败时隐藏整个板块 */
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('visitorMap');
-  const fallback = document.getElementById('visitorMapFallback');
-  const scriptEl = document.getElementById('clustrmaps');
-  const footer = container ? container.closest('footer') : null;
-  const footerHeading = footer ? footer.querySelector('.footer-heading') : null;
+const setupVisitorMapFallback = () => {
+  const container = $('#visitorMap');
+  const fallback = $('#visitorMapFallback');
+  const scriptEl = $('#clustrmaps');
   if (!container || !fallback || !scriptEl) return;
 
   fallback.dataset.state = 'loading';
-
   const widgetSelector = 'img, iframe, .clustrmaps-map, .clustrmaps-widget, .clustrmaps-globe';
   const hasWidget = () => Boolean(container.querySelector(widgetSelector));
 
@@ -303,9 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fallback.classList.remove('show-help');
   };
 
-  const hideMap = () => {
-    container.style.display = 'none';
-    if (footerHeading) footerHeading.style.display = 'none';
+  const showFallback = () => {
+    fallback.classList.add('show-help');
   };
 
   if (hasWidget()) {
@@ -313,12 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  scriptEl.addEventListener('error', () => hideMap());
+  scriptEl.addEventListener('error', showFallback);
   scriptEl.addEventListener('load', () => {
     window.setTimeout(() => {
-      if (fallback.dataset.state === 'loaded') return;
       if (hasWidget()) markLoaded();
-    }, 120);
+      else showFallback();
+    }, 200);
   });
 
   const observer = new MutationObserver(() => {
@@ -326,10 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
     markLoaded();
     observer.disconnect();
   });
+
   observer.observe(container, { childList: true, subtree: true });
 
   window.setTimeout(() => {
-    if (fallback.dataset.state === 'loaded' || container.style.display === 'none') return;
-    if (!hasWidget()) hideMap();
+    if (fallback.dataset.state !== 'loaded' && !hasWidget()) showFallback();
   }, 6000);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateLastUpdated();
+  setupVisitorMapFallback();
 });
