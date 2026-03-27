@@ -42,7 +42,10 @@ const runThemeTransition = () => {
 const applyTheme = (theme, { animate = true } = {}) => {
   if (animate) runThemeTransition();
   document.body.classList.toggle('dark-mode', theme === 'dark');
-  if (themeSwitcher) themeSwitcher.textContent = theme === 'dark' ? '☼' : '☾';
+  if (themeSwitcher) {
+    themeSwitcher.textContent = theme === 'dark' ? '☼' : '☾';
+    themeSwitcher.setAttribute('aria-pressed', String(theme === 'dark'));
+  }
 };
 
 const inferInitialTheme = () => {
