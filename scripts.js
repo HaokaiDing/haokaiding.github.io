@@ -124,6 +124,7 @@ const openVideoModal = path => {
   if (!videoModal || !videoPlayer || !path) return;
   lastFocused = document.activeElement;
   videoPlayer.src = path;
+  videoPlayer.muted = true;
   videoModal.classList.add('open');
   videoModal.setAttribute('aria-hidden', 'false');
   videoPlayer.play().catch(() => {});
