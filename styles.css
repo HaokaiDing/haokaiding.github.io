@@ -70,6 +70,11 @@ a:hover {
   text-decoration: underline;
 }
 
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .container {
   width: min(100%, var(--content-width));
   margin: 0 auto;
@@ -154,9 +159,13 @@ a:hover {
   white-space: nowrap;
 }
 
-.nav-links a.nav-active,
 .nav-links a:hover {
-  color: var(--text-soft);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-links a.nav-active {
+  color: var(--text);
   text-decoration: none;
 }
 

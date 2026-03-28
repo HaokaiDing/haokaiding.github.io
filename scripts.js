@@ -215,7 +215,15 @@ const setupVisitorMapFallback = () => {
   }, 6000);
 };
 
+const updateCopyrightYear = () => {
+  const footer = document.querySelector('.footer-meta');
+  if (!footer) return;
+  const currentYear = new Date().getFullYear();
+  footer.innerHTML = footer.innerHTML.replace(/© \d{4}–\d{4}/, `© 2025–${currentYear}`);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   updateLastUpdated();
+  updateCopyrightYear();
   setupVisitorMapFallback();
 });
