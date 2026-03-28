@@ -353,9 +353,21 @@ h1 {
   color: var(--text-soft);
 }
 
+.news-text {
+  color: color-mix(in srgb, var(--text-soft) 90%, var(--line));
+}
+
 .page-note,
 .page-summary {
   max-width: none;
+}
+
+.intro-kicker {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .hero-links {
@@ -372,6 +384,16 @@ h1 {
 
 .hero-links span {
   color: var(--line);
+}
+
+.hero-focus {
+  margin-top: 10px;
+  color: var(--text-soft);
+  line-height: 1.62;
+}
+
+.focus-label {
+  color: var(--text-faint);
 }
 
 
@@ -557,7 +579,7 @@ p {
 }
 
 .selected-list .pub-title {
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text);
 }
 
@@ -569,7 +591,7 @@ p {
 .inline-links .inline-link,
 .inline-links a {
   margin-left: 0.16ch;
-  color: #4e8fe8;
+  color: #5f9ff2;
 }
 
 .pub-authors-line {
