@@ -417,33 +417,6 @@ h1 {
   color: var(--line);
 }
 
-.qr-card {
-  margin: 0;
-  width: min(100%, 340px);
-}
-
-.contact-qr-card {
-  margin-top: 18px;
-}
-
-.qr-image {
-  display: block;
-  width: 100%;
-  border: 1px dashed var(--line);
-  background: var(--surface);
-}
-
-.qr-caption {
-  margin-top: 10px;
-  color: var(--text-faint);
-  font-size: 0.95rem;
-  text-align: center;
-}
-
-.contact-qr-caption {
-  text-align: left;
-}
-
 .focus-label {
   color: var(--text-faint);
 }

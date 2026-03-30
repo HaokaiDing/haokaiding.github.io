@@ -97,13 +97,13 @@ assert.match(
 );
 assert.match(
   contactHtml,
-  /WeChat QR code for Ditang/i,
-  'expected contact page to include descriptive alt text for the WeChat QR code',
+  /Open WeChat QR/i,
+  'expected contact page to provide a click-to-open WeChat QR link',
 );
 assert.match(
   contactHtml,
-  /Scan to add Ditang on WeChat/i,
-  'expected contact page to explain the purpose of the QR code',
+  /href="assets\/images\/ditang-wechat-qr\.jpg"[\s\S]*>Open WeChat QR</i,
+  'expected the WeChat QR link to point to the QR asset',
 );
 assert.match(
   contactHtml,
@@ -112,8 +112,8 @@ assert.match(
 );
 assert.doesNotMatch(
   contactHtml,
-  /<h2>wechat<\/h2>/i,
-  'expected the standalone WeChat section heading to be removed',
+  /<img[\s\S]*ditang-wechat-qr\.jpg/i,
+  'expected the WeChat QR image to stop rendering inline on the page',
 );
 
 assert.doesNotMatch(
