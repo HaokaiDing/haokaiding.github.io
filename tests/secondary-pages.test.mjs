@@ -80,10 +80,15 @@ assert.match(
   /When emailing:[\s\S]*include your affiliation/i,
   'expected contact page to explain what context to include in outreach emails',
 );
-assert.match(
+assert.doesNotMatch(
+  contactHtml,
+  /Best for:/i,
+  'expected the research-contact section to remove the extra collaboration guidance line',
+);
+assert.doesNotMatch(
   contactHtml,
   /primary inbox/i,
-  'expected contact page to clarify the preferred academic inbox',
+  'expected the research-contact section to remove the inbox preference line',
 );
 assert.match(
   contactHtml,
@@ -99,6 +104,16 @@ assert.match(
   contactHtml,
   /Scan to add Ditang on WeChat/i,
   'expected contact page to explain the purpose of the QR code',
+);
+assert.match(
+  contactHtml,
+  /id="contact"[\s\S]*assets\/images\/ditang-wechat-qr\.jpg[\s\S]*id="research-contact"/,
+  'expected the WeChat QR to appear in the main contact block before the research-contact section',
+);
+assert.doesNotMatch(
+  contactHtml,
+  /<h2>wechat<\/h2>/i,
+  'expected the standalone WeChat section heading to be removed',
 );
 
 assert.doesNotMatch(

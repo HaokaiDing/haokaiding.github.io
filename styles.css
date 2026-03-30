@@ -422,6 +422,10 @@ h1 {
   width: min(100%, 340px);
 }
 
+.contact-qr-card {
+  margin-top: 18px;
+}
+
 .qr-image {
   display: block;
   width: 100%;
@@ -434,6 +438,10 @@ h1 {
   color: var(--text-faint);
   font-size: 0.95rem;
   text-align: center;
+}
+
+.contact-qr-caption {
+  text-align: left;
 }
 
 .focus-label {
