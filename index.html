@@ -229,7 +229,6 @@
           <p class="fallback-loading">Loading visitor map…</p>
           <p class="fallback-help">If the map does not appear, ClustrMaps may be blocked in your region. <a href="https://clustrmaps.com/site/1bh9v" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</p>
         </div>
-        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
         <script
           type="text/javascript"
           id="clustrmaps"
@@ -242,14 +241,14 @@
     </footer>
   </div>
 
-  <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video viewer" tabindex="-1">
     <div class="modal-panel video-panel">
       <button class="close-button" id="videoClose" type="button" aria-label="Close video">×</button>
       <video id="videoPlayer" controls muted></video>
     </div>
   </div>
 
-  <div id="pdfModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="pdfModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="PDF viewer" tabindex="-1">
     <div class="modal-panel pdf-panel">
       <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">×</button>
       <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>

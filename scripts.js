@@ -101,11 +101,42 @@ const pdfClose = $('#pdfClose');
 const videoModal = $('#videoModal');
 const videoPlayer = $('#videoPlayer');
 const videoClose = $('#videoClose');
+const pageShell = $('.container');
+const modalFocusableSelector = [
+  'a[href]',
+  'button:not([disabled])',
+  'iframe',
+  'video[controls]',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ');
 let lastFocused = null;
+
+const setPageInert = isInert => {
+  if (!pageShell) return;
+  if (isInert) pageShell.setAttribute('inert', '');
+  else pageShell.removeAttribute('inert');
+};
+
+const getOpenModal = () => {
+  if (pdfModal?.classList.contains('open')) return pdfModal;
+  if (videoModal?.classList.contains('open')) return videoModal;
+  return null;
+};
+
+const getFocusableModalElements = modal => {
+  if (!modal) return [];
+  return Array.from(modal.querySelectorAll(modalFocusableSelector)).filter(element => {
+    if (element.hasAttribute('hidden') || element.getAttribute('aria-hidden') === 'true') {
+      return false;
+    }
+    return element.getClientRects().length > 0;
+  });
+};
 
 const openPdfModal = path => {
   if (!pdfModal || !pdfViewer || !path) return;
   lastFocused = document.activeElement;
+  setPageInert(true);
   pdfViewer.src = path;
   pdfModal.classList.add('open');
   pdfModal.setAttribute('aria-hidden', 'false');
@@ -117,12 +148,14 @@ const closePdfModal = () => {
   pdfModal.classList.remove('open');
   pdfModal.setAttribute('aria-hidden', 'true');
   pdfViewer.src = '';
+  setPageInert(false);
   if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
 };
 
 const openVideoModal = path => {
   if (!videoModal || !videoPlayer || !path) return;
   lastFocused = document.activeElement;
+  setPageInert(true);
   videoPlayer.src = path;
   videoPlayer.muted = true;
   videoModal.classList.add('open');
@@ -138,6 +171,7 @@ const closeVideoModal = () => {
   videoPlayer.pause();
   videoPlayer.removeAttribute('src');
   videoPlayer.load();
+  setPageInert(false);
   if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
 };
 
@@ -165,9 +199,40 @@ window.addEventListener('click', event => {
 });
 
 document.addEventListener('keydown', event => {
-  if (event.key !== 'Escape') return;
-  closePdfModal();
-  closeVideoModal();
+  if (event.key === 'Escape') {
+    closePdfModal();
+    closeVideoModal();
+    return;
+  }
+
+  if (event.key !== 'Tab') return;
+
+  const openModal = getOpenModal();
+  if (!openModal) return;
+
+  const focusableElements = getFocusableModalElements(openModal);
+  if (focusableElements.length === 0) {
+    event.preventDefault();
+    openModal.focus();
+    return;
+  }
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+  const activeElement = document.activeElement;
+
+  if (event.shiftKey) {
+    if (activeElement === firstElement || !openModal.contains(activeElement)) {
+      event.preventDefault();
+      lastElement.focus();
+    }
+    return;
+  }
+
+  if (activeElement === lastElement || !openModal.contains(activeElement)) {
+    event.preventDefault();
+    firstElement.focus();
+  }
 });
 
 const setupVisitorMapFallback = () => {
