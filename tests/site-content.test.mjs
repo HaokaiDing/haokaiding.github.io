@@ -8,6 +8,7 @@ const read = relativePath => readFileSync(join(root, relativePath), 'utf8');
 
 const indexHtml = read('index.html');
 const scriptsJs = read('scripts.js');
+const stylesCss = read('styles.css');
 
 const defaultProfileImage = indexHtml.match(/<img[\s\S]*?class="profile-image default"[\s\S]*?>/);
 
@@ -56,6 +57,16 @@ assert.match(
   scriptsJs,
   /document\.querySelectorAll\('\.image-link'\)\.forEach/,
   'expected scripts.js to bind image-link clicks directly for reliable modal behavior',
+);
+assert.match(
+  stylesCss,
+  /\.image-panel\s*\{[\s\S]*width:\s*min\(92vw,\s*420px\)/,
+  'expected the QR image modal to use a smaller width cap',
+);
+assert.match(
+  stylesCss,
+  /\.contact-block \.inline-link\s*\{[\s\S]*color:\s*inherit/,
+  'expected the Wechat trigger in the contact list to inherit the same color as the other contact links',
 );
 
 console.log('site-content checks passed');

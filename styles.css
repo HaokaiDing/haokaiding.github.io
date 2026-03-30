@@ -714,7 +714,15 @@ p {
   color: inherit;
 }
 
+.contact-block .inline-link {
+  color: inherit;
+}
+
 .contact-block a:hover {
+  color: var(--text);
+}
+
+.contact-block .inline-link:hover {
   color: var(--text);
 }
 
@@ -989,7 +997,7 @@ p {
 }
 
 .image-panel {
-  width: min(92vw, 640px);
+  width: min(92vw, 420px);
   padding: 20px;
   background: var(--surface);
 }
