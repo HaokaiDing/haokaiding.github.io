@@ -327,6 +327,13 @@ const updateCopyrightYear = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.image-link').forEach(trigger => {
+    trigger.addEventListener('click', event => {
+      event.preventDefault();
+      openImageModal(trigger.getAttribute('data-image'));
+    });
+  });
+
   updateLastUpdated();
   updateCopyrightYear();
   setupVisitorMapFallback();

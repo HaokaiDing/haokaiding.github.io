@@ -52,5 +52,10 @@ assert.match(
   /const explicitDate = target\.getAttribute\('datetime'\)\?\.trim\(\);/,
   'expected updateLastUpdated to respect an explicit content date before any fallback',
 );
+assert.match(
+  scriptsJs,
+  /document\.querySelectorAll\('\.image-link'\)\.forEach/,
+  'expected scripts.js to bind image-link clicks directly for reliable modal behavior',
+);
 
 console.log('site-content checks passed');
