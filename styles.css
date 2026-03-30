@@ -277,17 +277,26 @@ h1 {
 
 .intro-title {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: none;
+  color: var(--text-faint);
 }
 
 .intro-title::before {
   content: none;
 }
 
+.hero-title {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  line-height: 1.04;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
 .intro-rule {
-  margin: -2px 0 12px;
+  margin: 2px 0 12px;
   color: var(--text);
   line-height: 1;
 }
@@ -390,6 +399,41 @@ h1 {
   margin-top: 10px;
   color: var(--text-soft);
   line-height: 1.62;
+}
+
+.resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.55rem;
+  align-items: center;
+  color: var(--text-faint);
+}
+
+.resource-links a {
+  color: var(--text-soft);
+}
+
+.resource-links span {
+  color: var(--line);
+}
+
+.qr-card {
+  margin: 0;
+  width: min(100%, 340px);
+}
+
+.qr-image {
+  display: block;
+  width: 100%;
+  border: 1px dashed var(--line);
+  background: var(--surface);
+}
+
+.qr-caption {
+  margin-top: 10px;
+  color: var(--text-faint);
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .focus-label {
@@ -836,6 +880,18 @@ p {
   border-top: 1px dashed var(--line);
 }
 
+.visitor-record {
+  margin-top: 18px;
+}
+
+.footer-label {
+  margin: 0 0 8px;
+  color: var(--text-faint);
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
 .compact-footer {
   margin-top: 28px;
 }
@@ -855,7 +911,8 @@ p {
 }
 
 .visitor-map {
-  margin-top: 12px;
+  margin-top: 0;
+  width: min(100%, 560px);
 }
 
 .visitor-map > div,
@@ -1093,6 +1150,10 @@ body.dark-mode {
 
   .hero-intro {
     padding-top: 0;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 10vw, 2.35rem);
   }
 
   .hero-links {

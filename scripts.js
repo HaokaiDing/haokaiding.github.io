@@ -73,6 +73,12 @@ const updateLastUpdated = () => {
   const target = $('#lastUpdated');
   if (!target) return;
 
+  const explicitDate = target.getAttribute('datetime')?.trim();
+  if (explicitDate) {
+    target.textContent = explicitDate;
+    return;
+  }
+
   const parsed = new Date(document.lastModified);
   if (Number.isNaN(parsed.getTime())) {
     target.textContent = document.lastModified || '—';
