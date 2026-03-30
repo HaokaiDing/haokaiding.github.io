@@ -97,18 +97,23 @@ assert.match(
 );
 assert.match(
   contactHtml,
-  /Open WeChat QR/i,
-  'expected contact page to provide a click-to-open WeChat QR link',
+  />Wechat</i,
+  'expected contact page to provide a Wechat trigger in the contact links line',
 );
 assert.match(
   contactHtml,
-  /href="assets\/images\/ditang-wechat-qr\.jpg"[\s\S]*>Open WeChat QR</i,
-  'expected the WeChat QR link to point to the QR asset',
+  /class="inline-link image-link"[\s\S]*data-image="assets\/images\/ditang-wechat-qr\.jpg"[\s\S]*>Wechat</i,
+  'expected the Wechat trigger to point at the QR image via modal data attributes',
 );
 assert.match(
   contactHtml,
   /id="contact"[\s\S]*assets\/images\/ditang-wechat-qr\.jpg[\s\S]*id="research-contact"/,
   'expected the WeChat QR to appear in the main contact block before the research-contact section',
+);
+assert.match(
+  contactHtml,
+  /id="imageModal"[\s\S]*id="imageViewer"/i,
+  'expected contact page to include an in-page image modal for the WeChat QR',
 );
 assert.doesNotMatch(
   contactHtml,

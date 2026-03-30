@@ -104,6 +104,9 @@ profileBox?.addEventListener('click', () => {
 const pdfModal = $('#pdfModal');
 const pdfViewer = $('#pdf-viewer');
 const pdfClose = $('#pdfClose');
+const imageModal = $('#imageModal');
+const imageViewer = $('#imageViewer');
+const imageClose = $('#imageClose');
 const videoModal = $('#videoModal');
 const videoPlayer = $('#videoPlayer');
 const videoClose = $('#videoClose');
@@ -125,6 +128,7 @@ const setPageInert = isInert => {
 
 const getOpenModal = () => {
   if (pdfModal?.classList.contains('open')) return pdfModal;
+  if (imageModal?.classList.contains('open')) return imageModal;
   if (videoModal?.classList.contains('open')) return videoModal;
   return null;
 };
@@ -170,6 +174,25 @@ const openVideoModal = path => {
   videoClose?.focus();
 };
 
+const openImageModal = path => {
+  if (!imageModal || !imageViewer || !path) return;
+  lastFocused = document.activeElement;
+  setPageInert(true);
+  imageViewer.src = path;
+  imageModal.classList.add('open');
+  imageModal.setAttribute('aria-hidden', 'false');
+  imageClose?.focus();
+};
+
+const closeImageModal = () => {
+  if (!imageModal || !imageViewer) return;
+  imageModal.classList.remove('open');
+  imageModal.setAttribute('aria-hidden', 'true');
+  imageViewer.src = '';
+  setPageInert(false);
+  if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+};
+
 const closeVideoModal = () => {
   if (!videoModal || !videoPlayer) return;
   videoModal.classList.remove('open');
@@ -193,20 +216,30 @@ document.addEventListener('click', event => {
   if (videoTrigger) {
     event.preventDefault();
     openVideoModal(videoTrigger.getAttribute('data-video'));
+    return;
+  }
+
+  const imageTrigger = event.target.closest('.image-link');
+  if (imageTrigger) {
+    event.preventDefault();
+    openImageModal(imageTrigger.getAttribute('data-image'));
   }
 });
 
 pdfClose?.addEventListener('click', closePdfModal);
+imageClose?.addEventListener('click', closeImageModal);
 videoClose?.addEventListener('click', closeVideoModal);
 
 window.addEventListener('click', event => {
   if (event.target === pdfModal) closePdfModal();
+  if (event.target === imageModal) closeImageModal();
   if (event.target === videoModal) closeVideoModal();
 });
 
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     closePdfModal();
+    closeImageModal();
     closeVideoModal();
     return;
   }

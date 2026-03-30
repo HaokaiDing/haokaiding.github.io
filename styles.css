@@ -988,6 +988,19 @@ p {
   height: min(88vh, 920px);
 }
 
+.image-panel {
+  width: min(92vw, 640px);
+  padding: 20px;
+  background: var(--surface);
+}
+
+.image-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px dashed var(--line);
+}
+
 .pdf-panel iframe {
   height: 100%;
   border: 0;

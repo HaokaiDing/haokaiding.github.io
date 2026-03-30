@@ -40,7 +40,7 @@
         <ul class="contact-block">
           <li>Work email: <a href="mailto:hk_ding@outlook.com">hk_ding [at] outlook [dot] com</a></li>
           <li>Personal email: <a href="mailto:ditang0125@gmail.com">ditang0125 [at] gmail [dot] com</a></li>
-          <li>Follow me on <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a>, <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">ORCID</a>, <a href="https://hkding0125.github.io/" target="_blank" rel="noopener noreferrer">Website</a>, <a href="assets/pdfs/haokai-ding-cv.pdf" target="_blank" rel="noopener noreferrer">CV</a>, <a href="assets/images/ditang-wechat-qr.jpg" target="_blank" rel="noopener noreferrer">Open WeChat QR</a></li>
+          <li>Follow me on <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a>, <a href="https://orcid.org/0009-0001-6158-9897" target="_blank" rel="noopener noreferrer">ORCID</a>, <a href="https://hkding0125.github.io/" target="_blank" rel="noopener noreferrer">Website</a>, <a href="assets/pdfs/haokai-ding-cv.pdf" target="_blank" rel="noopener noreferrer">CV</a>, <button type="button" class="inline-link image-link" data-image="assets/images/ditang-wechat-qr.jpg">Wechat</button></li>
         </ul>
       </section>
 
@@ -53,6 +53,13 @@
     <footer class="site-footer compact-footer">
       <p class="footer-meta">← <a href="index.html">back to home</a> · Last updated <time id="lastUpdated" datetime="2026-03-30">2026-03-30</time></p>
     </footer>
+  </div>
+
+  <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image viewer" tabindex="-1">
+    <div class="modal-panel image-panel">
+      <button class="close-button" id="imageClose" type="button" aria-label="Close image">×</button>
+      <img id="imageViewer" src="" alt="Expanded image" loading="lazy">
+    </div>
   </div>
 
   <script src="scripts.js"></script>
