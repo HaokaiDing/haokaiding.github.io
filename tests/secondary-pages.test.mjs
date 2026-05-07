@@ -11,7 +11,7 @@ const contactHtml = read('contact.html');
 
 assert.match(
   publicationsHtml,
-  /<link rel="canonical" href="https:\/\/hkding0125\.github\.io\/publications\.html" \/>/,
+  /<link rel="canonical" href="https:\/\/haokaiding\.github\.io\/publications\.html" \/>/,
   'expected publications page to define a canonical URL',
 );
 assert.match(
@@ -47,7 +47,7 @@ assert.match(
 
 assert.match(
   contactHtml,
-  /<link rel="canonical" href="https:\/\/hkding0125\.github\.io\/contact\.html" \/>/,
+  /<link rel="canonical" href="https:\/\/haokaiding\.github\.io\/contact\.html" \/>/,
   'expected contact page to define a canonical URL',
 );
 assert.match(
