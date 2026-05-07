@@ -75,21 +75,6 @@ a:hover {
   outline-offset: 2px;
 }
 
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--accent);
-  color: #fff;
-  padding: 8px 16px;
-  z-index: 1000;
-  text-decoration: none;
-}
-
-.skip-link:focus {
-  top: 0;
-}
-
 .container {
   width: min(100%, var(--content-width));
   margin: 0 auto;
@@ -799,13 +784,6 @@ p {
   padding: 0;
   object-fit: contain;
   object-position: center;
-}
-
-.entry-logo-mbzuai {
-  width: 200px;
-  height: 56px;
-  object-fit: contain;
-  object-position: left center;
 }
 
 .plain-list {
