@@ -756,8 +756,9 @@ p {
 }
 
 .logo-row {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  align-items: start;
   gap: 12px;
 }
 
@@ -765,7 +766,7 @@ p {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex-shrink: 0;
+  align-items: center;
 }
 
 .entry-logo {
@@ -775,7 +776,7 @@ p {
   border: none;
   background: transparent;
   padding: 0;
-  flex-shrink: 0;
+  justify-self: center;
 }
 
 .entry-logo-sjtu {
