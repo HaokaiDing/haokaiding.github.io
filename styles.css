@@ -801,6 +801,13 @@ p {
   object-position: center;
 }
 
+.entry-logo-mbzuai {
+  width: 200px;
+  height: 56px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 .plain-list {
   list-style: none;
   display: flex;
