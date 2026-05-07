@@ -1240,11 +1240,6 @@ body.dark-mode .entry-logo-sjtu {
     gap: 8px;
   }
 
-  .logo-stack {
-    flex-direction: row;
-    gap: 8px;
-  }
-
   .entry-logo,
   .entry-logo-sjtu {
     width: 60px;
