@@ -19,9 +19,9 @@ const toTokenRegex = assetPath => {
 const expectedPaths = [
   'assets/images/haokai-ding-cartoon.png',
   'assets/images/haokai-ding-photo.png',
-  'assets/images/shenzhen-technology-university-logo.jpg',
+  'assets/images/shenzhen-technology-university-logo.png',
   'assets/images/tsinghua-university-logo.svg',
-  'assets/images/x-institute-logo.jpg',
+  'assets/images/x-institute-logo.png',
   'assets/images/shanghai-jiao-tong-university-logo.svg',
   'assets/images/ditang-wechat-qr.jpg',
   'assets/pdfs/haokai-ding-cv.pdf',
