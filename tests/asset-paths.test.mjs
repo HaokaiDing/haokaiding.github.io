@@ -34,7 +34,7 @@ const expectedPaths = [
   'assets/pdfs/icarm-2025-peaucellier-gripper.pdf',
   'assets/pdfs/e3s-2025-heavy-metal-libs.pdf',
   'assets/pdfs/polymers-2025-zinc-ion-batteries-review.pdf',
-  'assets/videos/semi-peaucellier-gripper-demo.mp4',
+  'assets/videos/semi-peaucellier-gripper-demo-compressed.mp4',
 ];
 
 const oldReferencedPaths = [

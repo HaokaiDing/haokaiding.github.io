@@ -3,8 +3,8 @@
   --surface: #ffffff;
   --surface-soft: #f4f6f8;
   --text: #171b22;
-  --text-soft: #556072;
-  --text-faint: #7b8494;
+  --text-soft: #3f4756;
+  --text-faint: #5b6577;
   --line: #dbe1e8;
   --accent: #2f6fcf;
   --accent-soft: rgba(47, 111, 207, 0.08);
@@ -73,6 +73,21 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 1000;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 .container {
@@ -343,10 +358,6 @@ h1 {
   margin-bottom: 0;
 }
 
-.intro-highlight {
-  color: var(--text) !important;
-}
-
 .page-note,
 .section-intro,
 .pub-meta,
@@ -418,28 +429,6 @@ h1 {
 }
 
 .focus-label {
-  color: var(--text-faint);
-}
-
-
-.contact-list li::after {
-  content: " /";
-  color: var(--line);
-  margin-left: 8px;
-}
-
-.contact-list li:last-child::after {
-  content: "";
-  margin-left: 0;
-}
-
-.contact-list a {
-  display: inline-block;
-  padding: 2px 0;
-}
-
-.jump-line {
-  margin-top: 10px;
   color: var(--text-faint);
 }
 
@@ -804,10 +793,6 @@ p {
   flex-shrink: 0;
 }
 
-.entry-logo-wide {
-  width: 56px;
-}
-
 .entry-logo-sjtu {
   width: 76px;
   height: 76px;
@@ -1169,10 +1154,6 @@ body.dark-mode {
     margin-bottom: 14px;
     line-height: 1.62;
     font-size: 0.98rem;
-  }
-
-  .intro-highlight {
-    line-height: 1.56;
   }
 
   .main-content {

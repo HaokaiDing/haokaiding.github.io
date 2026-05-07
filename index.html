@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Haokai Ding</title>
+  <title>Haokai Ding — Undergraduate Researcher in Robotics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#11141b" media="(prefers-color-scheme: dark)">
   <meta name="description" content="Haokai Ding is an undergraduate researcher working on underactuated robotic grippers, mechanism design, and adaptive grasping." />
   <meta name="color-scheme" content="light dark" />
   <meta property="og:title" content="Haokai Ding" />
@@ -14,15 +16,40 @@
   <meta name="twitter:card" content="summary" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23161b22'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='26' fill='%23f6f7f9'%3EHD%3C/text%3E%3C/svg%3E" />
   <link rel="canonical" href="https://haokaiding.github.io/" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Haokai Ding",
+    "jobTitle": "Undergraduate Researcher",
+    "affiliation": [
+      {"@type": "EducationalOrganization", "name": "Shenzhen Technology University"},
+      {"@type": "EducationalOrganization", "name": "Tsinghua University"},
+      {"@type": "EducationalOrganization", "name": "Shenzhen X-Institute"},
+      {"@type": "EducationalOrganization", "name": "Shanghai Jiao Tong University"}
+    ],
+    "url": "https://haokaiding.github.io/",
+    "image": "https://haokaiding.github.io/assets/images/haokai-ding-photo.png",
+    "sameAs": [
+      "https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en",
+      "https://orcid.org/0009-0001-6158-9897",
+      "https://github.com/HaokaiDing"
+    ],
+    "knowsAbout": ["Robotics", "Underactuated Grippers", "Mechanism Design", "Aerial Manipulation"]
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
   <div class="container">
     <nav class="site-nav" aria-label="Primary">
       <div class="site-brand" aria-label="site mark"><span class="site-mark"><a class="site-mark-link" href="index.html">Haokai Ding</a><span class="site-mark-prompt">:~#</span></span></div>
       <div class="nav-links">
         <a href="publications.html">Publications/</a>
         <a href="contact.html">Contact/</a>
+        <a href="https://github.com/HaokaiDing" target="_blank" rel="noopener noreferrer">GitHub/</a>
         <a href="https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Scholar/</a>
       </div>
       <button id="theme-switcher" type="button" aria-label="Toggle dark mode">☾</button>
@@ -31,24 +58,32 @@
     <header class="hero" id="top">
       <div class="hero-media">
         <div class="profile-container" id="profileBox">
-          <img
-            class="profile-image default"
-            fetchpriority="high"
-            decoding="async"
-            crossorigin="anonymous"
-            src="assets/images/haokai-ding-cartoon.png"
-            alt="Illustrated profile photo of Haokai Ding"
-            onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
-          >
-          <img
-            class="profile-image hover"
-            loading="lazy"
-            decoding="async"
-            crossorigin="anonymous"
-            src="assets/images/haokai-ding-photo.png"
-            alt="Profile photo of Haokai Ding"
-            onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
-          >
+          <picture>
+            <source srcset="assets/images/haokai-ding-cartoon-compressed.webp" type="image/webp">
+            <img
+              class="profile-image default"
+              fetchpriority="high"
+              decoding="async"
+              crossorigin="anonymous"
+              src="assets/images/haokai-ding-cartoon.png"
+              width="296" height="444"
+              alt="Illustrated profile photo of Haokai Ding"
+              onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
+            >
+          </picture>
+          <picture>
+            <source srcset="assets/images/haokai-ding-photo-compressed.webp" type="image/webp">
+            <img
+              class="profile-image hover"
+              loading="lazy"
+              decoding="async"
+              crossorigin="anonymous"
+              src="assets/images/haokai-ding-photo.png"
+              width="296" height="444"
+              alt="Profile photo of Haokai Ding"
+              onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
+            >
+          </picture>
         </div>
       </div>
 
@@ -58,13 +93,16 @@
         <p class="intro-rule">===========</p>
         <p class="intro-kicker">Undergraduate researcher in robotics</p>
         <p>
-          I am Haokai Ding, an undergraduate researcher at Shenzhen Technology University and an X Scholar in the joint training program with Tsinghua University and Shenzhen X-Institute.
+          I am Haokai Ding, an undergraduate researcher at Shenzhen Technology University and an X Scholar in the joint training program with Tsinghua University and Shenzhen X-Institute. I will join MBZUAI as an incoming MSc student in Robotics.
         </p>
         <p>
           I previously worked with Prof. <a href="https://scholar.google.com/citations?user=n-3doEMAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Wenzeng Zhang</a> and am currently working with Prof. <a href="https://xingxingzuo.github.io/" target="_blank" rel="noopener noreferrer">Xingxing Zuo</a> on aerial manipulation.
         </p>
         <p>
           My work focuses on underactuated robotic grippers, idle-stroke mechanisms, Peaucellier-based linkages, adaptive grasping, and related problems in aerial manipulation.
+        </p>
+        <p>
+          I am drawn to robotics because mechanism is where intelligence becomes physical. My work asks how few actuators and well-designed linkages — Peaucellier-based, idle-stroke, and other underactuated structures — can replace many degrees of freedom while preserving dexterous pinching and adaptive grasping. Looking forward, I want to extend these ideas into aerial manipulation, asking how much intelligent behavior can be encoded into the body itself before the controller has to do the work.
         </p>
         <p class="hero-links">
           <a href="assets/pdfs/haokai-ding-cv.pdf" target="_blank" rel="noopener noreferrer">CV</a>
@@ -77,7 +115,7 @@
       </div>
     </header>
 
-    <main class="main-content">
+    <main class="main-content" id="main">
       <section class="content-section latest-publications" id="publications">
         <div class="latest-heading">
           <h2>Selected publications</h2>
@@ -91,10 +129,10 @@
                 <span class="pub-links inline-links">
                   <button type="button" class="inline-link pdf-link" data-pdf="assets/pdfs/iros-2025-semi-peaucellier-gripper.pdf">[pdf]</button>
                   <a href="https://doi.org/10.1109/IROS60139.2025.11246057" target="_blank" rel="noopener noreferrer">[doi]</a>
-                  <button type="button" class="inline-link video-link" data-video="assets/videos/semi-peaucellier-gripper-demo.mp4">[demo]</button>
+                  <button type="button" class="inline-link video-link" data-video="assets/videos/semi-peaucellier-gripper-demo-compressed.mp4">[demo]</button>
                 </span>
               </div>
-              <div class="pub-authors-line"><strong>Haokai Ding</strong><sup>†</sup>, W. Zhang*</div>
+              <div class="pub-authors-line"><strong>H. Ding</strong><sup>†</sup>, W. Zhang*</div>
               <div class="pub-venue-line">IROS 2025</div>
             </div>
           </li>
@@ -107,7 +145,7 @@
                   <a href="https://doi.org/10.1109/CASE58245.2025.11163785" target="_blank" rel="noopener noreferrer">[doi]</a>
                 </span>
               </div>
-              <div class="pub-authors-line"><strong>Haokai Ding</strong><sup>†</sup>, Z. Chen, T. Yang*, W. Zhang*</div>
+              <div class="pub-authors-line"><strong>H. Ding</strong><sup>†</sup>, Z. Chen, T. Yang*, W. Zhang*</div>
               <div class="pub-venue-line">CASE 2025</div>
             </div>
           </li>
@@ -118,6 +156,10 @@
       <section class="content-section" id="news">
         <h2>news</h2>
         <ul class="news-list">
+          <li class="news-item"><span class="news-date">2026.05</span><span class="news-text">Admitted to <strong>MSc in Robotics</strong> at <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener noreferrer">MBZUAI</a> (incoming).</span></li>
+          <li class="news-item"><span class="news-date">2026.03</span><span class="news-text">"An Underactuated Gripper with Independent Double-Parallelogram Linkages" is now available on <a href="https://doi.org/10.1109/RAAI67517.2025.11423397" target="_blank" rel="noopener noreferrer">IEEE Xplore</a>.</span></li>
+          <li class="news-item"><span class="news-date">2026.02</span><span class="news-text">Started a visiting appointment at the <strong>State Key Lab of Mechanical System and Vibration</strong>, Shanghai Jiao Tong University, with Prof. Wei Dong.</span></li>
+          <li class="news-item"><span class="news-date">2026.02</span><span class="news-text">"BioCrest – A Flexible Adaptive Robotic Hand" is now available on <a href="https://doi.org/10.1109/ROBIO66223.2025.11376343" target="_blank" rel="noopener noreferrer">IEEE Xplore</a>.</span></li>
           <li class="news-item"><span class="news-date">2026.02</span><span class="news-text">"GLINT: An Idle-Stroke Grasp-and-Lift Hand for In-Hand Manipulation" is now available on <a href="https://doi.org/10.1109/ICCMA67641.2025.11369602" target="_blank" rel="noopener noreferrer">IEEE Xplore</a>.</span></li>
           <li class="news-item"><span class="news-date">2025.12</span><span class="news-text">Received the <strong>National Scholarship</strong> from the Ministry of Education of China.</span></li>
           <li class="news-item"><span class="news-date">2025.10</span><span class="news-text">Served as a <strong>Session Chair</strong> at IEEE/RSJ IROS 2025.</span></li>
@@ -146,13 +188,52 @@
         </div>
       </section>
 
+      <section class="content-section" id="projects">
+        <h2>projects</h2>
+        <div class="stack-list">
+          <article class="stack-item">
+            <div>
+              <h3>01 · semi-peaucellier gripper</h3>
+              <p>An underactuated gripper that integrates an optimized Peaucellier linkage with idle-stroke transmission, achieving linear parallel pinching and shape-adaptive enveloping under a single motor.</p>
+            </div>
+            <p class="stack-tags">Peaucellier linkage · idle-stroke · single-actuator · adaptive grasping</p>
+          </article>
+          <article class="stack-item">
+            <div>
+              <h3>02 · GLINT in-hand manipulation</h3>
+              <p>A grasp-and-lift hand that embeds phase switching directly into a lost-motion transmission, separating force-free alignment from force-transmitting lifting and offloading control burden onto the mechanism.</p>
+            </div>
+            <p class="stack-tags">lost-motion · grasp-to-lift · in-hand manipulation · mechanical intelligence</p>
+          </article>
+          <article class="stack-item">
+            <div>
+              <h3>03 · aerial manipulation @ SJTU</h3>
+              <p>Ongoing visiting work with Prof. Wei Dong on UAV perching and contact-rich aerial manipulation, exploring how mechanism-level designs translate to flying platforms.</p>
+            </div>
+            <p class="stack-tags">UAV perching · aerial manipulation · contact-rich · mechanism design</p>
+          </article>
+        </div>
+      </section>
+
       <section class="content-section" id="education">
         <h2>education</h2>
         <div class="detail-list">
           <article class="detail-item">
             <div class="detail-main">
               <div class="logo-row">
-                <img class="entry-logo" src="assets/images/shenzhen-technology-university-logo.jpg" alt="Shenzhen Technology University logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=SZ';">
+                <img class="entry-logo" src="assets/images/mbzuai-logo.svg" alt="MBZUAI logo" width="56" height="56" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=MBZ';">
+                <div>
+                  <h3>Mohamed bin Zayed University of Artificial Intelligence</h3>
+                  <p>MSc in Robotics (Incoming)</p>
+                </div>
+              </div>
+            </div>
+            <div class="detail-side">2026.09–</div>
+          </article>
+          <article class="detail-item">
+            <div class="detail-main">
+              <div class="logo-row">
+                <img class="entry-logo" src="assets/images/shenzhen-technology-university-logo.jpg" alt="Shenzhen Technology University logo" width="56" height="56" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=SZ';">
                 <div>
                   <h3>Shenzhen Technology University</h3>
                   <p>B.Eng. in Electronic Science and Technology, Future Technology School</p>
@@ -165,8 +246,8 @@
             <div class="detail-main">
               <div class="logo-row">
                 <div class="logo-stack">
-                  <img class="entry-logo" src="assets/images/tsinghua-university-logo.svg" alt="Tsinghua University logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=TH';">
-                  <img class="entry-logo" src="assets/images/x-institute-logo.jpg" alt="X-Institute logo" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=X';">
+                  <img class="entry-logo" src="assets/images/tsinghua-university-logo.svg" alt="Tsinghua University logo" width="56" height="56" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=TH';">
+                  <img class="entry-logo" src="assets/images/x-institute-logo.jpg" alt="X-Institute logo" width="56" height="56" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/44x44/EFEFEF/333333?text=X';">
                 </div>
                 <div>
                   <h3>Tsinghua University Tsien Excellence in Engineering Program · Shenzhen X-Institute</h3>
@@ -185,10 +266,10 @@
           <article class="detail-item">
             <div class="detail-main">
               <div class="logo-row">
-                <img class="entry-logo entry-logo-sjtu" src="assets/images/shanghai-jiao-tong-university-logo.svg" alt="Shanghai Jiao Tong University logo" loading="lazy">
+                <img class="entry-logo entry-logo-sjtu" src="assets/images/shanghai-jiao-tong-university-logo.svg" alt="Shanghai Jiao Tong University logo" width="76" height="76" loading="lazy">
                 <div>
                   <h3>Visiting Student · State Key Laboratory of Mechanical System and Vibration, Shanghai&nbsp;Jiao&nbsp;Tong&nbsp;University</h3>
-                  <p>Research experience in UAV systems and aerial manipulation.</p>
+                  <p>Visiting student with Prof. Wei Dong on UAV perching and aerial manipulation; developing controllers and mechanism designs for contact-rich UAV tasks.</p>
                 </div>
               </div>
             </div>
@@ -248,14 +329,14 @@
 
   <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video viewer" tabindex="-1">
     <div class="modal-panel video-panel">
-      <button class="close-button" id="videoClose" type="button" aria-label="Close video">×</button>
+      <button class="close-button" id="videoClose" type="button" aria-label="Close video"><span aria-hidden="true">×</span></button>
       <video id="videoPlayer" controls muted></video>
     </div>
   </div>
 
   <div id="pdfModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="PDF viewer" tabindex="-1">
     <div class="modal-panel pdf-panel">
-      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF">×</button>
+      <button class="close-button" id="pdfClose" type="button" aria-label="Close PDF"><span aria-hidden="true">×</span></button>
       <iframe id="pdf-viewer" src="" title="PDF viewer" loading="lazy"></iframe>
     </div>
   </div>
