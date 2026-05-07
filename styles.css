@@ -1016,6 +1016,14 @@ body.dark-mode {
   --accent-soft: rgba(134, 171, 244, 0.1);
 }
 
+body.dark-mode .entry-logo,
+body.dark-mode .entry-logo-sjtu {
+  background: #fff;
+  padding: 4px;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
 @media (max-width: 760px) {
   .hero {
     grid-template-columns: 96px minmax(0, 1fr);
