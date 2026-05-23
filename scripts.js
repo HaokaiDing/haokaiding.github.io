@@ -323,17 +323,16 @@ const updateCopyrightYear = () => {
   const footer = document.querySelector('.footer-meta');
   if (!footer) return;
   const currentYear = new Date().getFullYear();
-  footer.innerHTML = footer.innerHTML.replace(/© \d{4}–\d{4}/, `© 2025–${currentYear}`);
+  const walker = document.createTreeWalker(footer, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (/© \d{4}–\d{4}/.test(node.nodeValue)) {
+      node.nodeValue = node.nodeValue.replace(/© \d{4}–\d{4}/, `© 2025–${currentYear}`);
+    }
+  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.image-link').forEach(trigger => {
-    trigger.addEventListener('click', event => {
-      event.preventDefault();
-      openImageModal(trigger.getAttribute('data-image'));
-    });
-  });
-
   updateLastUpdated();
   updateCopyrightYear();
   setupVisitorMapFallback();

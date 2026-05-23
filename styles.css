@@ -283,10 +283,6 @@ h1 {
   color: var(--text-faint);
 }
 
-.intro-title::before {
-  content: none;
-}
-
 .hero-title {
   margin: 0;
   font-size: clamp(2.2rem, 5vw, 3rem);
@@ -391,12 +387,6 @@ h1 {
   color: var(--line);
 }
 
-.hero-focus {
-  margin-top: 10px;
-  color: var(--text-soft);
-  line-height: 1.62;
-}
-
 .resource-links {
   display: flex;
   flex-wrap: wrap;
@@ -412,11 +402,6 @@ h1 {
 .resource-links span {
   color: var(--line);
 }
-
-.focus-label {
-  color: var(--text-faint);
-}
-
 
 .profile-container {
   position: relative;
@@ -590,7 +575,7 @@ p {
 .inline-links .inline-link,
 .inline-links a {
   margin-left: 0.16ch;
-  color: #5f9ff2;
+  color: var(--accent);
 }
 
 .pub-authors-line {
@@ -640,6 +625,7 @@ p {
 
 .pub-title {
   color: var(--text);
+  font-weight: 700;
   margin-bottom: 4px;
 }
 

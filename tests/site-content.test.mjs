@@ -55,8 +55,8 @@ assert.match(
 );
 assert.match(
   scriptsJs,
-  /document\.querySelectorAll\('\.image-link'\)\.forEach/,
-  'expected scripts.js to bind image-link clicks directly for reliable modal behavior',
+  /event\.target\.closest\('\.image-link'\)/,
+  'expected scripts.js to handle image-link clicks via a single delegated handler (no double binding)',
 );
 assert.match(
   stylesCss,
