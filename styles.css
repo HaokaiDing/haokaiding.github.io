@@ -856,10 +856,15 @@ p {
   margin-top: 28px;
 }
 
+.site-footer .footer-meta {
+  margin-top: 18px;
+  font-size: 0.78rem;
+}
+
 .footer-credit {
   margin-top: 6px;
   color: var(--text-faint);
-  font-size: 0.92rem;
+  font-size: 0.78rem;
 }
 
 .footer-credit a {
