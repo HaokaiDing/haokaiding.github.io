@@ -277,8 +277,8 @@ document.addEventListener('keydown', event => {
 const setupVisitorMapFallback = () => {
   const container = $('#visitorMap');
   const fallback = $('#visitorMapFallback');
-  const scriptEl = $('#clustrmaps');
-  if (!container || !fallback || !scriptEl) return;
+  const slot = $('#clustrmaps-slot');
+  if (!container || !fallback || !slot) return;
 
   fallback.dataset.state = 'loading';
   const widgetSelector = 'img, iframe, .clustrmaps-map, .clustrmaps-widget, .clustrmaps-globe';
@@ -298,25 +298,50 @@ const setupVisitorMapFallback = () => {
     return;
   }
 
-  scriptEl.addEventListener('error', showFallback);
-  scriptEl.addEventListener('load', () => {
+  const inject = () => {
+    if (slot.dataset.injected) return;
+    slot.dataset.injected = '1';
+    const isDark = document.body.classList.contains('dark-mode');
+    const src = isDark ? slot.dataset.srcDark : slot.dataset.srcLight;
+    if (!src) return;
+    const scriptEl = document.createElement('script');
+    scriptEl.id = 'clustrmaps';
+    scriptEl.async = true;
+    scriptEl.src = src;
+    scriptEl.referrerPolicy = 'no-referrer-when-downgrade';
+    scriptEl.addEventListener('error', showFallback);
+    scriptEl.addEventListener('load', () => {
+      window.setTimeout(() => {
+        if (hasWidget()) markLoaded();
+        else showFallback();
+      }, 200);
+    });
+    slot.appendChild(scriptEl);
+
+    const observer = new MutationObserver(() => {
+      if (!hasWidget()) return;
+      markLoaded();
+      observer.disconnect();
+    });
+    observer.observe(container, { childList: true, subtree: true });
+
     window.setTimeout(() => {
-      if (hasWidget()) markLoaded();
-      else showFallback();
-    }, 200);
-  });
+      if (fallback.dataset.state !== 'loaded' && !hasWidget()) showFallback();
+    }, 6000);
+  };
 
-  const observer = new MutationObserver(() => {
-    if (!hasWidget()) return;
-    markLoaded();
-    observer.disconnect();
-  });
+  if (!('IntersectionObserver' in window)) {
+    inject();
+    return;
+  }
 
-  observer.observe(container, { childList: true, subtree: true });
-
-  window.setTimeout(() => {
-    if (fallback.dataset.state !== 'loaded' && !hasWidget()) showFallback();
-  }, 6000);
+  const io = new IntersectionObserver(entries => {
+    if (entries.some(e => e.isIntersecting)) {
+      inject();
+      io.disconnect();
+    }
+  }, { rootMargin: '300px 0px' });
+  io.observe(slot);
 };
 
 const updateCopyrightYear = () => {
