@@ -895,6 +895,12 @@ p {
   border: 1px dashed var(--line);
 }
 
+body.dark-mode .visitor-map > div,
+body.dark-mode .visitor-map img,
+body.dark-mode .visitor-map iframe {
+  filter: brightness(0.55) saturate(0.55);
+}
+
 .visitor-map-fallback {
   font-size: 0.95rem;
 }
