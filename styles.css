@@ -200,7 +200,7 @@ a:hover {
 .hero {
   animation-delay: 0.04s;
   display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
+  grid-template-columns: 200px minmax(0, 1fr);
   gap: 44px;
   align-items: start;
 }
@@ -292,9 +292,19 @@ h1 {
 }
 
 .intro-rule {
-  margin: 2px 0 12px;
-  color: var(--text);
-  line-height: 1;
+  margin: 4px 0 12px;
+  height: 6px;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--text) 0 6px,
+    transparent 6px 11px
+  );
+  background-position: 0 2px;
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
 }
 
 @keyframes hero-cursor-fade {
@@ -371,6 +381,12 @@ h1 {
   text-transform: none;
 }
 
+.intro-kicker::before {
+  content: "# ";
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
 .hero-links {
   display: flex;
   flex-wrap: wrap;
@@ -405,7 +421,7 @@ h1 {
 
 .profile-container {
   position: relative;
-  width: 148px;
+  width: 200px;
   aspect-ratio: 2 / 3;
   border: 1px dashed var(--line);
   overflow: hidden;
@@ -1010,15 +1026,15 @@ body.dark-mode {
 
 body.dark-mode .entry-logo,
 body.dark-mode .entry-logo-sjtu {
-  background: #fff;
+  background: #dde3ec;
   padding: 4px;
-  border-radius: 6px;
+  border-radius: 3px;
   box-sizing: border-box;
 }
 
 @media (max-width: 760px) {
   .hero {
-    grid-template-columns: 96px minmax(0, 1fr);
+    grid-template-columns: 120px minmax(0, 1fr);
     gap: 18px;
   }
 
@@ -1027,7 +1043,7 @@ body.dark-mode .entry-logo-sjtu {
   }
 
   .profile-container {
-    width: 96px;
+    width: 120px;
   }
 }
 
@@ -1106,7 +1122,7 @@ body.dark-mode .entry-logo-sjtu {
   }
 
   .hero {
-    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-columns: 88px minmax(0, 1fr);
     gap: 12px;
     margin-bottom: 34px;
   }
@@ -1117,7 +1133,7 @@ body.dark-mode .entry-logo-sjtu {
   }
 
   .profile-container {
-    width: 72px;
+    width: 88px;
   }
 
   .hero-intro {
@@ -1252,6 +1268,4 @@ body.dark-mode .entry-logo-sjtu {
     height: min(50vh, 320px);
   }
 }
-
-
 
