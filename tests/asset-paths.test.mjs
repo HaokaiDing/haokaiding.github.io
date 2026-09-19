@@ -17,7 +17,8 @@ const toTokenRegex = assetPath => {
 };
 
 const expectedPaths = [
-  'assets/images/haokai-ding-cartoon.png',
+  'assets/images/haokai-robot-sketch.png',
+  'assets/images/favicon-haokai-sketch.png',
   'assets/images/haokai-ding-photo.png',
   'assets/images/shenzhen-technology-university-logo.png',
   'assets/images/tsinghua-university-logo.svg',
@@ -42,6 +43,7 @@ const expectedPaths = [
 ];
 
 const oldReferencedPaths = [
+  'assets/images/haokai-ding-cartoon.png',
   'my-academic-site/images/haokai_DING_photo_cartoon.png',
   'my-academic-site/images/hkding.png',
   'my-academic-site/images/深圳技术大学校徽_00.jpg',

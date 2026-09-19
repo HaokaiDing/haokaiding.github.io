@@ -431,12 +431,24 @@ h1 {
 }
 
 .profile-container {
+  appearance: none;
   position: relative;
+  display: block;
   width: 200px;
-  aspect-ratio: 2 / 3;
+  max-width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
   border: 1px dashed var(--line);
   overflow: hidden;
   background: var(--surface);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.profile-container:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .profile-image {
@@ -449,21 +461,38 @@ h1 {
 }
 
 .profile-image.default {
+  object-position: center 30%;
   opacity: 1;
 }
 
 .profile-image.hover {
+  object-fit: contain;
+  background: #fff;
   opacity: 0;
 }
 
-.profile-container:hover .profile-image.default,
 .profile-container.toggled .profile-image.default {
   opacity: 0;
 }
 
-.profile-container:hover .profile-image.hover,
 .profile-container.toggled .profile-image.hover {
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .profile-container:hover .profile-image.default {
+    opacity: 0;
+  }
+
+  .profile-container:hover .profile-image.hover {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-image {
+    transition: none;
+  }
 }
 
 .main-content {

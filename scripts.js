@@ -91,14 +91,10 @@ const updateLastUpdated = () => {
   target.setAttribute('datetime', formatted);
 };
 
-let touchCapable = false;
-window.addEventListener('touchstart', () => {
-  touchCapable = true;
-}, { once: true });
-
 const profileBox = $('#profileBox');
 profileBox?.addEventListener('click', () => {
-  if (touchCapable) profileBox.classList.toggle('toggled');
+  const isToggled = profileBox.classList.toggle('toggled');
+  profileBox.setAttribute('aria-pressed', String(isToggled));
 });
 
 const modalRegistry = [
