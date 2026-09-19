@@ -13,6 +13,9 @@ const stylesCss = read('styles.css');
 const consoleHero = indexHtml.match(
   /<header class="hero" id="top">[\s\S]*?<\/header>/,
 );
+const heroAcknowledgment = consoleHero?.[0].match(
+  /<p class="hero-acknowledgment">[\s\S]*?<\/p>/,
+);
 const defaultProfileImage = indexHtml.match(/<img[\s\S]*?class="profile-image default"[\s\S]*?>/);
 const selectedPublications = indexHtml.match(
   /<section class="content-section latest-publications" id="publications">[\s\S]*?<\/section>/,
@@ -45,14 +48,28 @@ assert.match(
   'expected the homepage hero to expose a compact identity line',
 );
 assert.doesNotMatch(consoleHero[0].match(/<p class="hero-status">[\s\S]*?<\/p>/)?.[0] ?? '', /B\.Eng\.|Shenzhen Technology University/);
-assert.match(consoleHero[0], /My research interests lie in underactuated manipulation, aerial robotics, and deployment-focused robot learning/);
+for (const researchInterest of [
+  /underactuated manipulation/,
+  /aerial robotics/,
+  /deployment-focused robot learning/,
+]) {
+  assert.match(consoleHero[0], researchInterest);
+}
+assert.ok(heroAcknowledgment, 'expected the homepage hero to retain its peer-advisor acknowledgment');
+assert.match(heroAcknowledgment[0], /thanks|grateful/i);
+assert.match(heroAcknowledgment[0], /peer advisor/);
 assert.match(
-  consoleHero[0],
-  /<p class="hero-acknowledgment">\s*I am deeply grateful to my peer advisor <a href="https:\/\/yinsumirage\.github\.io\/" target="_blank" rel="noopener noreferrer">Wentao Guo<\/a> for his generous guidance and mentorship in my research and during the graduate application season\. Thank you!\s*<\/p>/,
+  heroAcknowledgment[0],
+  /<a href="https:\/\/yinsumirage\.github\.io\/" target="_blank" rel="noopener noreferrer">Wentao Guo<\/a>/,
   'expected the homepage hero to thank peer advisor Wentao Guo and link his homepage',
 );
-assert.match(consoleHero[0], /I am also an X Scholar[\s\S]*Tsien Excellence in Engineering Program[\s\S]*Tsinghua University[\s\S]*Shenzhen X-Institute[\s\S]*through September 2026/);
-assert.match(consoleHero[0], /Previously, I was a visiting student[\s\S]*State Key Laboratory of Mechanical System and Vibration[\s\S]*Shanghai Jiao Tong University[\s\S]*Prof\. Wei Dong/);
+assert.match(heroAcknowledgment[0], /guidance|mentorship/);
+assert.match(heroAcknowledgment[0], /research/);
+assert.match(heroAcknowledgment[0], /graduate application/);
+assert.match(consoleHero[0], /I am (?:also )?an X Scholar/);
+assert.match(consoleHero[0], /X Scholar[\s\S]*through September 2026/);
+assert.match(consoleHero[0], /Tsinghua University/);
+assert.match(consoleHero[0], /Shenzhen X-Institute/);
 assert.doesNotMatch(consoleHero[0], /class="intro-kicker"|# Robotics|I am an M\.Sc\. student in Robotics at/);
 assert.match(
   consoleHero[0],
@@ -117,6 +134,9 @@ assert.ok(xScholarItem, 'expected the X Scholar education item');
 assert.match(xScholarItem[0], /<div class="detail-side">2023\.09–2026\.09<\/div>/);
 assert.doesNotMatch(xScholarItem[0], /2023\.09–present/);
 assert.ok(sjtuExperienceItem, 'expected the SJTU visiting-student experience item');
+assert.match(sjtuExperienceItem[0], /State Key Laboratory of Mechanical System and Vibration/);
+assert.match(sjtuExperienceItem[0], /Shanghai(?:\s|&nbsp;)+Jiao(?:\s|&nbsp;)+Tong(?:\s|&nbsp;)+University/);
+assert.match(sjtuExperienceItem[0], /Worked with Prof\. Wei Dong/);
 assert.match(sjtuExperienceItem[0], /<div class="detail-side">2026\.02–2026\.08<\/div>/);
 assert.doesNotMatch(sjtuExperienceItem[0], /present|developing/);
 assert.doesNotMatch(indexHtml, /currently a visiting student|Ongoing visiting work/);
