@@ -1,6 +1,11 @@
 .availability-section {
+  --availability-now: #c13c3c;
   border-top: 1px dashed var(--line);
   padding-top: 22px;
+}
+
+body.dark-mode .availability-section {
+  --availability-now: #ff8585;
 }
 
 .availability-summary {
@@ -55,9 +60,10 @@
 
 .availability-panel-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 20px;
+  gap: 8px 20px;
   margin-bottom: 14px;
 }
 
@@ -70,6 +76,25 @@
   color: var(--text-faint);
   font-size: 0.78em;
   font-weight: 400;
+}
+
+.availability-current-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.availability-current-time:not(:empty)::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--availability-now);
 }
 
 .availability-controls {
@@ -185,7 +210,7 @@
 .availability-calendar-header {
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 4;
   border-bottom: 1px solid var(--text-faint);
   background: var(--surface-soft);
 }
@@ -216,6 +241,15 @@
 .availability-day-header span {
   color: var(--text-faint);
   font-size: 0.78rem;
+}
+
+.availability-day-header.is-today {
+  color: var(--accent);
+  box-shadow: inset 0 -2px var(--accent);
+}
+
+.availability-day-header.is-today span {
+  color: var(--accent);
 }
 
 .availability-calendar-body {
@@ -265,6 +299,51 @@
 .availability-day-column:last-child,
 .availability-day-header:last-child {
   border-right: 0;
+}
+
+.availability-day-column.is-today {
+  background-color: var(--accent-soft);
+}
+
+.availability-now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 0;
+  border-top: 2px solid var(--availability-now);
+  pointer-events: none;
+}
+
+.availability-now-line::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--availability-now);
+}
+
+.availability-now-label {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--availability-now);
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.availability-now-line.is-near-start .availability-now-label {
+  top: 3px;
+  bottom: auto;
 }
 
 .availability-busy-block {

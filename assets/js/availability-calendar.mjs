@@ -346,6 +346,31 @@ export function shiftWeek(anchor, weekCount, timeZone = OWNER_TIME_ZONE) {
   return getLocalDayBoundary(addCalendarDays(localMonday, weekCount * 7), timeZone);
 }
 
+export function getCurrentTimeMarker(now, {
+  timeZone = OWNER_TIME_ZONE,
+  weekStart,
+  visibleStartHour = WORK_HOURS.start,
+  visibleEndHour = WORK_HOURS.end,
+}) {
+  if (!(visibleStartHour >= 0 && visibleEndHour <= 24 && visibleEndHour > visibleStartHour)) {
+    throw new RangeError('Expected an hour range within 0–24');
+  }
+
+  const current = getZonedParts(now, timeZone);
+  const monday = getZonedParts(getWeekRange(weekStart, timeZone).start, timeZone);
+  const dayIndex = calendarDateOrdinal(current) - calendarDateOrdinal(monday);
+  const minute = current.hour * 60 + current.minute + current.second / 60;
+  const startMinute = visibleStartHour * 60;
+  const endMinute = visibleEndHour * 60;
+  if (dayIndex < 0 || dayIndex > 6 || minute < startMinute || minute >= endMinute) return null;
+
+  return {
+    dayIndex,
+    topPercent: ((minute - startMinute) / (endMinute - startMinute)) * 100,
+    label: `Now ${String(current.hour).padStart(2, '0')}:${String(current.minute).padStart(2, '0')}`,
+  };
+}
+
 const getDayBoundaries = (weekStart, timeZone) => {
   const { start } = getWeekRange(weekStart, timeZone);
   const monday = getZonedParts(start, timeZone);
@@ -525,6 +550,7 @@ const initializeAvailabilityCalendar = () => {
   const expand = section.querySelector('#availability-expand');
   const retry = section.querySelector('#availability-retry');
   const timeZoneLabel = section.querySelector('#availability-time-zone-label');
+  const currentTime = section.querySelector('#availability-current-time');
 
   if (
     !availabilityUrl
@@ -539,6 +565,7 @@ const initializeAvailabilityCalendar = () => {
     || !expand
     || !retry
     || !timeZoneLabel
+    || !currentTime
   ) return;
 
   let anchor = new Date();
@@ -548,6 +575,7 @@ const initializeAvailabilityCalendar = () => {
   let availability = null;
   let loadPromise = null;
   let expiryTimer = null;
+  let currentTimeTimer = null;
   let activeController = null;
   const requestGeneration = createRequestGenerationGuard();
 
@@ -626,6 +654,58 @@ const initializeAvailabilityCalendar = () => {
     timeZoneLabel.textContent = `(${activeTimeZone} time)`;
   };
 
+  const updateCurrentTime = () => {
+    const now = new Date();
+    const current = getZonedParts(now, activeTimeZone);
+    const clock = [current.hour, current.minute, current.second]
+      .map(value => String(value).padStart(2, '0'))
+      .join(':');
+    currentTime.textContent = `${clock} ${activeTimeZone}`;
+    currentTime.dateTime = now.toISOString();
+    if (grid.hidden) return;
+
+    const monday = getZonedParts(getWeekRange(anchor, activeTimeZone).start, activeTimeZone);
+    const todayIndex = calendarDateOrdinal(current) - calendarDateOrdinal(monday);
+    const dayHeaders = grid.querySelectorAll('.availability-day-header');
+    const dayColumns = grid.querySelectorAll('.availability-day-column');
+    dayHeaders.forEach((header, index) => header.classList.toggle('is-today', index === todayIndex));
+    dayColumns.forEach((column, index) => column.classList.toggle('is-today', index === todayIndex));
+
+    const marker = getCurrentTimeMarker(now, {
+      timeZone: activeTimeZone,
+      weekStart: anchor,
+      visibleStartHour: allDay ? 0 : WORK_HOURS.start,
+      visibleEndHour: allDay ? 24 : WORK_HOURS.end,
+    });
+    let line = grid.querySelector('.availability-now-line');
+    if (!marker) {
+      line?.remove();
+      return;
+    }
+
+    const column = dayColumns[marker.dayIndex];
+    if (!line || line.parentElement !== column) {
+      line?.remove();
+      line = el('div', 'availability-now-line');
+      line.setAttribute('aria-hidden', 'true');
+      line.append(el('span', 'availability-now-label'));
+      column.append(line);
+    }
+    line.style.top = `${marker.topPercent}%`;
+    const visibleStartMinute = (allDay ? 0 : WORK_HOURS.start) * 60;
+    line.classList.toggle('is-near-start', current.hour * 60 + current.minute - visibleStartMinute < 25);
+    line.firstElementChild.textContent = marker.label;
+  };
+
+  const syncCurrentTimeUpdates = () => {
+    if (currentTimeTimer !== null) clearInterval(currentTimeTimer);
+    currentTimeTimer = null;
+    updateCurrentTime();
+    if (!panel.hidden && !document.hidden) {
+      currentTimeTimer = setInterval(updateCurrentTime, 1000);
+    }
+  };
+
   const makeDayHeader = (instant, timeZone) => {
     const header = el('div', 'availability-day-header');
     const weekday = new Intl.DateTimeFormat('en', {
@@ -650,6 +730,7 @@ const initializeAvailabilityCalendar = () => {
   }).format(instant);
 
   const renderCalendar = () => {
+    updateCurrentTime();
     if (!availability) return;
     const snapshot = getAvailabilitySnapshot(availability, Date.now());
     if (snapshot.kind === 'setup-required') {
@@ -771,6 +852,7 @@ const initializeAvailabilityCalendar = () => {
     }
 
     grid.append(calendarHeader, calendarBody);
+    updateCurrentTime();
     setStatus(
       snapshot.kind === 'delayed'
         ? `${statusPrefix}: Update delayed — showing last verified Busy blocks. Unmarked times may have changed.`
@@ -833,6 +915,7 @@ const initializeAvailabilityCalendar = () => {
     panel.hidden = !opening;
     toggle.setAttribute('aria-expanded', String(opening));
     toggle.textContent = opening ? 'Hide calendar' : 'View calendar';
+    syncCurrentTimeUpdates();
     if (opening) {
       const currentState = availability ? getAvailabilitySnapshot(availability, Date.now()) : null;
       if (['ready', 'delayed'].includes(currentState?.kind)) renderCalendar();
@@ -868,8 +951,11 @@ const initializeAvailabilityCalendar = () => {
   });
 
   retry.addEventListener('click', () => loadAvailability());
+  document.addEventListener('visibilitychange', syncCurrentTimeUpdates);
+  currentTime.setAttribute('aria-live', 'off');
   setControlsDisabled(true);
   setScrollerAvailable(false);
+  syncCurrentTimeUpdates();
 };
 
 if (typeof document !== 'undefined') {

@@ -10,15 +10,15 @@
   <meta name="color-scheme" content="light dark" />
   <meta property="og:title" content="Haokai Ding" />
   <meta property="og:description" content="Robotics researcher — underactuated grippers, mechanism design, and aerial manipulation." />
-  <meta property="og:image" content="https://haokaiding.github.io/assets/images/haokai-ding-photo.png" />
+  <meta property="og:image" content="https://haokaiding.github.io/assets/images/haokai-ding-outdoor.jpg" />
   <meta property="og:url" content="https://haokaiding.github.io/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
   <link rel="icon" type="image/png" href="assets/images/favicon-haokai-sketch.png" />
   <link rel="canonical" href="https://haokaiding.github.io/" />
   <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-  <link rel="stylesheet" href="styles.css?v=sketch-20260920" />
-  <link rel="stylesheet" href="availability.css" />
+  <link rel="stylesheet" href="styles.css?v=portrait-clock-20260920" />
+  <link rel="stylesheet" href="availability.css?v=clock-20260920" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,7 +33,7 @@
       {"@type": "EducationalOrganization", "name": "Mohamed bin Zayed University of Artificial Intelligence", "url": "https://mbzuai.ac.ae/"}
     ],
     "url": "https://haokaiding.github.io/",
-    "image": "https://haokaiding.github.io/assets/images/haokai-ding-photo.png",
+    "image": "https://haokaiding.github.io/assets/images/haokai-ding-outdoor.jpg",
     "sameAs": [
       "https://scholar.google.com/citations?user=ikir1CUAAAAJ&hl=en",
       "https://orcid.org/0009-0001-6158-9897",
@@ -58,17 +58,16 @@
 
     <header class="hero" id="top">
       <div class="hero-media">
-        <button class="profile-container" id="profileBox" type="button" aria-label="Keep the illustration visible" aria-pressed="false">
+        <button class="profile-container" id="profileBox" type="button" aria-label="Keep the photo visible" aria-pressed="false">
           <picture>
-            <source srcset="assets/images/haokai-ding-photo-compressed.webp" type="image/webp">
             <img
               class="profile-image default"
               fetchpriority="high"
               decoding="async"
               crossorigin="anonymous"
-              src="assets/images/haokai-ding-photo.png"
-              width="296" height="296"
-              alt="Profile photo of Haokai Ding"
+              src="assets/images/haokai-robot-sketch-full.png"
+              width="1254" height="1254"
+              alt="Hand-drawn illustration of Haokai Ding with a robot"
               onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
             >
           </picture>
@@ -78,13 +77,17 @@
               loading="lazy"
               decoding="async"
               crossorigin="anonymous"
-              src="assets/images/haokai-robot-sketch.png"
-              width="296" height="296"
-              alt="Hand-drawn illustration of Haokai Ding with a robot"
+              src="assets/images/haokai-ding-outdoor.jpg"
+              width="2078" height="1364"
+              alt="Profile photo of Haokai Ding"
               onerror="this.onerror=null;this.src='https://placehold.co/160x210/EFEFEF/333333?text=Haokai';"
             >
           </picture>
         </button>
+        <div class="profile-caption">
+          <p class="profile-location">Abu Dhabi, UAE</p>
+          <p class="profile-motto">Stay curious. Keep building.</p>
+        </div>
       </div>
 
       <div class="hero-copy hero-intro">
@@ -318,6 +321,7 @@
         <div class="availability-panel" id="availability-panel" hidden>
           <div class="availability-panel-heading">
             <h3>My Free/Busy Hours <span class="availability-time-zone-label" id="availability-time-zone-label">(Asia/Dubai time)</span></h3>
+            <time class="availability-current-time" id="availability-current-time" aria-label="Current time">Now —</time>
           </div>
           <div class="availability-controls" role="group" aria-label="Calendar controls">
             <button class="availability-button" id="availability-previous" type="button" aria-label="Previous week">← Prev</button>
@@ -372,8 +376,8 @@
     </div>
   </div>
 
-  <script src="scripts.js?v=sketch-20260920" defer></script>
+  <script src="scripts.js?v=portrait-clock-20260920" defer></script>
   <script type="module" src="assets/js/visitor-map.js"></script>
-  <script type="module" src="assets/js/availability-calendar.mjs"></script>
+  <script type="module" src="assets/js/availability-calendar.mjs?v=clock-20260920"></script>
 </body>
 </html>

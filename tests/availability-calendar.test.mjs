@@ -15,6 +15,7 @@ import {
   createRequestGenerationGuard,
   formatWeekRange,
   getAvailabilitySnapshot,
+  getCurrentTimeMarker,
   getLocalDayBoundary,
   getWeekRange,
   isWeekCovered,
@@ -247,6 +248,85 @@ test('uses a Monday week boundary in the selected IANA time zone', () => {
   );
 });
 
+test('places the current time in the Dubai workday using local wall time', () => {
+  const week = getWeekRange('2026-09-09T09:30:00Z', OWNER_TIME_ZONE);
+
+  assert.deepEqual(
+    getCurrentTimeMarker(new Date('2026-09-09T09:30:00Z'), { weekStart: week.start }),
+    { dayIndex: 2, topPercent: 50, label: 'Now 13:30' },
+  );
+});
+
+test('hides the current-time marker when viewing a different week', () => {
+  const now = new Date('2026-09-09T09:30:00Z');
+  for (const anchor of ['2026-09-02T09:30:00Z', '2026-09-16T09:30:00Z']) {
+    const week = getWeekRange(anchor, OWNER_TIME_ZONE);
+    assert.equal(getCurrentTimeMarker(now, { weekStart: week.start }), null);
+  }
+
+  const selectedWeek = getWeekRange(now, OWNER_TIME_ZONE);
+  assert.equal(
+    getCurrentTimeMarker(new Date('2026-09-13T20:00:00Z'), {
+      weekStart: selectedWeek.start,
+      visibleStartHour: 0,
+      visibleEndHour: 24,
+    }),
+    null,
+    'Monday midnight belongs to the following week',
+  );
+});
+
+test('includes 09:00 and excludes 18:00 from the work-hours marker', () => {
+  const week = getWeekRange('2026-09-09T09:30:00Z', OWNER_TIME_ZONE);
+  const options = { weekStart: week.start };
+
+  assert.equal(getCurrentTimeMarker(new Date('2026-09-09T04:59:59Z'), options), null);
+  assert.deepEqual(
+    getCurrentTimeMarker(new Date('2026-09-09T05:00:00Z'), options),
+    { dayIndex: 2, topPercent: 0, label: 'Now 09:00' },
+  );
+  const beforeEnd = getCurrentTimeMarker(new Date('2026-09-09T13:59:59Z'), options);
+  assert.equal(beforeEnd.dayIndex, 2);
+  assert.equal(beforeEnd.label, 'Now 17:59');
+  assert.ok(beforeEnd.topPercent > 99 && beforeEnd.topPercent < 100);
+  assert.equal(getCurrentTimeMarker(new Date('2026-09-09T14:00:00Z'), options), null);
+});
+
+test('moves the marker to the visitor local date when changing time zones', () => {
+  const now = new Date('2026-09-09T02:30:00Z');
+  const markers = [OWNER_TIME_ZONE, 'America/Los_Angeles'].map(timeZone => (
+    getCurrentTimeMarker(now, {
+      timeZone,
+      weekStart: getWeekRange(now, timeZone).start,
+      visibleStartHour: 0,
+      visibleEndHour: 24,
+    })
+  ));
+
+  assert.deepEqual(
+    markers.map(({ dayIndex, label }) => ({ dayIndex, label })),
+    [
+      { dayIndex: 2, label: 'Now 06:30' },
+      { dayIndex: 1, label: 'Now 19:30' },
+    ],
+  );
+});
+
+test('shows the nighttime marker after expanding to the full day', () => {
+  const now = new Date('2026-09-09T18:30:00Z');
+  const week = getWeekRange(now, OWNER_TIME_ZONE);
+
+  assert.equal(getCurrentTimeMarker(now, { weekStart: week.start }), null);
+  assert.deepEqual(
+    getCurrentTimeMarker(now, {
+      weekStart: week.start,
+      visibleStartHour: 0,
+      visibleEndHour: 24,
+    }),
+    { dayIndex: 2, topPercent: 93.75, label: 'Now 22:30' },
+  );
+});
+
 test('splits UTC Busy instants at local day and week boundaries', () => {
   const week = getWeekRange(new Date('2026-09-09T10:00:00Z'), OWNER_TIME_ZONE);
   const segments = splitBusyIntervals(fixture.busy, week.start, OWNER_TIME_ZONE);
@@ -424,6 +504,7 @@ test('homepage wires a collapsed, lazy-loaded, accessible calendar', () => {
   const html = read('index.html');
   const css = read('availability.css');
   const js = read('assets/js/availability-calendar.mjs');
+  const calendarSection = html.match(/<section[^>]*id="availability"[\s\S]*?<\/section>/)?.[0];
 
   const awardsEnd = html.indexOf('</section>', html.indexOf('id="awards"'));
   const availabilityStart = html.indexOf('id="availability"');
@@ -444,7 +525,8 @@ test('homepage wires a collapsed, lazy-loaded, accessible calendar', () => {
     html,
     /class="availability-scroller" role="region"[^>]*aria-label="Scrollable weekly Busy calendar"/,
   );
-  assert.doesNotMatch(html, /role="grid"|aria-pressed/);
+  assert.ok(calendarSection, 'expected the availability section to exist');
+  assert.doesNotMatch(calendarSection, /role="grid"|aria-pressed/);
   assert.match(
     css,
     /\.availability-scroller\s*\{[^}]*max-height:[^}]*overflow:\s*auto/,

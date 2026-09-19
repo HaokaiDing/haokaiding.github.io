@@ -218,7 +218,7 @@ a:hover {
 .hero {
   animation-delay: 0.04s;
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
+  grid-template-columns: 260px minmax(0, 1fr);
   gap: 44px;
   align-items: start;
 }
@@ -434,7 +434,7 @@ h1 {
   appearance: none;
   position: relative;
   display: block;
-  width: 200px;
+  width: 260px;
   max-width: 100%;
   aspect-ratio: 1;
   padding: 0;
@@ -451,6 +451,28 @@ h1 {
   outline-offset: 4px;
 }
 
+.profile-caption {
+  width: 260px;
+  max-width: 100%;
+  margin-top: 16px;
+}
+
+.profile-location {
+  margin: 0 0 6px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.profile-motto {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
 .profile-image {
   position: absolute;
   inset: 0;
@@ -461,13 +483,14 @@ h1 {
 }
 
 .profile-image.default {
-  object-position: center 30%;
+  object-fit: contain;
+  background: #fff;
   opacity: 1;
 }
 
 .profile-image.hover {
-  object-fit: contain;
-  background: #fff;
+  object-fit: cover;
+  object-position: center 30%;
   opacity: 0;
 }
 
@@ -1204,7 +1227,7 @@ body.dark-mode .entry-logo-sjtu {
   }
 
   .hero {
-    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-columns: 180px minmax(0, 1fr);
     gap: 18px;
   }
 
@@ -1212,8 +1235,9 @@ body.dark-mode .entry-logo-sjtu {
     display: flex;
   }
 
-  .profile-container {
-    width: 120px;
+  .profile-container,
+  .profile-caption {
+    width: 180px;
   }
 
   .selected-list > .publication-item > .paper-showcase {
@@ -1241,6 +1265,11 @@ body.dark-mode .entry-logo-sjtu {
   .hero-media {
     display: flex;
     align-items: flex-start;
+  }
+
+  .profile-container,
+  .profile-caption {
+    width: 200px;
   }
 
   .hero-intro {
@@ -1345,8 +1374,9 @@ body.dark-mode .entry-logo-sjtu {
     align-items: flex-start;
   }
 
-  .profile-container {
-    width: 96px;
+  .profile-container,
+  .profile-caption {
+    width: 200px;
   }
 
   .hero-intro {
