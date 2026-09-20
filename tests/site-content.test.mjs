@@ -100,8 +100,8 @@ assert.match(
 );
 assert.match(
   indexHtml,
-  /<link rel="icon" type="image\/png" href="assets\/images\/favicon-haokai-sketch\.png" \/>/,
-  'expected the homepage favicon to use the local Haokai sketch asset',
+  /<link rel="icon" type="image\/png" href="assets\/images\/favicon-haokai-line\.png" \/>/,
+  'expected the homepage favicon to use the local Haokai line-art asset',
 );
 assert.doesNotMatch(indexHtml, /data:image\/svg\+xml[\s\S]*%3EHD%3C/);
 assert.match(

@@ -10,7 +10,7 @@
   --accent-soft: rgba(84, 112, 124, 0.08);
   --shadow: none;
   --font-mono: "JetBrains Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-  --content-width: 1180px;
+  --content-width: 1040px;
 }
 
 * {
@@ -218,9 +218,9 @@ a:hover {
 .hero {
   animation-delay: 0.04s;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
+  grid-template-columns: minmax(0, 1fr) 240px;
   grid-template-areas: "copy media";
-  gap: 44px;
+  gap: 36px;
   align-items: start;
 }
 
@@ -438,7 +438,7 @@ h1 {
   appearance: none;
   position: relative;
   display: block;
-  width: 260px;
+  width: 240px;
   max-width: 100%;
   aspect-ratio: 1;
   padding: 0;
@@ -457,7 +457,7 @@ h1 {
 }
 
 .profile-caption {
-  width: 260px;
+  width: 240px;
   max-width: 100%;
   margin-top: 16px;
 }
@@ -468,6 +468,11 @@ h1 {
   font-size: 1rem;
   font-style: italic;
   line-height: 1.6;
+}
+
+.profile-motto > span {
+  display: block;
+  white-space: nowrap;
 }
 
 .profile-image {

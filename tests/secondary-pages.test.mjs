@@ -15,8 +15,8 @@ for (const [pageName, html] of [
 ]) {
   assert.match(
     html,
-    /<link rel="icon" type="image\/png" href="assets\/images\/favicon-haokai-sketch\.png" \/>/,
-    `expected ${pageName} to use the local Haokai sketch asset as its favicon`,
+    /<link rel="icon" type="image\/png" href="assets\/images\/favicon-haokai-line\.png" \/>/,
+    `expected ${pageName} to use the local Haokai line-art asset as its favicon`,
   );
   assert.doesNotMatch(html, /data:image\/svg\+xml[\s\S]*%3EHD%3C/);
 }
