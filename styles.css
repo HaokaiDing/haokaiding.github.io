@@ -72,6 +72,18 @@ a:hover {
   text-underline-offset: 0.2em;
 }
 
+body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a) {
+  color: #316d8c;
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a):hover {
+  text-decoration-color: currentColor;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
