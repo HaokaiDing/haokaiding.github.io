@@ -1,13 +1,13 @@
 :root {
-  --bg: #ffffff;
+  --bg: #fafaf8;
   --surface: #ffffff;
-  --surface-soft: #f5f5f5;
-  --text: #202020;
-  --text-soft: #555555;
-  --text-faint: #737373;
-  --line: rgba(0, 0, 0, 0.1);
-  --accent: #b509ac;
-  --accent-soft: rgba(181, 9, 172, 0.08);
+  --surface-soft: #f2f3f0;
+  --text: #343a3b;
+  --text-soft: #5f6768;
+  --text-faint: #697172;
+  --line: #dfe3df;
+  --accent: #54707c;
+  --accent-soft: rgba(84, 112, 124, 0.08);
   --shadow: none;
   --font-mono: "JetBrains Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --content-width: 1180px;
