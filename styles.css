@@ -68,20 +68,16 @@ a {
 }
 
 a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  color: var(--text);
 }
 
 body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a) {
-  color: #316d8c;
-  text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
+  color: #72543f;
+  text-decoration: none;
 }
 
 body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a):hover {
-  text-decoration-color: currentColor;
+  color: #4f3d2f;
 }
 
 :focus-visible {
@@ -817,8 +813,7 @@ p {
 }
 
 .inline-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  color: var(--text);
 }
 
 .contact-lead {
