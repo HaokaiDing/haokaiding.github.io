@@ -72,12 +72,12 @@ a:hover {
 }
 
 body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a) {
-  color: #72543f;
+  color: #1769c2;
   text-decoration: none;
 }
 
 body:not(.dark-mode) :is(.hero-copy a, .main-content a, .main-content .inline-link, .page-header a):hover {
-  color: #4f3d2f;
+  color: #0d4787;
 }
 
 :focus-visible {
