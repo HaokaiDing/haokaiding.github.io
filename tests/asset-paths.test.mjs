@@ -17,7 +17,7 @@ const toTokenRegex = assetPath => {
 };
 
 const expectedPaths = [
-  'assets/images/haokai-robot-paperplane.png',
+  'assets/images/haokai-robot-fistbump.png',
   'assets/images/favicon-haokai-line.png',
   'assets/images/haokai-ding-outdoor.jpg',
   'assets/images/shenzhen-technology-university-logo.png',
