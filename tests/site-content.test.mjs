@@ -209,8 +209,13 @@ assert.match(
 );
 assert.match(
   stylesCss,
-  /\.contact-block \.inline-link\s*\{[^}]*color:\s*inherit/,
-  'expected the Wechat trigger in the contact list to inherit the same color as the other contact links',
+  /(?:^|\n)a\s*,\s*\.inline-link\s*\{[^}]*color:\s*var\(--link-color\)/,
+  'expected links and inline-link buttons to share the global link color token',
+);
+assert.match(
+  stylesCss,
+  /(?:^|\n)a:hover\s*,\s*\.inline-link:hover\s*\{[^}]*color:\s*var\(--link-hover-color\)/,
+  'expected links and inline-link buttons to share the global hover color token',
 );
 assert.match(stylesCss, /\.selected-list > \.publication-item > \.paper-showcase\s*\{[^}]*display:\s*grid/);
 assert.match(stylesCss, /\.paper-media\s*\{[^}]*position:\s*relative/);
