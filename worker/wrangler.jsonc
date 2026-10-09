@@ -7,7 +7,6 @@
     { "binding": "DB", "database_name": "visitor-map", "database_id": "593a79f6-5f40-4ce4-b608-68e44f257f59" }
   ],
   "routes": [
-    { "pattern": "visitors.haokaiding.qzz.io", "custom_domain": true },
     { "pattern": "visitors.haokaiding.com", "custom_domain": true }
   ]
 }
