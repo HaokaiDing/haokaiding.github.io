@@ -38,7 +38,7 @@ export function buildPointsPayload(rows, firstTsSeconds, last30 = 0) {
   };
 }
 
-const ALLOWED_ORIGINS = ['https://haokaiding.qzz.io', 'https://haokaiding.github.io'];
+const ALLOWED_ORIGINS = ['https://haokaiding.qzz.io', 'https://haokaiding.github.io', 'https://haokaiding.com', 'https://www.haokaiding.com'];
 
 export function isAllowedOrigin(origin) {
   return Boolean(origin && (ALLOWED_ORIGINS.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin)));

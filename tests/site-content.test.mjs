@@ -95,7 +95,7 @@ assert.doesNotMatch(
 );
 assert.match(
   indexHtml,
-  /<link rel="canonical" href="https:\/\/haokaiding\.github\.io\/" \/>/,
+  /<link rel="canonical" href="https:\/\/haokaiding\.com\/" \/>/,
   'expected the GitHub Pages canonical host to remain unchanged',
 );
 assert.match(
@@ -106,7 +106,7 @@ assert.match(
 assert.doesNotMatch(indexHtml, /data:image\/svg\+xml[\s\S]*%3EHD%3C/);
 assert.match(
   indexHtml,
-  /<meta property="og:url" content="https:\/\/haokaiding\.github\.io\/" \/>/,
+  /<meta property="og:url" content="https:\/\/haokaiding\.com\/" \/>/,
   'expected Open Graph metadata to retain the GitHub Pages host',
 );
 assert.match(

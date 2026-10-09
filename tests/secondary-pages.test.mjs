@@ -23,7 +23,7 @@ for (const [pageName, html] of [
 
 assert.match(
   publicationsHtml,
-  /<link rel="canonical" href="https:\/\/haokaiding\.github\.io\/publications\.html" \/>/,
+  /<link rel="canonical" href="https:\/\/haokaiding\.com\/publications\.html" \/>/,
   'expected publications page to define a canonical URL',
 );
 assert.match(
@@ -74,7 +74,7 @@ assert.match(
 
 assert.match(
   contactHtml,
-  /<link rel="canonical" href="https:\/\/haokaiding\.github\.io\/contact\.html" \/>/,
+  /<link rel="canonical" href="https:\/\/haokaiding\.com\/contact\.html" \/>/,
   'expected contact page to define a canonical URL',
 );
 assert.match(

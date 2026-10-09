@@ -222,6 +222,8 @@ test('statsHtml renders an em dash (not 1970) for an empty database', () => {
 test('isAllowedOrigin accepts allowlisted + localhost, rejects others', () => {
   assert.equal(isAllowedOrigin('https://haokaiding.qzz.io'), true);
   assert.equal(isAllowedOrigin('https://haokaiding.github.io'), true);
+  assert.equal(isAllowedOrigin('https://haokaiding.com'), true);
+  assert.equal(isAllowedOrigin('https://www.haokaiding.com'), true);
   assert.equal(isAllowedOrigin('http://localhost:4567'), true);
   assert.equal(isAllowedOrigin('https://evil.example'), false);
   assert.equal(isAllowedOrigin(null), false);

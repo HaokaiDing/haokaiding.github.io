@@ -87,7 +87,7 @@ export default {
       const topCities = (await env.DB.prepare('SELECT city, country, COUNT(*) AS n FROM hits GROUP BY city, country ORDER BY n DESC LIMIT 12').all()).results || [];
       const topBrowsers = (await env.DB.prepare('SELECT browser, COUNT(*) AS n FROM hits WHERE browser IS NOT NULL GROUP BY browser ORDER BY n DESC LIMIT 8').all()).results || [];
       const topOS = (await env.DB.prepare('SELECT os, COUNT(*) AS n FROM hits WHERE os IS NOT NULL GROUP BY os ORDER BY n DESC LIMIT 8').all()).results || [];
-      const topReferrers = (await env.DB.prepare("SELECT referrer, COUNT(*) AS n FROM hits WHERE referrer IS NOT NULL AND referrer NOT IN ('haokaiding.qzz.io', 'haokaiding.github.io') AND referrer NOT IN ('localhost', '127.0.0.1', '0.0.0.0', '[::1]', '::1') AND referrer NOT LIKE '%.local' AND referrer NOT LIKE '%.localhost' GROUP BY referrer ORDER BY n DESC LIMIT 10").all()).results || [];
+      const topReferrers = (await env.DB.prepare("SELECT referrer, COUNT(*) AS n FROM hits WHERE referrer IS NOT NULL AND referrer NOT IN ('haokaiding.qzz.io', 'haokaiding.github.io', 'haokaiding.com', 'www.haokaiding.com') AND referrer NOT IN ('localhost', '127.0.0.1', '0.0.0.0', '[::1]', '::1') AND referrer NOT LIKE '%.local' AND referrer NOT LIKE '%.localhost' GROUP BY referrer ORDER BY n DESC LIMIT 10").all()).results || [];
       const recent = (await env.DB.prepare('SELECT ts, city, region, country, browser, os FROM hits ORDER BY ts DESC LIMIT 50').all()).results || [];
 
       // Trend series at three granularities (chronological order).

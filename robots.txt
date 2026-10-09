@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://haokaiding.github.io/sitemap.xml
+Sitemap: https://haokaiding.com/sitemap.xml
