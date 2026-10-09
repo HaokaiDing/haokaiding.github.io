@@ -177,7 +177,7 @@ assert.match(
 );
 assert.match(
   indexHtml,
-  /href="https:\/\/visitors\.haokaiding\.qzz\.io\/stats"/,
+  /href="https:\/\/visitors\.haokaiding\.com\/stats"/,
   'expected the footer map to link through to the public stats page',
 );
 assert.match(

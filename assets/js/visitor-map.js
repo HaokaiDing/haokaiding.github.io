@@ -1,4 +1,4 @@
-const ENDPOINT = 'https://visitors.haokaiding.qzz.io';
+const ENDPOINT = 'https://visitors.haokaiding.com';
 const VIEW_W = 1000, VIEW_H = 500;
 
 export function project(lon, lat, w, h) {
