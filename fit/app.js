@@ -100,8 +100,10 @@ const TYPES = {
 const KEY = 'fitlog.v1';
 const UI_KEY = 'fitlog.ui';
 
+// Every entry and custom exercise carries `u` (last change, ms); deletions leave a tombstone
+// in `deleted` so cloud sync can merge two copies without bringing deleted rows back.
 function emptyDb() {
-  return { v: 1, logs: {}, custom: [], defs: {} };
+  return { v: 1, logs: {}, custom: [], defs: {}, defsU: {}, deleted: {} };
 }
 
 function loadDb() {
@@ -117,7 +119,14 @@ function loadDb() {
 
 function normalize(d) {
   if (!d || typeof d !== 'object' || typeof d.logs !== 'object') throw new Error('不是有效的健身记录文件');
-  return { v: 1, logs: d.logs || {}, custom: Array.isArray(d.custom) ? d.custom : [], defs: d.defs || {} };
+  return {
+    v: 1,
+    logs: d.logs || {},
+    custom: Array.isArray(d.custom) ? d.custom : [],
+    defs: d.defs || {},
+    defsU: d.defsU || {},
+    deleted: d.deleted || {},
+  };
 }
 
 function save() {
@@ -126,6 +135,12 @@ function save() {
   } catch (e) {
     toast('保存失败：浏览器存储不可用');
   }
+  scheduleSync();
+}
+
+function markDeleted(ids) {
+  const now = Date.now();
+  for (const id of ids) db.deleted[id] = now;
 }
 
 function loadUi() {
@@ -308,7 +323,7 @@ function renderToday() {
   const list = db.logs[d] || [];
   let html = '';
   if (!isStandalone() && !ui.hideInstall) {
-    html += `<div class="banner"><p>在 Safari 里点 <b>分享</b> → <b>添加到主屏幕</b>，就能像 App 一样全屏打开、离线使用。<br>注意：主屏幕 App 和 Safari 的数据互相独立，建议添加后再开始记录。</p><button data-act="hideInstall" aria-label="关闭">×</button></div>`;
+    html += `<div class="banner"><p>在 Safari 里点 <b>分享</b> → <b>添加到主屏幕</b>，就能像 App 一样全屏打开、离线使用。<br>注意：主屏幕 App 和 Safari 的数据互相独立，建议添加后再开始记录，或在「数据」里开启云同步。</p><button data-act="hideInstall" aria-label="关闭">×</button></div>`;
   }
   if (list.length) {
     let sets = 0, vol = 0, mins = 0;
@@ -361,7 +376,7 @@ function copyDay(from) {
     if (have.has(e.ex)) continue;
     const last = lastUpTo(e.ex, d) || e;
     const { id, ts, date, note, ...nums } = last;
-    list.push({ ...nums, id: uid(), ts: Date.now() + n, ex: e.ex });
+    list.push({ ...nums, id: uid(), ts: Date.now() + n, u: Date.now(), ex: e.ex });
     have.add(e.ex);
     n++;
   }
@@ -502,12 +517,14 @@ function openEditor(exId, entryId) {
       const vals = readFields(el, ex);
       const note = el.querySelector('#f_note').value.trim();
       const day = (db.logs[state.date] = db.logs[state.date] || []);
-      if (entry) {
-        for (const k of TYPES[ex.type].fields) delete entry[k];
-        Object.assign(entry, vals);
-        if (note) entry.note = note; else delete entry.note;
+      // Look the entry up again: a background sync may have replaced db while the sheet was open.
+      const cur = entry && day.find(e => e.id === entryId);
+      if (cur) {
+        for (const k of TYPES[ex.type].fields) delete cur[k];
+        Object.assign(cur, vals, { u: Date.now() });
+        if (note) cur.note = note; else delete cur.note;
       } else {
-        day.push({ id: uid(), ex: ex.id, ts: Date.now(), ...vals, ...(note ? { note } : {}) });
+        day.push({ id: entryId || uid(), ex: ex.id, ts: entry?.ts || Date.now(), u: Date.now(), ...vals, ...(note ? { note } : {}) });
       }
       save();
       closeSheet();
@@ -518,8 +535,9 @@ function openEditor(exId, entryId) {
     const del = el.querySelector('[data-act2="del"]');
     if (del) del.onclick = () => {
       if (!confirm(`删除这条「${ex.name}」记录？`)) return;
-      db.logs[state.date] = list.filter(e => e.id !== entryId);
+      db.logs[state.date] = (db.logs[state.date] || []).filter(e => e.id !== entryId);
       if (!db.logs[state.date].length) delete db.logs[state.date];
+      markDeleted([entryId]);
       save();
       closeSheet();
       render();
@@ -566,8 +584,13 @@ function openExInfo(exId) {
     el.querySelector('[data-act2="log"]').onclick = () => openEditor(ex.id, null);
     el.querySelector('[data-act2="saveDef"]').onclick = () => {
       const vals = readFields(el.querySelector('#defCard'), ex);
-      if (ex.builtin) db.defs[ex.id] = vals;
-      else db.custom.find(c => c.id === ex.id).defaults = vals;
+      if (ex.builtin) {
+        db.defs[ex.id] = vals;
+        db.defsU[ex.id] = Date.now();
+      } else {
+        const c = db.custom.find(c => c.id === ex.id);
+        if (c) Object.assign(c, { defaults: vals, u: Date.now() });
+      }
       save();
       toast('默认值已保存');
       render();
@@ -576,6 +599,7 @@ function openExInfo(exId) {
     if (del) del.onclick = () => {
       if (!confirm(`删除「${ex.name}」？已有的记录会保留，但显示为“已删除的动作”。`)) return;
       db.custom = db.custom.filter(c => c.id !== ex.id);
+      markDeleted([ex.id]);
       save();
       closeSheet();
       render();
@@ -595,7 +619,7 @@ function openNewEx() {
       if (!name) { toast('请输入名称'); return; }
       const type = el.querySelector('#nx_type').value;
       const defaults = { weight: { w: 20, s: 3, r: 12 }, body: { s: 3, r: 12, w: 0 }, hold: { s: 3, t: 45 }, cardio: { t: 20 } }[type];
-      const ex = { id: 'c_' + uid(), group: el.querySelector('#nx_group').value, name, type, defaults };
+      const ex = { id: 'c_' + uid(), group: el.querySelector('#nx_group').value, name, type, defaults, u: Date.now() };
       db.custom.push(ex);
       save();
       render();
@@ -690,8 +714,16 @@ function renderMe() {
       <div class="kv"><span>第一次记录</span><span>${first ? fmtDate(first) : '—'}</span></div>
       <div class="kv"><span>自定义动作</span><span>${db.custom.length} 个</span></div>
     </div>
+    <div class="section-title">云同步</div>
+    ${sync.token ? `
+      <div class="card"><div class="kv"><span>状态</span><span id="syncStatus">${esc(syncStatusText())}</span></div></div>
+      <p class="hint">每次保存后自动上传到你自己的服务器（fit-sync.haokaiding.com），打开 App 时自动拉取。换手机或在 Safari 里输入同一个密钥，就能拿回全部记录。</p>
+      <div class="btns2"><button class="btn" data-act="syncNow">立即同步</button><button class="btn danger" data-act="syncOff">在本机关闭</button></div>` : `
+      <p class="hint">开启后，记录会自动备份到你自己的服务器，换手机、删除图标也不会丢，Safari 和主屏幕 App 之间也能共用。输入同步密钥即可开启。</p>
+      <input class="textin" id="syncToken" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="同步密钥，例如 abcd-efgh-…" />
+      <div style="margin-top:10px"><button class="btn primary" data-act="syncConnect">开启云同步</button></div>`}
     <div class="section-title">备份</div>
-    <p class="hint">数据只保存在这台手机的浏览器里，不会上传。换手机、清除 Safari 数据或删除主屏幕图标前，请先导出备份。</p>
+    <p class="hint">${sync.token ? '云同步之外，也可以导出一份 JSON 自己保存。' : '没开云同步时，数据只保存在这台手机的浏览器里。换手机、清除 Safari 数据或删除主屏幕图标前，请先导出备份。'}</p>
     <div class="btns2"><button class="btn" data-act="export">导出 JSON</button><button class="btn" data-act="import">导入 JSON</button></div>
     <div class="section-title">安装</div>
     <p class="hint">${isStandalone() ? '已经从主屏幕打开 ✓' : '在 Safari 里点 <b>分享</b> → <b>添加到主屏幕</b>。主屏幕 App 和 Safari 标签页的数据互相独立，可以用导出 / 导入把记录搬过去。'}</p>
@@ -733,7 +765,13 @@ $('#importFile').addEventListener('change', async e => {
       for (const c of data.custom) if (!cids.has(c.id)) db.custom.push(c);
       db.defs = { ...data.defs, ...db.defs };
     } else if (confirm('用文件内容覆盖现有全部记录？')) {
+      const keep = new Set([...Object.values(data.logs).flat().map(e => e.id), ...data.custom.map(c => c.id)]);
+      markDeleted([...Object.values(db.logs).flat().map(e => e.id), ...db.custom.map(c => c.id)].filter(id => !keep.has(id)));
+      const deleted = db.deleted;
       db = data;
+      for (const id of keep) delete deleted[id];
+      db.deleted = { ...data.deleted, ...deleted };
+      touchAll(db);
     } else return;
     save();
     render();
@@ -742,6 +780,133 @@ $('#importFile').addEventListener('change', async e => {
     alert('导入失败：' + err.message);
   }
 });
+
+/* ---------- Cloud sync ---------- */
+
+// Optional sync to the haokaiding-fit-sync worker (worker-fit/). Both sides keep the whole
+// document; each sync downloads, merges by per-row timestamps and tombstones, and uploads.
+const SYNC_URL = 'https://fit-sync.haokaiding.com/v1/data';
+const SYNC_KEY = 'fitlog.sync';
+let sync = (() => { try { return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; } catch { return {}; } })();
+function saveSync() {
+  try { localStorage.setItem(SYNC_KEY, JSON.stringify(sync)); } catch {}
+}
+
+const stamp = x => x.u || x.ts || 0;
+
+function touchAll(d) {
+  const now = Date.now();
+  for (const list of Object.values(d.logs)) for (const e of list) e.u = now;
+  for (const c of d.custom) c.u = now;
+  for (const k of Object.keys(d.defs)) d.defsU[k] = now;
+}
+
+function mergeDb(a, b) {
+  const deleted = { ...a.deleted };
+  for (const [id, t] of Object.entries(b.deleted)) deleted[id] = Math.max(deleted[id] || 0, t);
+  const rows = new Map();
+  for (const d of [a, b]) {
+    for (const [date, list] of Object.entries(d.logs)) {
+      for (const e of list) {
+        const cur = rows.get(e.id);
+        if (!cur || stamp(e) > stamp(cur.e)) rows.set(e.id, { e, date });
+      }
+    }
+  }
+  const logs = {};
+  for (const { e, date } of rows.values()) {
+    if ((deleted[e.id] || 0) >= stamp(e)) continue;
+    (logs[date] = logs[date] || []).push(e);
+  }
+  for (const list of Object.values(logs)) list.sort((x, y) => (x.ts || 0) - (y.ts || 0));
+  const custom = new Map();
+  for (const c of [...a.custom, ...b.custom]) {
+    const cur = custom.get(c.id);
+    if (!cur || stamp(c) > stamp(cur)) custom.set(c.id, c);
+  }
+  const defs = { ...b.defs }, defsU = { ...b.defsU };
+  for (const k of Object.keys(a.defs)) {
+    if (!(k in b.defs) || (a.defsU[k] || 0) >= (b.defsU[k] || 0)) { defs[k] = a.defs[k]; defsU[k] = a.defsU[k] || 0; }
+  }
+  return {
+    v: 1,
+    logs,
+    custom: [...custom.values()].filter(c => (deleted[c.id] || 0) < stamp(c)),
+    defs,
+    defsU,
+    deleted,
+  };
+}
+
+// Key-sorted JSON so two equal documents compare equal regardless of insertion order.
+function canon(x) {
+  if (Array.isArray(x)) return '[' + x.map(canon).join(',') + ']';
+  if (x && typeof x === 'object') return '{' + Object.keys(x).sort().map(k => JSON.stringify(k) + ':' + canon(x[k])).join(',') + '}';
+  return JSON.stringify(x);
+}
+
+let syncing = false, syncAgain = false, syncTimer;
+function scheduleSync(delay = 1500) {
+  if (!sync.token) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(runSync, delay);
+}
+
+async function runSync() {
+  if (!sync.token) return false;
+  if (syncing) { syncAgain = true; return false; }
+  syncing = true;
+  setSyncStatus('同步中…');
+  let ok = false;
+  try {
+    const headers = { Authorization: 'Bearer ' + sync.token };
+    const r = await fetch(SYNC_URL, { headers, cache: 'no-store' });
+    if (r.status === 401) throw new Error('同步密钥不对');
+    if (!r.ok) throw new Error('服务器错误 ' + r.status);
+    const { data } = await r.json();
+    const remote = data ? normalize(data) : emptyDb();
+    const merged = mergeDb(db, remote);
+    if (!data || canon(merged) !== canon(remote)) {
+      const w = await fetch(SYNC_URL, {
+        method: 'PUT',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged),
+      });
+      if (!w.ok) throw new Error('上传失败 ' + w.status);
+    }
+    // Merge again with the current db: the user may have saved something while we were waiting.
+    const next = mergeDb(db, merged);
+    if (canon(next) !== canon(db)) {
+      db = next;
+      try { localStorage.setItem(KEY, JSON.stringify(db)); } catch {}
+      render();
+    }
+    sync.last = Date.now();
+    delete sync.err;
+    ok = true;
+  } catch (e) {
+    sync.err = navigator.onLine === false ? '离线，联网后会自动同步' : e.message || '同步失败';
+  } finally {
+    syncing = false;
+    saveSync();
+    setSyncStatus();
+    if (syncAgain) { syncAgain = false; scheduleSync(300); }
+  }
+  return ok;
+}
+
+function syncStatusText() {
+  if (!sync.token) return '未开启';
+  if (sync.err) return '⚠️ ' + sync.err;
+  if (!sync.last) return '还没同步过';
+  const d = new Date(sync.last);
+  const day = ymd(d) === todayStr() ? '今天' : fmtShort(ymd(d));
+  return `✓ 已同步 · ${day} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function setSyncStatus(text) {
+  const el = document.getElementById('syncStatus');
+  if (el) el.textContent = text || syncStatusText();
+}
 
 /* ---------- Events ---------- */
 
@@ -773,9 +938,29 @@ document.addEventListener('click', e => {
     case 'openDay': state.date = t.dataset.date; state.tab = 'today'; render(); window.scrollTo(0, 0); break;
     case 'export': exportData(); break;
     case 'import': $('#importFile').click(); break;
+    case 'syncConnect': {
+      const token = ($('#syncToken')?.value || '').trim();
+      if (!token) { toast('请输入同步密钥'); break; }
+      sync = { token };
+      saveSync();
+      t.disabled = true;
+      t.textContent = '连接中…';
+      runSync().then(ok => {
+        if (ok) { toast('云同步已开启'); render(); }
+        else { const err = sync.err; sync = {}; saveSync(); render(); alert('开启失败：' + err); }
+      });
+      break;
+    }
+    case 'syncNow': runSync().then(ok => toast(ok ? '已同步' : sync.err)); break;
+    case 'syncOff':
+      if (confirm('在这台设备上关闭云同步？本机和服务器上的记录都会保留。')) { sync = {}; saveSync(); render(); }
+      break;
     case 'wipe':
       if (confirm('清空全部健身记录和自定义动作？此操作不能撤销，建议先导出备份。') && confirm('再确认一次：真的清空？')) {
-        db = emptyDb(); save(); render(); toast('已清空');
+        const deleted = db.deleted;
+        markDeleted([...Object.values(db.logs).flat().map(e => e.id), ...db.custom.map(c => c.id)]);
+        db = { ...emptyDb(), deleted };
+        save(); render(); toast('已清空');
       }
       break;
   }
@@ -803,6 +988,7 @@ document.querySelectorAll('#tabbar button').forEach(b => b.addEventListener('cli
 let lastSeenDay = todayStr();
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState !== 'visible') return;
+  scheduleSync(0);
   const now = todayStr();
   if (now !== lastSeenDay) {
     if (state.date === lastSeenDay) state.date = now;
@@ -814,7 +1000,10 @@ document.addEventListener('visibilitychange', () => {
 // Other tabs or windows writing the same storage.
 window.addEventListener('storage', e => { if (e.key === KEY) { db = loadDb(); render(); } });
 
+window.addEventListener('online', () => scheduleSync(0));
+
 render();
+scheduleSync(0);
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});

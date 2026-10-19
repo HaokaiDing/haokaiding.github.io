@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/wrangler.json",
+  "name": "haokaiding-fit-sync",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-01",
+  "kv_namespaces": [
+    { "binding": "FIT", "id": "32e3c4d36dd4473ba61250b588d227f7" }
+  ],
+  "routes": [
+    { "pattern": "fit-sync.haokaiding.com", "custom_domain": true }
+  ]
+}
