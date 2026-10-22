@@ -17,8 +17,8 @@ const GROUP = Object.fromEntries(GROUPS.map(([id, name, color]) => [id, { id, na
 // type: weight = 器械/自由重量 (kg, 组, 次); body = 自重 (组, 次, 附加 kg);
 //       hold = 计时 (组, 秒); cardio = 有氧 (分钟, 档位, 距离)
 const BUILTIN = [
-  ['lat_pulldown', 'back', '高位下拉', 'weight', { w: 40, s: 4, r: 10 }],
-  ['seated_row', 'back', '坐姿划船', 'weight', { w: 40, s: 4, r: 10 }],
+  ['lat_pulldown', 'back', '高位下拉', 'weight', { w: 37.5, s: 4, r: 10 }],
+  ['seated_row', 'back', '坐姿划船', 'weight', { w: 37.5, s: 4, r: 10 }],
   ['pullup', 'back', '引体向上', 'body', { s: 4, r: 8, w: 0 }],
   ['assisted_pullup', 'back', '辅助引体向上', 'weight', { w: 30, s: 4, r: 10 }, { w: '辅助重量' }],
   ['barbell_row', 'back', '杠铃划船', 'weight', { w: 30, s: 4, r: 10 }],
@@ -29,7 +29,7 @@ const BUILTIN = [
   ['bench_press', 'chest', '杠铃卧推', 'weight', { w: 40, s: 4, r: 8 }],
   ['db_press', 'chest', '哑铃卧推', 'weight', { w: 16, s: 4, r: 10 }],
   ['incline_db_press', 'chest', '上斜哑铃卧推', 'weight', { w: 14, s: 4, r: 10 }],
-  ['machine_press', 'chest', '器械推胸', 'weight', { w: 35, s: 4, r: 10 }],
+  ['machine_press', 'chest', '器械推胸', 'weight', { w: 33.75, s: 4, r: 10 }],
   ['pec_deck', 'chest', '蝴蝶机夹胸', 'weight', { w: 30, s: 3, r: 12 }],
   ['db_fly', 'chest', '哑铃飞鸟', 'weight', { w: 10, s: 3, r: 12 }],
   ['cable_fly', 'chest', '绳索夹胸', 'weight', { w: 10, s: 3, r: 12 }],
@@ -37,7 +37,7 @@ const BUILTIN = [
   ['pushup', 'chest', '俯卧撑', 'body', { s: 3, r: 15, w: 0 }],
 
   ['db_shoulder_press', 'shoulder', '哑铃推举', 'weight', { w: 12, s: 4, r: 10 }],
-  ['machine_shoulder_press', 'shoulder', '器械推肩', 'weight', { w: 25, s: 4, r: 10 }],
+  ['machine_shoulder_press', 'shoulder', '器械推肩', 'weight', { w: 22.5, s: 4, r: 10 }],
   ['ohp', 'shoulder', '杠铃推举', 'weight', { w: 30, s: 4, r: 8 }],
   ['lateral_raise', 'shoulder', '哑铃侧平举', 'weight', { w: 6, s: 4, r: 15 }],
   ['cable_lateral', 'shoulder', '绳索侧平举', 'weight', { w: 5, s: 3, r: 15 }],
@@ -45,10 +45,10 @@ const BUILTIN = [
   ['face_pull', 'shoulder', '面拉', 'weight', { w: 15, s: 3, r: 15 }],
 
   ['squat', 'legs', '杠铃深蹲', 'weight', { w: 50, s: 4, r: 8 }],
-  ['leg_press', 'legs', '腿举', 'weight', { w: 80, s: 4, r: 10 }],
+  ['leg_press', 'legs', '腿举', 'weight', { w: 75, s: 4, r: 10 }],
   ['hack_squat', 'legs', '哈克深蹲', 'weight', { w: 40, s: 4, r: 10 }],
   ['leg_ext', 'legs', '腿屈伸', 'weight', { w: 30, s: 3, r: 12 }],
-  ['leg_curl', 'legs', '腿弯举', 'weight', { w: 25, s: 3, r: 12 }],
+  ['leg_curl', 'legs', '腿弯举', 'weight', { w: 26.25, s: 3, r: 12 }],
   ['rdl', 'legs', '罗马尼亚硬拉', 'weight', { w: 40, s: 4, r: 10 }],
   ['bulgarian', 'legs', '保加利亚分腿蹲', 'weight', { w: 10, s: 3, r: 10 }],
   ['lunge', 'legs', '箭步蹲', 'weight', { w: 10, s: 3, r: 12 }],
@@ -70,7 +70,7 @@ const BUILTIN = [
   ['hanging_leg_raise', 'abs', '悬垂举腿', 'body', { s: 3, r: 12, w: 0 }],
   ['ab_wheel', 'abs', '健腹轮', 'body', { s: 3, r: 10, w: 0 }],
   ['russian_twist', 'abs', '俄罗斯转体', 'body', { s: 3, r: 20, w: 5 }],
-  ['machine_crunch', 'abs', '器械卷腹', 'weight', { w: 25, s: 3, r: 15 }],
+  ['machine_crunch', 'abs', '器械卷腹', 'weight', { w: 26.25, s: 3, r: 15 }],
 
   ['back_ext', 'lower', '山羊挺身', 'body', { s: 3, r: 15, w: 0 }],
   ['machine_back_ext', 'lower', '器械背伸展', 'weight', { w: 30, s: 3, r: 15 }],
@@ -87,6 +87,16 @@ const BUILTIN = [
   ['stair', 'cardio', '爬楼机', 'cardio', { t: 20, lv: 6 }, { lv: '档位' }],
   ['jump_rope', 'cardio', '跳绳', 'cardio', { t: 10 }, { lv: '次/分' }],
 ];
+
+// Pin-loaded machines and cable stacks: the gym's plates are 3.75 kg each.
+const MACHINE_STEP = 3.75;
+const MACHINES = new Set([
+  'lat_pulldown', 'seated_row', 'assisted_pullup', 'straight_arm',
+  'machine_press', 'pec_deck', 'cable_fly',
+  'machine_shoulder_press', 'cable_lateral', 'rear_delt', 'face_pull',
+  'leg_press', 'leg_ext', 'leg_curl', 'abduction',
+  'pushdown', 'machine_crunch', 'machine_back_ext',
+]);
 
 const TYPES = {
   weight: { name: '器械 / 自由重量', fields: ['w', 's', 'r'] },
@@ -171,7 +181,10 @@ const num = v => (v === null || v === undefined || v === '' || Number.isNaN(Numb
 const round = v => Math.round(v * 100) / 100;
 
 function exercises() {
-  const list = BUILTIN.map(([id, group, name, type, defaults, x]) => ({ id, group, name, type, defaults, x: x || {}, builtin: true }));
+  const list = BUILTIN.map(([id, group, name, type, defaults, x]) => ({
+    id, group, name, type, defaults, builtin: true,
+    x: { ...(MACHINES.has(id) ? { step: MACHINE_STEP } : {}), ...(x || {}) },
+  }));
   return list.concat(db.custom.map(c => ({ ...c, x: c.x || {} })));
 }
 function exById(id) {
@@ -183,7 +196,7 @@ function defaultsOf(ex) {
 
 function fieldDef(ex, k) {
   switch (k) {
-    case 'w': return { label: ex.x.w || (ex.type === 'body' ? '附加重量' : '重量'), unit: 'kg', step: 2.5 };
+    case 'w': return { label: ex.x.w || (ex.type === 'body' ? '附加重量' : '重量'), unit: 'kg', step: ex.x.step || 2.5 };
     case 's': return { label: '组数', unit: '组', step: 1 };
     case 'r': return { label: '每组次数', unit: '次', step: 1 };
     case 't': return ex.type === 'hold' ? { label: '每组时长', unit: '秒', step: 5 } : { label: '时长', unit: '分钟', step: 1 };
@@ -389,7 +402,11 @@ function copyDay(from) {
 
 function openSheet(title, body, onReady) {
   $('#sheetTitle').textContent = title;
-  $('#sheetBody').innerHTML = body;
+  // Swap in a fresh body element so listeners bound by the previous sheet do not pile up.
+  const prev = $('#sheetBody');
+  const fresh = prev.cloneNode(false);
+  prev.replaceWith(fresh);
+  fresh.innerHTML = body;
   $('#sheetBody').scrollTop = 0;
   const s = $('#sheet'), b = $('#backdrop');
   s.classList.remove('hidden');

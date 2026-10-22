@@ -1,5 +1,5 @@
 // Network-first for the app shell so updates arrive quickly; cache fallback for offline use.
-const CACHE = 'fit-v2';
+const CACHE = 'fit-v3';
 const ASSETS = ['./', './index.html', './app.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
