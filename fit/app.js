@@ -98,6 +98,13 @@ const MACHINES = new Set([
   'pushdown', 'machine_crunch', 'machine_back_ext',
 ]);
 
+// Two alternating full-body workouts; the user can edit them in the 动作 tab (stored in db.plans).
+const PLAN_KEYS = ['A', 'B'];
+const DEFAULT_PLANS = {
+  A: { name: 'A 日', ex: ['machine_press', 'seated_row', 'leg_press', 'machine_crunch'] },
+  B: { name: 'B 日', ex: ['machine_shoulder_press', 'lat_pulldown', 'leg_curl', 'back_ext', 'preacher_curl'] },
+};
+
 const TYPES = {
   weight: { name: '器械 / 自由重量', fields: ['w', 's', 'r'] },
   body: { name: '自重', fields: ['s', 'r', 'w'] },
@@ -113,7 +120,7 @@ const UI_KEY = 'fitlog.ui';
 // Every entry and custom exercise carries `u` (last change, ms); deletions leave a tombstone
 // in `deleted` so cloud sync can merge two copies without bringing deleted rows back.
 function emptyDb() {
-  return { v: 1, logs: {}, custom: [], defs: {}, defsU: {}, deleted: {} };
+  return { v: 1, logs: {}, custom: [], defs: {}, defsU: {}, deleted: {}, plans: {} };
 }
 
 function loadDb() {
@@ -136,6 +143,7 @@ function normalize(d) {
     defs: d.defs || {},
     defsU: d.defsU || {},
     deleted: d.deleted || {},
+    plans: d.plans || {},
   };
 }
 
@@ -362,15 +370,74 @@ function renderToday() {
       </button>`;
     }
     html += '</div>';
-    const last = lastWorkoutBefore(d);
-    if (last) html += `<div style="margin-top:14px"><button class="btn soft" data-act="copyDay" data-date="${last}">再练一次 ${fmtShort(last)} 的动作</button></div>`;
+    html += planCards(d, true);
   } else {
+    const streak = streakBefore(d);
+    if (streak >= 3) html += `<div class="banner"><p>已经连续练了 <b>${streak} 天</b>。肌肉在休息时生长，今天可以休息，或者只做轻松的有氧和拉伸。</p></div>`;
     html += `<div class="empty"><div class="big">🏋️</div><div>${isToday ? '今天' : '这天'}还没有记录</div></div>
       <button class="btn primary" data-act="add">${ICON.plus.replace('<svg', '<svg width="22" height="22"')} 添加动作</button>`;
+    html += planCards(d, false);
     const last = lastWorkoutBefore(d);
     if (last) html += `<button class="btn soft" data-act="copyDay" data-date="${last}">照 ${fmtShort(last)} 的训练再练一次</button>`;
   }
   $('#view').innerHTML = html;
+}
+
+function getPlan(k) {
+  return db.plans[k] || DEFAULT_PLANS[k];
+}
+
+// Alternate A/B: suggest the plan not used in the latest workout that came from a plan.
+function nextPlan(date) {
+  const done = allEntries().filter(e => e.plan && e.date <= date);
+  const last = done[done.length - 1];
+  if (!last) return PLAN_KEYS[0];
+  return PLAN_KEYS[(PLAN_KEYS.indexOf(last.plan) + 1) % PLAN_KEYS.length];
+}
+
+// Consecutive training days ending on the day before `date`.
+function streakBefore(date) {
+  let n = 0;
+  for (let d = addDays(date, -1); (db.logs[d] || []).length; d = addDays(d, -1)) n++;
+  return n;
+}
+
+function planCards(d, compact) {
+  const rec = nextPlan(d);
+  if (compact) {
+    return `<div class="section-title">添加整套</div><div class="btns2">${PLAN_KEYS.map(k =>
+      `<button class="btn soft" data-act="addPlan" data-plan="${k}">${esc(getPlan(k).name)}</button>`).join('')}</div>`;
+  }
+  return `<div class="section-title">今天练哪套？</div><div class="card">${PLAN_KEYS.map(k => {
+    const p = getPlan(k);
+    return `<button class="row" data-act="addPlan" data-plan="${k}">
+      <span class="main"><div class="name">${esc(p.name)} ${k === rec ? '<span class="badge pr" style="margin-left:4px">推荐</span>' : ''}</div>
+      <div class="meta">${esc(p.ex.map(id => exById(id).name).join('、')) || '还没有动作'}</div></span>
+      <span class="chev">${ICON.chev}</span></button>`;
+  }).join('')}</div><p class="hint">点一下就把整套动作加进来，数字沿用每个动作上次的记录。计划可以在「动作」页修改。</p>`;
+}
+
+// Add the plan's exercises that are not on this day yet, prefilled with each one's latest numbers.
+function addPlan(k) {
+  const d = state.date;
+  const list = (db.logs[d] = db.logs[d] || []);
+  const have = new Set(list.map(e => e.ex));
+  let n = 0;
+  for (const exId of getPlan(k).ex) {
+    if (have.has(exId)) continue;
+    const ex = exById(exId);
+    const last = lastUpTo(exId, d);
+    const src = last || defaultsOf(ex);
+    const nums = {};
+    for (const f of TYPES[ex.type].fields) if (src[f] != null) nums[f] = src[f];
+    list.push({ ...nums, id: uid(), ts: Date.now() + n, u: Date.now(), ex: exId, plan: k });
+    have.add(exId);
+    n++;
+  }
+  if (!list.length) delete db.logs[d];
+  save();
+  render();
+  toast(n ? `已添加 ${getPlan(k).name} 的 ${n} 个动作，练完点开改数字` : '这些动作已经在列表里了');
 }
 
 function lastWorkoutBefore(d) {
@@ -424,10 +491,12 @@ function closeSheet() {
 }
 
 let pickerGroup = 'all';
-function openPicker() {
+let pickHandler = null;
+function openPicker(handler, title) {
+  pickHandler = handler || null;
   const body = `<input class="search" id="pickSearch" type="search" placeholder="搜索动作" autocomplete="off" />
     <div class="chips" id="pickChips"></div><div id="pickList"></div>`;
-  openSheet(`添加到 ${state.date === todayStr() ? '今天' : fmtShort(state.date)}`, body, el => {
+  openSheet(title || `添加到 ${state.date === todayStr() ? '今天' : fmtShort(state.date)}`, body, el => {
     const draw = () => {
       const q = $('#pickSearch').value.trim();
       $('#pickChips').innerHTML = [['all', '全部'], ['recent', '最近']].concat(GROUPS.map(g => [g[0], g[1]]))
@@ -574,7 +643,53 @@ function renderLib() {
   const chips = [['all', '全部']].concat(GROUPS.map(g => [g[0], g[1]]))
     .map(([id, n]) => `<button class="chip ${state.libGroup === id ? 'on' : ''}" data-act="libGroup" data-g="${id}">${n}</button>`).join('');
   $('#view').innerHTML = `<input class="search" id="libSearch" type="search" placeholder="搜索动作" autocomplete="off" value="${esc(state.libQ || '')}" />
-    <div class="chips">${chips}</div><div id="libList">${exerciseList(state.libQ || '', state.libGroup, 'exInfo')}</div>`;
+    <div class="chips">${chips}</div>
+    <div class="section-title">训练计划</div><div class="card">${PLAN_KEYS.map(k => {
+      const p = getPlan(k);
+      return `<button class="row" data-act="editPlan" data-plan="${k}"><span class="main"><div class="name">${esc(p.name)}</div>
+        <div class="meta">${esc(p.ex.map(id => exById(id).name).join('、')) || '还没有动作'}</div></span><span class="chev">${ICON.chev}</span></button>`;
+    }).join('')}</div>
+    <div id="libList">${exerciseList(state.libQ || '', state.libGroup, 'exInfo')}</div>`;
+}
+
+function savePlan(k, ex) {
+  db.plans[k] = { name: getPlan(k).name, ex, u: Date.now() };
+  save();
+}
+
+function openPlanEditor(k) {
+  const p = getPlan(k);
+  const rows = p.ex.map((id, i) => {
+    const ex = exById(id);
+    return `<div class="row"><span class="dot" style="background:${GROUP[ex.group]?.color || '#999'}"></span>
+      <span class="main"><div class="name">${esc(ex.name)}</div><div class="meta">${GROUP[ex.group]?.name || ''}</div></span>
+      <button class="linkbtn" data-pa="up" data-i="${i}" ${i ? '' : 'disabled style="opacity:.3"'}>上移</button>
+      <button class="linkbtn" style="color:var(--danger)" data-pa="rm" data-i="${i}">移除</button></div>`;
+  }).join('');
+  const body = `<div class="card">${rows || '<div class="empty">还没有动作</div>'}</div>
+    <div style="margin-top:14px"><button class="btn soft" data-pa="add">+ 添加动作</button>
+    <button class="btn" data-pa="reset">恢复默认</button></div>`;
+  openSheet(p.name, body, el => {
+    el.addEventListener('click', e => {
+      const b = e.target.closest('[data-pa]');
+      if (!b) return;
+      const ex = [...getPlan(k).ex];
+      const i = Number(b.dataset.i);
+      if (b.dataset.pa === 'rm') { ex.splice(i, 1); savePlan(k, ex); }
+      else if (b.dataset.pa === 'up' && i > 0) { [ex[i - 1], ex[i]] = [ex[i], ex[i - 1]]; savePlan(k, ex); }
+      else if (b.dataset.pa === 'reset') { if (!confirm(`把${p.name}恢复成默认动作？`)) return; savePlan(k, [...DEFAULT_PLANS[k].ex]); }
+      else if (b.dataset.pa === 'add') {
+        openPicker(id => {
+          const cur = [...getPlan(k).ex];
+          if (!cur.includes(id)) { cur.push(id); savePlan(k, cur); }
+          openPlanEditor(k);
+        }, `添加到 ${p.name}`);
+        return;
+      } else return;
+      render();
+      openPlanEditor(k);
+    });
+  });
 }
 
 function openExInfo(exId) {
@@ -852,7 +967,14 @@ function mergeDb(a, b) {
     defs,
     defsU,
     deleted,
+    plans: mergePlans(a.plans, b.plans),
   };
+}
+
+function mergePlans(a, b) {
+  const out = { ...b };
+  for (const [k, v] of Object.entries(a)) if (!out[k] || (v.u || 0) >= (out[k].u || 0)) out[k] = v;
+  return out;
 }
 
 // Key-sorted JSON so two equal documents compare equal regardless of insertion order.
@@ -936,7 +1058,9 @@ document.addEventListener('click', e => {
     case 'nextDay': state.date = addDays(state.date, 1); render(); break;
     case 'goToday': state.date = todayStr(); render(); break;
     case 'add': openPicker(); break;
-    case 'pick': openEditor(t.dataset.ex, null); break;
+    case 'pick': if (pickHandler) pickHandler(t.dataset.ex); else openEditor(t.dataset.ex, null); break;
+    case 'addPlan': addPlan(t.dataset.plan); break;
+    case 'editPlan': openPlanEditor(t.dataset.plan); break;
     case 'editEntry': openEditor((db.logs[state.date] || []).find(x => x.id === t.dataset.id)?.ex, t.dataset.id); break;
     case 'copyDay': copyDay(t.dataset.date); break;
     case 'hideInstall': ui.hideInstall = true; saveUi(); render(); break;
@@ -990,7 +1114,7 @@ document.addEventListener('input', e => {
   }
 });
 
-$('#fab').addEventListener('click', openPicker);
+$('#fab').addEventListener('click', () => openPicker());
 $('#sheetClose').addEventListener('click', closeSheet);
 $('#backdrop').addEventListener('click', closeSheet);
 document.querySelectorAll('#tabbar button').forEach(b => b.addEventListener('click', () => {
