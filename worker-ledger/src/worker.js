@@ -125,11 +125,11 @@ async function gemini(env, parts, timeoutMs) {
   });
   const text = await r.text();
   if (!r.ok) throw new HttpError(502, `Gemini HTTP ${r.status}: ${text.slice(0, 200)}`);
-  // Thinking models may put reasoning parts first, so the last text part is the answer.
+  // The answer can arrive split over several text parts; thought parts are skipped.
   let answer = '';
   try {
     const parts = JSON.parse(text).candidates[0].content.parts;
-    answer = parts.map(p => p.text).filter(Boolean).pop() || '';
+    answer = parts.filter(p => p.text && !p.thought).map(p => p.text).join('');
   } catch {
     throw new HttpError(502, '返回内容看不懂：' + text.slice(0, 200));
   }
