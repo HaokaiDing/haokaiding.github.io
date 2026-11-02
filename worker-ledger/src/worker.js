@@ -11,9 +11,11 @@
 //   POST /v1/ai/text    {text, source, currency, now}
 //   POST /v1/ai/category {merchant, amount, kind, currency}
 //   POST /v1/ai/review  {facts}
+//   POST /v1/quick      {image | text, source}  -> plain-text summary for a notification
 //
 // Secrets: PASSWORD (what the user types), API_TOKEN (long-lived token for scripts),
-// GEMINI_KEY, GEMINI_BASE (optional; empty = Google). Var: GEMINI_MODEL.
+// SHORTCUT_TOKEN (add-only, used by the iPhone shortcuts), GEMINI_KEY, GEMINI_BASE (optional;
+// empty = Google). Var: GEMINI_MODEL.
 const ALLOWED_ORIGINS = ['https://haokaiding.com', 'https://www.haokaiding.com'];
 const DOC_KEY = 'doc';
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -267,22 +269,155 @@ async function ai(kind, request, env, origin) {
   return json({ error: 'not found' }, 404, origin);
 }
 
-async function rates(url, env, origin) {
-  const base = /^[A-Z]{3}$/.test(url.searchParams.get('base') || '') ? url.searchParams.get('base') : 'AED';
+async function getRates(env, base) {
   const cacheKey = 'rates:' + base;
   const cached = await env.LEDGER.get(cacheKey, 'json');
-  if (cached && Date.now() - cached.fetched < 12 * 3600 * 1000) return json(cached, 200, origin);
+  if (cached && Date.now() - cached.fetched < 12 * 3600 * 1000) return cached;
   try {
     const r = await fetch(`https://open.er-api.com/v6/latest/${base}`, { signal: AbortSignal.timeout(10000) });
     const d = await r.json();
     if (d.result !== 'success') throw new Error('bad rates');
     const out = { base: d.base_code, rates: d.rates, updated: d.time_last_update_unix * 1000, fetched: Date.now() };
     await env.LEDGER.put(cacheKey, JSON.stringify(out));
-    return json(out, 200, origin);
+    return out;
   } catch {
-    if (cached) return json(cached, 200, origin);
-    return json({ error: '汇率服务暂时不可用' }, 502, origin);
+    return cached;
   }
+}
+
+async function rates(url, env, origin) {
+  const base = /^[A-Z]{3}$/.test(url.searchParams.get('base') || '') ? url.searchParams.get('base') : 'AED';
+  const out = await getRates(env, base);
+  return out ? json(out, 200, origin) : json({ error: '汇率服务暂时不可用' }, 502, origin);
+}
+
+/* ---------- Quick entries from iPhone shortcuts (Back Tap screenshot, bank SMS, dictation) ---------- */
+
+// Entries added here wait under `inbox:<id>` until a client upload contains them, so a client
+// that downloaded the document just before can't overwrite them away.
+const INBOX = 'inbox:';
+const TZ_OFFSET = 4 * 3600 * 1000; // the user is in the UAE (UTC+4, no DST)
+const pad2 = n => String(n).padStart(2, '0');
+const normKey = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}]/gu, '');
+
+function localNowText() {
+  const d = new Date(Date.now() + TZ_OFFSET);
+  const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getUTCDay()];
+  return `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())} ${day}`;
+}
+
+// "yyyy-MM-dd[ HH:mm]" in UAE time -> ms; date-only means noon; future dates are model mistakes.
+function parseLocalDate(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/.exec(String(s || '').trim());
+  if (!m) return null;
+  const t = Date.UTC(+m[1], +m[2] - 1, +m[3], m[4] ? +m[4] : 12, m[5] ? +m[5] : 0) - TZ_OFFSET;
+  return t <= Date.now() + 86400000 ? t : null;
+}
+
+async function inboxEntries(env) {
+  const { keys } = await env.LEDGER.list({ prefix: INBOX });
+  const vals = await Promise.all(keys.map(k => env.LEDGER.get(k.name, 'json')));
+  return vals.filter(Boolean);
+}
+
+function catLabel(id) {
+  return Object.fromEntries([...EXPENSE, ...INCOME])[id] || id;
+}
+
+async function quick(request, env) {
+  const text = (s, status = 200) => new Response(s, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  let b;
+  try {
+    b = await request.json();
+  } catch {
+    return text('记账失败：请求格式不对', 400);
+  }
+  const doc = (await env.LEDGER.get(DOC_KEY, 'json')) || { entries: {}, deleted: {}, settings: { home: 'AED' } };
+  const home = doc.settings?.home || 'AED';
+  const now = localNowText();
+  let rows;
+  try {
+    if (b.image) {
+      const image = String(b.image).replace(/\s+/g, '');
+      if (image.length > 7_000_000) return text('记账失败：截图太大', 400);
+      const out = await gemini(env, [{ inline_data: { mime_type: b.mime || 'image/jpeg', data: image } }, { text: receiptPrompt(home, now) }], 60000);
+      rows = out.entries;
+    } else if (String(b.text || '').trim()) {
+      const out = await gemini(env, [{ text: textPrompt(b.text, b.source === 'bank' ? 'bank' : 'note', home, now) }], 40000);
+      rows = out.entries;
+    } else {
+      return text('记账失败：没有收到截图或文字', 400);
+    }
+  } catch (e) {
+    return text('记账失败：' + (e.name === 'TimeoutError' ? 'Gemini 超时了' : e.message), 502);
+  }
+  rows = (Array.isArray(rows) ? rows : []).filter(r => parseFloat(r.amount) > 0);
+  if (!rows.length) return text(b.source === 'bank' ? '这条短信不是交易，没有记' : '没找到交易，没有记');
+
+  // A merchant you categorized before keeps that category; otherwise Gemini's guess.
+  const existing = [...Object.values(doc.entries || {}), ...(await inboxEntries(env))];
+  const learned = {};
+  for (const e of existing) {
+    const k = normKey(e.merchant);
+    if (k && (!learned[k] || e.date >= learned[k].date)) learned[k] = e;
+  }
+  const rateTable = await getRates(env, home);
+  const saved = [], skipped = [];
+  for (const r of rows) {
+    const kind = String(r.kind).toLowerCase() === 'income' ? 'income' : 'expense';
+    const ids = (kind === 'income' ? INCOME : EXPENSE).map(c => c[0]);
+    const merchant = String(r.merchant || '').trim();
+    const amount = Math.round(Math.abs(parseFloat(r.amount)) * 100) / 100;
+    const cur = String(r.currency || '').trim().toUpperCase();
+    const currency = /^[A-Z]{3}$/.test(cur) ? cur : home;
+    const date = parseLocalDate(r.date) || Date.now();
+    // The same amount within a day is most likely the same transaction seen twice
+    // (a screenshot of the SMS, or two banks notifying one card payment).
+    if (existing.some(e => e.currency === currency && Math.abs(e.amount - amount) < 0.01 && Math.abs(e.date - date) < 86400000)) {
+      skipped.push(`${merchant} ${amount} ${currency}`);
+      continue;
+    }
+    const hit = learned[normKey(merchant)];
+    const category = hit && hit.kind === kind ? hit.cat : ids.includes(r.category) ? r.category : kind === 'income' ? 'otherIncome' : 'other';
+    let rate = 1, rateHome = home;
+    if (currency !== home) {
+      const t = rateTable?.rates?.[currency];
+      if (t) rate = Math.round((1 / t) * 1e8) / 1e8;
+      else { rate = null; rateHome = ''; }
+    }
+    const now = Date.now();
+    const e = {
+      id: crypto.randomUUID().replace(/-/g, ''), amount, kind, cat: category, merchant,
+      note: String(r.note || '').trim(), date, created: now, currency, rate, rateHome, u: now,
+      via: b.image ? 'screenshot' : b.source === 'bank' ? 'sms' : 'voice',
+    };
+    await env.LEDGER.put(INBOX + e.id, JSON.stringify(e), { expirationTtl: 365 * 86400 });
+    existing.push(e);
+    saved.push(`${merchant || catLabel(category)} ${kind === 'income' ? '+' : ''}${amount} ${currency}（${catLabel(category)}）`);
+  }
+  const lines = [];
+  if (saved.length) lines.push(`已记 ${saved.length} 笔：` + saved.join('；'));
+  if (skipped.length) lines.push(`可能重复，没记：` + skipped.join('；'));
+  return text(lines.join('\n'));
+}
+
+async function storeDoc(env, data) {
+  // Inbox entries the upload doesn't know yet are folded in; the ones it already has are done.
+  const inbox = await inboxEntries(env);
+  for (const e of inbox) {
+    if (data.entries[e.id] || (data.deleted && data.deleted[e.id])) await env.LEDGER.delete(INBOX + e.id);
+    else data.entries[e.id] = e;
+  }
+  const text = JSON.stringify(data);
+  const updatedAt = new Date().toISOString();
+  // Keep the first version of each day for 90 days, so a bad sync can be rolled back.
+  const backupKey = 'backup:' + updatedAt.slice(0, 10);
+  if ((await env.LEDGER.get(backupKey)) === null) {
+    const prev = await env.LEDGER.get(DOC_KEY);
+    if (prev) await env.LEDGER.put(backupKey, prev, { expirationTtl: 90 * 86400 });
+  }
+  await env.LEDGER.put(DOC_KEY, text, { metadata: { updatedAt } });
+  return updatedAt;
 }
 
 export default {
@@ -293,6 +428,11 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
     if (path === '/v1/login' && request.method === 'POST') return login(request, env, origin);
+    if (path === '/v1/quick' && request.method === 'POST') {
+      // Shortcuts carry their own token, which can only add entries; the full tokens work too.
+      const ok = (env.SHORTCUT_TOKEN && (await sameSecret(bearer(request), env.SHORTCUT_TOKEN))) || (await authorized(request, env));
+      return ok ? quick(request, env) : new Response('记账失败：快捷指令的密钥不对', { status: 401 });
+    }
     if (!(await authorized(request, env))) return json({ error: 'unauthorized' }, 401, origin);
 
     if (path === '/v1/logout' && request.method === 'POST') {
@@ -303,7 +443,13 @@ export default {
     if (path === '/v1/data') {
       if (request.method === 'GET') {
         const { value, metadata } = await env.LEDGER.getWithMetadata(DOC_KEY);
-        return json({ data: value ? JSON.parse(value) : null, updatedAt: metadata?.updatedAt || null }, 200, origin);
+        let data = value ? JSON.parse(value) : null;
+        const inbox = await inboxEntries(env);
+        if (inbox.length) {
+          data = data || { v: 1, entries: {}, deleted: {}, settings: { home: 'AED', u: 0 }, reviews: {} };
+          for (const e of inbox) if (!data.entries[e.id] && !data.deleted?.[e.id]) data.entries[e.id] = e;
+        }
+        return json({ data, updatedAt: metadata?.updatedAt || null }, 200, origin);
       }
       if (request.method === 'PUT') {
         const text = await request.text();
@@ -315,14 +461,7 @@ export default {
           return json({ error: 'invalid json' }, 400, origin);
         }
         if (!data || typeof data !== 'object' || typeof data.entries !== 'object') return json({ error: 'invalid document' }, 400, origin);
-        const updatedAt = new Date().toISOString();
-        // Keep the first version of each day for 90 days, so a bad sync can be rolled back.
-        const backupKey = 'backup:' + updatedAt.slice(0, 10);
-        if ((await env.LEDGER.get(backupKey)) === null) {
-          const prev = await env.LEDGER.get(DOC_KEY);
-          if (prev) await env.LEDGER.put(backupKey, prev, { expirationTtl: 90 * 86400 });
-        }
-        await env.LEDGER.put(DOC_KEY, text, { metadata: { updatedAt } });
+        const updatedAt = await storeDoc(env, data);
         return json({ ok: true, updatedAt }, 200, origin);
       }
       return json({ error: 'method not allowed' }, 405, origin);
