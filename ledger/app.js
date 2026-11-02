@@ -502,6 +502,19 @@ function settingsView() {
 /* ---------- Sheets ---------- */
 
 let sheetState = null;
+
+// iOS keeps fixed elements on the layout viewport, so the on-screen keyboard covers a sheet's
+// bottom and pushes its top bar (取消 / 保存) off screen. Fit sheets to the visible viewport.
+if (window.visualViewport) {
+  const vv = window.visualViewport, root = document.documentElement.style;
+  const fit = () => {
+    root.setProperty('--vvh', vv.height + 'px');
+    root.setProperty('--kb', Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px');
+  };
+  vv.addEventListener('resize', fit);
+  vv.addEventListener('scroll', fit);
+  fit();
+}
 function openSheet(html, onMount) {
   const keep = sheetState;
   closeSheet(true);
@@ -589,7 +602,13 @@ function openEditor(id) {
     q('#edCur').addEventListener('change', () => { st.currency = q('#edCur').value; st.touched.currency = true; refresh(); });
     q('#edDate').addEventListener('change', () => { const t = new Date(q('#edDate').value).getTime(); if (t) { st.date = t; st.touched.date = true; } });
     q('#edQuick')?.addEventListener('input', () => applyQuick(sheet));
-    q('#edQuick')?.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); q('#edQuick').blur(); } });
+    // The keyboard's 完成 key saves when there's something to save (not while an IME is composing).
+    q('#edQuick')?.addEventListener('keydown', ev => {
+      if (ev.key !== 'Enter' || ev.isComposing || ev.keyCode === 229) return;
+      ev.preventDefault();
+      if (st.multi.length || parseFloat(q('#edAmount').value) > 0) saveEditor(sheet);
+      else q('#edQuick').blur();
+    });
     q('#edSave').addEventListener('click', () => saveEditor(sheet));
     q('#edDelete')?.addEventListener('click', () => {
       if (!confirm('删除这笔记录？')) return;

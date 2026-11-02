@@ -12,6 +12,8 @@
 //   POST /v1/ai/category {merchant, amount, kind, currency}
 //   POST /v1/ai/review  {facts}
 //   POST /v1/quick      {image | text, source}  -> plain-text summary for a notification
+//                       with confirm: true -> {msg, id?}; nothing is saved until
+//   POST /v1/quick/confirm {id}               -> plain-text summary
 //
 // Secrets: PASSWORD (what the user types), API_TOKEN (long-lived token for scripts),
 // SHORTCUT_TOKEN (add-only, used by the iPhone shortcuts), GEMINI_KEY, GEMINI_BASE (optional;
@@ -296,6 +298,7 @@ async function rates(url, env, origin) {
 // Entries added here wait under `inbox:<id>` until a client upload contains them, so a client
 // that downloaded the document just before can't overwrite them away.
 const INBOX = 'inbox:';
+const PENDING = 'pending:'; // entries shown to the user for confirmation, kept 30 min
 const TZ_OFFSET = 4 * 3600 * 1000; // the user is in the UAE (UTC+4, no DST)
 const pad2 = n => String(n).padStart(2, '0');
 const normKey = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}]/gu, '');
@@ -324,14 +327,17 @@ function catLabel(id) {
   return Object.fromEntries([...EXPENSE, ...INCOME])[id] || id;
 }
 
+const plain = (s, status = 200) => new Response(s, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+
 async function quick(request, env) {
-  const text = (s, status = 200) => new Response(s, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   let b;
   try {
     b = await request.json();
   } catch {
-    return text('记账失败：请求格式不对', 400);
+    return plain('记账失败：请求格式不对', 400);
   }
+  // With confirm the shortcut gets {msg, id} and shows msg in an alert; only an id means there is something to save.
+  const text = (s, status = 200) => (b.confirm ? Response.json({ msg: s }, { status }) : plain(s, status));
   const doc = (await env.LEDGER.get(DOC_KEY, 'json')) || { entries: {}, deleted: {}, settings: { home: 'AED' } };
   const home = doc.settings?.home || 'AED';
   const now = localNowText();
@@ -362,7 +368,7 @@ async function quick(request, env) {
     if (k && (!learned[k] || e.date >= learned[k].date)) learned[k] = e;
   }
   const rateTable = await getRates(env, home);
-  const saved = [], skipped = [];
+  const saved = [], skipped = [], fresh = [];
   for (const r of rows) {
     const kind = String(r.kind).toLowerCase() === 'income' ? 'income' : 'expense';
     const ids = (kind === 'income' ? INCOME : EXPENSE).map(c => c[0]);
@@ -391,14 +397,28 @@ async function quick(request, env) {
       note: String(r.note || '').trim(), date, created: now, currency, rate, rateHome, u: now,
       via: b.image ? 'screenshot' : b.source === 'bank' ? 'sms' : 'voice',
     };
-    await env.LEDGER.put(INBOX + e.id, JSON.stringify(e), { expirationTtl: 365 * 86400 });
+    fresh.push(e);
     existing.push(e);
     saved.push(`${merchant || catLabel(category)} ${kind === 'income' ? '+' : ''}${amount} ${currency}（${catLabel(category)}）`);
   }
-  const lines = [];
-  if (saved.length) lines.push(`已记 ${saved.length} 笔：` + saved.join('；'));
-  if (skipped.length) lines.push(`可能重复，没记：` + skipped.join('；'));
-  return text(lines.join('\n'));
+  const dupLine = skipped.length ? `可能重复，没记：` + skipped.join('；') : '';
+  if (b.confirm && fresh.length) {
+    const id = crypto.randomUUID().replace(/-/g, '');
+    await env.LEDGER.put(PENDING + id, JSON.stringify(fresh), { expirationTtl: 1800 });
+    return Response.json({ id, msg: [...saved, dupLine].filter(Boolean).join('\n') });
+  }
+  for (const e of fresh) await env.LEDGER.put(INBOX + e.id, JSON.stringify(e), { expirationTtl: 365 * 86400 });
+  return text([saved.length ? `已记 ${saved.length} 笔：` + saved.join('；') : '', dupLine].filter(Boolean).join('\n'));
+}
+
+async function confirmQuick(request, env) {
+  const { id } = await request.json().catch(() => ({}));
+  const key = PENDING + String(id || '').replace(/[^0-9a-f]/g, '');
+  const fresh = await env.LEDGER.get(key, 'json');
+  if (!fresh) return plain('没有记：确认超时了，请再来一次', 404);
+  for (const e of fresh) await env.LEDGER.put(INBOX + e.id, JSON.stringify(e), { expirationTtl: 365 * 86400 });
+  await env.LEDGER.delete(key);
+  return plain(`已记 ${fresh.length} 笔：` + fresh.map(e => `${e.merchant || catLabel(e.cat)} ${e.amount} ${e.currency}`).join('；'));
 }
 
 async function storeDoc(env, data) {
@@ -428,10 +448,11 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders(origin) });
     if (path === '/v1/login' && request.method === 'POST') return login(request, env, origin);
-    if (path === '/v1/quick' && request.method === 'POST') {
+    if ((path === '/v1/quick' || path === '/v1/quick/confirm') && request.method === 'POST') {
       // Shortcuts carry their own token, which can only add entries; the full tokens work too.
       const ok = (env.SHORTCUT_TOKEN && (await sameSecret(bearer(request), env.SHORTCUT_TOKEN))) || (await authorized(request, env));
-      return ok ? quick(request, env) : new Response('记账失败：快捷指令的密钥不对', { status: 401 });
+      if (!ok) return plain('记账失败：快捷指令的密钥不对', 401);
+      return path === '/v1/quick' ? quick(request, env) : confirmQuick(request, env);
     }
     if (!(await authorized(request, env))) return json({ error: 'unauthorized' }, 401, origin);
 
