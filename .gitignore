@@ -8,3 +8,7 @@ node_modules/
 .wrangler/
 **/.wrangler/
 .claude/
+
+# Local worker secrets for wrangler dev
+.dev.vars
+**/.dev.vars

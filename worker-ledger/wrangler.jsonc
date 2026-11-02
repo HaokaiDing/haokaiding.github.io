@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/wrangler.json",
+  "name": "haokaiding-ledger",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-01",
+  "vars": { "GEMINI_MODEL": "gemini-3.8-flash" },
+  "kv_namespaces": [
+    { "binding": "LEDGER", "id": "3b95cdda7e6c4adea0a7f6d31203f83c" }
+  ],
+  "routes": [
+    { "pattern": "ledger-sync.haokaiding.com", "custom_domain": true }
+  ]
+}
