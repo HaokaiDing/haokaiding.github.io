@@ -17,7 +17,9 @@
 //
 // Secrets: PASSWORD (what the user types), API_TOKEN (long-lived token for scripts),
 // SHORTCUT_TOKEN (add-only, used by the iPhone shortcuts), GEMINI_KEY, GEMINI_BASE (optional;
-// empty = Google). Var: GEMINI_MODEL.
+// empty = Google), GEMINI_BACKUP_KEY, GEMINI_BACKUP_BASE (optional second relay).
+// Vars: GEMINI_MODEL, GEMINI_BACKUP_MODEL (defaults to GEMINI_MODEL).
+// /v1/ai/*?route=main|backup pins one relay, for testing.
 const ALLOWED_ORIGINS = ['https://haokaiding.com', 'https://www.haokaiding.com'];
 const DOC_KEY = 'doc';
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -104,19 +106,68 @@ async function login(request, env, origin) {
 
 /* ---------- Gemini ---------- */
 
-function geminiEndpoint(env) {
-  let base = (env.GEMINI_BASE || '').trim() || 'https://generativelanguage.googleapis.com';
-  base = base.replace(/\/+$/, '').replace(/\/v1(beta)?$/, '');
-  return `${base}/v1beta/models/${env.GEMINI_MODEL || 'gemini-3.8-flash'}:generateContent`;
+// The relays are sometimes slow for a while. If the main one has not answered after HEDGE_MS
+// (or fails), the same request also goes to the backup relay, and whichever answers first wins.
+const HEDGE_MS = 12000;
+
+function geminiRoutes(env, only) {
+  const routes = [];
+  const add = (name, key, base, model) => {
+    if (!(key || '').trim()) return;
+    base = (base || '').trim() || 'https://generativelanguage.googleapis.com';
+    base = base.replace(/\/+$/, '').replace(/\/v1(beta)?$/, '');
+    routes.push({ name, key: key.trim(), url: `${base}/v1beta/models/${model || 'gemini-3.8-flash'}:generateContent` });
+  };
+  add('main', env.GEMINI_KEY, env.GEMINI_BASE, env.GEMINI_MODEL);
+  add('backup', env.GEMINI_BACKUP_KEY, env.GEMINI_BACKUP_BASE, env.GEMINI_BACKUP_MODEL || env.GEMINI_MODEL);
+  return only ? routes.filter(r => r.name === only) : routes;
 }
 
-async function gemini(env, parts, timeoutMs) {
-  if (!env.GEMINI_KEY) throw new HttpError(503, '服务器还没配置 Gemini key');
-  const url = geminiEndpoint(env);
+// opts.only = 'main' | 'backup' forces one relay (used to test each one).
+async function gemini(env, parts, timeoutMs, opts = {}) {
+  const routes = geminiRoutes(env, opts.only);
+  if (!routes.length) throw new HttpError(503, '服务器还没配置 Gemini key');
+  const deadline = AbortSignal.timeout(timeoutMs);
+  const hedgeMs = Math.min(HEDGE_MS, timeoutMs * 0.4);
+  return new Promise((resolve, reject) => {
+    const controllers = [];
+    const errors = [];
+    let started = 0, done = false, timer;
+    const settle = () => { done = true; clearTimeout(timer); controllers.forEach(c => c.abort()); };
+    const start = () => {
+      if (done || started >= routes.length || deadline.aborted) return;
+      const route = routes[started++];
+      const c = new AbortController();
+      controllers.push(c);
+      geminiOnce(route, parts, AbortSignal.any([deadline, c.signal])).then(out => {
+        if (done) return;
+        settle();
+        resolve(out);
+      }, e => {
+        if (done) return;
+        errors.push(e);
+        console.log(`gemini ${route.name} failed: ${e.name} ${e.message}`);
+        if (started < routes.length && !deadline.aborted) { clearTimeout(timer); start(); return; }
+        if (errors.length < started) return; // another relay is still working on it
+        settle();
+        if (errors.every(x => x.name === 'TimeoutError' || x.name === 'AbortError')) {
+          const t = new Error('timeout'); t.name = 'TimeoutError'; reject(t);
+        } else {
+          reject(errors.find(x => x.name !== 'TimeoutError' && x.name !== 'AbortError'));
+        }
+      });
+    };
+    start();
+    if (routes.length > 1) timer = setTimeout(start, hedgeMs);
+  });
+}
+
+async function geminiOnce(route, parts, signal) {
+  const url = route.url;
   const google = new URL(url).host === 'generativelanguage.googleapis.com';
   const headers = { 'Content-Type': 'application/json' };
-  if (google) headers['x-goog-api-key'] = env.GEMINI_KEY.trim();
-  else headers.Authorization = 'Bearer ' + env.GEMINI_KEY.trim();
+  if (google) headers['x-goog-api-key'] = route.key;
+  else headers.Authorization = 'Bearer ' + route.key;
   const r = await fetch(url, {
     method: 'POST',
     headers,
@@ -125,7 +176,7 @@ async function gemini(env, parts, timeoutMs) {
       // Thinking tokens count toward maxOutputTokens on Gemini 3, so leave headroom.
       generationConfig: { responseMimeType: 'application/json', temperature: 0, maxOutputTokens: 4096 },
     }),
-    signal: AbortSignal.timeout(timeoutMs),
+    signal,
   });
   const text = await r.text();
   if (!r.ok) throw new HttpError(502, `Gemini HTTP ${r.status}: ${text.slice(0, 200)}`);
@@ -240,25 +291,27 @@ async function ai(kind, request, env, origin) {
   }
   const currency = /^[A-Z]{3}$/.test(b.currency || '') ? b.currency : 'AED';
   const now = String(b.now || new Date().toISOString()).slice(0, 40);
+  const r = new URL(request.url).searchParams.get('route');
+  const opts = r === 'main' || r === 'backup' ? { only: r } : {};
   try {
     if (kind === 'receipt') {
       if (!b.image || b.image.length > 7_000_000) return json({ error: '图片太大或为空' }, 400, origin);
       const mime = /^image\/(jpeg|png|webp|heic)$/.test(b.mime || '') ? b.mime : 'image/jpeg';
-      const out = await gemini(env, [{ inline_data: { mime_type: mime, data: b.image } }, { text: receiptPrompt(currency, now) }], 60000);
+      const out = await gemini(env, [{ inline_data: { mime_type: mime, data: b.image } }, { text: receiptPrompt(currency, now) }], 60000, opts);
       return json({ entries: Array.isArray(out.entries) ? out.entries : [] }, 200, origin);
     }
     if (kind === 'text') {
-      const out = await gemini(env, [{ text: textPrompt(b.text || '', b.source, currency, now) }], 40000);
+      const out = await gemini(env, [{ text: textPrompt(b.text || '', b.source, currency, now) }], 40000, opts);
       return json({ entries: Array.isArray(out.entries) ? out.entries : [] }, 200, origin);
     }
     if (kind === 'category') {
       const k = b.kind === 'income' ? 'income' : 'expense';
-      const out = await gemini(env, [{ text: categoryPrompt(b.merchant || '', b.amount, k, currency) }], 15000);
+      const out = await gemini(env, [{ text: categoryPrompt(b.merchant || '', b.amount, k, currency) }], 25000, opts);
       const ids = (k === 'income' ? INCOME : EXPENSE).map(c => c[0]);
       return json({ category: ids.includes(out.category) ? out.category : k === 'income' ? 'otherIncome' : 'other' }, 200, origin);
     }
     if (kind === 'review') {
-      const out = await gemini(env, [{ text: reviewPrompt(b.facts || {}) }], 45000);
+      const out = await gemini(env, [{ text: reviewPrompt(b.facts || {}) }], 45000, opts);
       return json({
         title: String(out.title || ''),
         highlights: Array.isArray(out.highlights) ? out.highlights.filter(Boolean).map(String) : [],

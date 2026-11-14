@@ -1,21 +1,27 @@
 #!/bin/sh
 # Sets the ledger worker's secrets without printing them. Run it yourself:
 #   worker-ledger/set-secrets.sh [path/to/.env] [PREFIX]
+#   worker-ledger/set-secrets.sh --gemini-only [path/to/.env] [PREFIX]   (keeps the password)
 # 1. asks for the login password (typed twice, hidden) -> PASSWORD
 # 2. copies the Gemini relay settings from a .env (default: the short-drama project's,
-#    PREFIX defaults to YUNWU -> YUNWU_BASE / YUNWU_API_KEY) -> GEMINI_BASE / GEMINI_KEY
+#    PREFIX defaults to YUNWU -> YUNWU_BASE / YUNWU_API_KEY) -> GEMINI_BASE / GEMINI_KEY,
+#    and the backup relay (YUNWU_BACKUP_BASE / YUNWU_BACKUP_API_KEY) -> GEMINI_BACKUP_BASE / GEMINI_BACKUP_KEY
 set -eu
 cd "$(dirname "$0")"
+GEMINI_ONLY=0
+if [ "${1:-}" = "--gemini-only" ]; then GEMINI_ONLY=1; shift; fi
 ENV_FILE=${1:-"$HOME/Documents/ChatGPT/ai 短剧/videoclaw/.env"}
 PREFIX=${2:-YUNWU}
 put() { printf '%s' "$2" | npx -y wrangler@4 secret put "$1" >/dev/null && echo "✓ $1 set"; }
 
-stty -echo
-printf '记账登录密码: '; read -r P1; echo
-printf '再输一次: '; read -r P2; echo
-stty echo
-[ -n "$P1" ] && [ "$P1" = "$P2" ] || { echo "✗ 两次不一样或为空"; exit 1; }
-put PASSWORD "$P1"
+if [ "$GEMINI_ONLY" = 0 ]; then
+  stty -echo
+  printf '记账登录密码: '; read -r P1; echo
+  printf '再输一次: '; read -r P2; echo
+  stty echo
+  [ -n "$P1" ] && [ "$P1" = "$P2" ] || { echo "✗ 两次不一样或为空"; exit 1; }
+  put PASSWORD "$P1"
+fi
 
 value() { grep -E "^$1=" "$ENV_FILE" | tail -1 | cut -d= -f2- | sed -e 's/^["'\'']//' -e 's/["'\'']$//'; }
 KEY=$(value "${PREFIX}_API_KEY")
@@ -24,4 +30,11 @@ if [ -n "$KEY" ]; then
   put GEMINI_BASE "$(value "${PREFIX}_BASE")"
 else
   echo "✗ ${PREFIX}_API_KEY not found in $ENV_FILE; Gemini features stay off"
+fi
+BKEY=$(value "${PREFIX}_BACKUP_API_KEY")
+if [ -n "$BKEY" ]; then
+  put GEMINI_BACKUP_KEY "$BKEY"
+  put GEMINI_BACKUP_BASE "$(value "${PREFIX}_BACKUP_BASE")"
+else
+  echo "– ${PREFIX}_BACKUP_API_KEY not found; no backup relay"
 fi
