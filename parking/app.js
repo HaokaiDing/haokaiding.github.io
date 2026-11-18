@@ -149,6 +149,9 @@ function step(dt) {
     drive *= dir * (1 - S.brake);
   }
   const resist = S.brake * 3 + (dir ? 0 : 0.25) + (S.gear === 'P' ? 8 : 0);
+  // Easing off the brake: the car picks up its creep speed within about half a second. Only the
+  // surplus over the brake is boosted, so the speed each brake position settles at is unchanged.
+  if (dir && S.v * dir >= 0 && drive * dir > resist && !(K.gas || PAD.gas > 0.05)) drive = dir * (resist + 3 * (drive * dir - resist));
   if (Math.abs(S.v) < 0.004) {
     S.v = Math.abs(drive) > resist ? (drive - Math.sign(drive) * resist) * dt : 0;
   } else {
