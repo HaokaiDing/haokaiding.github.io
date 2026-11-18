@@ -303,12 +303,18 @@ function coach() {
   if (stopped && S.brake > 0.3 && !(S.phase % 2 === 0 && allIn)) return '松开刹车，车会自己慢慢走；踩刹车就停';
 
   if (S.phase % 2 === 0) {
-    if (S.ph.moved < 0.05) return `倒车中 · 到地面蓝色虚线（打死点）时向${sideR}打死`;
+    // Right reverse: the control line reaches the lower edge of the left door mirror at the turn-in
+    // point. On the left reverse that spot is hidden by the door, so the ground marker is used.
+    if (S.ph.moved < 0.05)
+      return mir ? `倒车中 · 到地面蓝色虚线（打死点）时向${sideR}打死` : `倒车中 · 看左后视镜：下缘贴到黄色控制线时向${sideR}打死`;
     if (Math.abs(a) < 8 && S.y > 0.5) {
       const d = x - (RMIN + turnLead());
       if (st > 500) return '保持打死，继续后退';
-      if (d > 0.3) return `直线后退，距打死点还有 ${d.toFixed(1)} m`;
-      if (d > -0.5) return `到点了，向${sideR}打死（${keyR}）`;
+      if (d > 0.3)
+        return mir
+          ? `直线后退，距打死点还有 ${d.toFixed(1)} m`
+          : `直线后退 · 左后视镜下缘贴到黄色控制线就向${sideR}打死（还差 ${d.toFixed(1)} m）`;
+      if (d > -0.5) return mir ? `到点了，向${sideR}打死（${keyR}）` : `左后视镜下缘贴线了，向${sideR}打死（${keyR}）`;
       return `已过打死点 ${(-d).toFixed(1)} m，入库会偏，建议重来`;
     }
     if (a >= 8 && a < 82) {
@@ -780,7 +786,9 @@ function buildCar() {
   carParts.glass = [];
   const doorMirror = (sg, tex) => {
     const g = new THREE.Group();
-    g.position.set(1.98, 1.04, sg * (HW + 0.11));
+    // Placed so that, from the driver's eye, the lower edge of the left housing meets the control
+    // line exactly at the turn-in point of the reverse (rear axle RMIN + lead from the bay centre).
+    g.position.set(1.8, 0.991, sg * (HW + 0.11));
     g.rotation.y = sg * 10 * DEG;
     const shellG = new THREE.SphereGeometry(0.1, 20, 14);
     shellG.scale(0.5, 0.62, 1.05);
@@ -839,7 +847,7 @@ function buildCameras() {
   const side = (sg) => {
     const c = new THREE.PerspectiveCamera(30, 640 / 412, 0.05, 400);
     c.rotation.order = 'YXZ';
-    c.position.set(1.9, 1.1, sg * (HW + 0.15));
+    c.position.set(1.75, 1.05, sg * (HW + 0.15));
     c.rotation.y = Math.PI / 2 + sg * 5 * DEG; // look back, toed out
     c.rotation.x = -15 * DEG;
     car.add(c);
