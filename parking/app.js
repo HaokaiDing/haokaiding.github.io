@@ -133,8 +133,11 @@ function step(dt) {
   S.steer = clamp(S.steer, -CAR.lock, CAR.lock);
 
   // automatic gearbox: in D or R the car creeps at idle; the brake pedal is what holds it
-  const wantBrake = S.over ? 1 : Math.max(K.brake ? 1 : 0, PAD.brake);
-  S.brake += clamp(wantBrake - S.brake, -5 * dt, 4 * dt);
+  // Trigger travel is spread out: the first 80% covers the light braking that trims creep speed
+  // (the car stops at about 80%), the last 20% is the firm stop. The key ramps in gently.
+  const padBrake = PAD.brake <= 0.8 ? 0.3 * Math.pow(PAD.brake / 0.8, 1.3) : 0.3 + (PAD.brake - 0.8) * 3.5;
+  const wantBrake = S.over ? 1 : Math.max(K.brake ? 1 : 0, padBrake);
+  S.brake += clamp(wantBrake - S.brake, -5 * dt, (K.brake ? 1.6 : 4) * dt);
   S.braking = S.brake > 0.05;
   const dir = gearDir();
   let drive = 0;
@@ -1219,7 +1222,7 @@ function padDiagram() {
   <ul>
     <li><b>左摇杆</b>推到边上绕圈，就是在转方向盘：摇杆转一圈，方向盘转一圈，顺时针向右，一圈半打死。松开摇杆方向盘停在原处，往回转或按下左摇杆（L3）回正。十字键也能慢慢转。</li>
     <li><b>换挡</b>要先踩住 LT。挡位顺序 P ⇄ R ⇄ N ⇄ D：起步倒车是踩 LT、按一下 RB 到 R、松开 LT。</li>
-    <li><b>LT 轻踩</b>可以把车速压在怠速以下，踩到三成左右停住。出线或不合格时手柄会震动。</li>
+    <li><b>LT 轻踩</b>可以把车速压在怠速以下，越踩越慢，踩到八成左右停住。出线或不合格时手柄会震动。</li>
   </ul>`;
 }
 function showPadGuide() {
