@@ -49,6 +49,7 @@ assert.match(
 );
 assert.doesNotMatch(consoleHero[0].match(/<p class="hero-status">[\s\S]*?<\/p>/)?.[0] ?? '', /B\.Eng\.|Shenzhen Technology University/);
 for (const researchInterest of [
+  /robot imagination/,
   /underactuated manipulation/,
   /aerial robotics/,
   /deployment-focused robot learning/,
@@ -66,8 +67,10 @@ assert.match(
 assert.match(heroAcknowledgment[0], /guidance|mentorship/);
 assert.match(heroAcknowledgment[0], /research/);
 assert.match(heroAcknowledgment[0], /graduate application/);
-assert.match(consoleHero[0], /I am (?:also )?an X Scholar/);
-assert.match(consoleHero[0], /X Scholar[\s\S]*through September 2026/);
+assert.match(consoleHero[0], /I am advised by <a href="https:\/\/mbzuai\.ac\.ae\/study\/faculty\/gregory-chirikjian\/"[^>]*>Prof\. Gregory Chirikjian<\/a>/);
+assert.match(consoleHero[0], /I was an X Scholar/);
+assert.match(consoleHero[0], /X Scholar[\s\S]*from 2023 to 2026, advised by[\s\S]*Prof\. Wenzeng Zhang/);
+assert.doesNotMatch(consoleHero[0], /through September 2026/);
 assert.match(consoleHero[0], /Tsinghua University/);
 assert.match(consoleHero[0], /Shenzhen X-Institute/);
 assert.doesNotMatch(consoleHero[0], /class="intro-kicker"|# Robotics|I am an M\.Sc\. student in Robotics at/);
