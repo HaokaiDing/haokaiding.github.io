@@ -1178,6 +1178,45 @@ function showResult() {
     </div>`);
 }
 
+// Labelled controller drawing for the help card.
+function padDiagram() {
+  const L = (y, name, what) => `<text x="150" y="${y}" text-anchor="end"><tspan class="k">${name}</tspan>　${what}</text>`;
+  const R = (y, name, what) => `<text x="550" y="${y}"><tspan class="k">${name}</tspan>　${what}</text>`;
+  const face = (x, y, c, t) => `<circle cx="${x}" cy="${y}" r="11" fill="#1d2025" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" fill="${c}" font-weight="700" font-size="12">${t}</text>`;
+  return `<svg class="pad" viewBox="0 0 700 292" role="img" aria-label="手柄按键图示">
+    <g fill="none" stroke="#6b727c" stroke-width="1.2">
+      <path d="M156 36 H236 V48"/><path d="M156 70 H224"/><path d="M156 124 H243"/><path d="M156 192 H282"/>
+      <path d="M156 262 H320 V136"/>
+      <path d="M544 36 H464 V48"/><path d="M544 70 H476"/><path d="M544 116 H470"/><path d="M544 138 H447 V146"/><path d="M544 192 H420"/>
+      <path d="M544 262 H380 V136"/>
+    </g>
+    <path d="M210 88 Q350 70 490 88 Q532 96 540 170 Q546 236 510 240 Q486 240 460 205 H240 Q214 240 190 240 Q154 236 160 170 Q168 96 210 88 Z" fill="#2a2e35" stroke="#4a505a" stroke-width="2"/>
+    <rect x="236" y="48" width="48" height="20" rx="7" fill="#f2c230"/><rect x="416" y="48" width="48" height="20" rx="7" fill="#f2c230"/>
+    <rect x="224" y="72" width="74" height="13" rx="6" fill="#3a3f48" stroke="#f2c230" stroke-width="2"/><rect x="402" y="72" width="74" height="13" rx="6" fill="#3a3f48" stroke="#f2c230" stroke-width="2"/>
+    <g font-size="10" font-weight="700" text-anchor="middle"><text x="260" y="62" fill="#1a1500">LT</text><text x="440" y="62" fill="#1a1500">RT</text><text x="261" y="82.5" fill="#f2c230">LB</text><text x="439" y="82.5" fill="#f2c230">RB</text></g>
+    <circle cx="255" cy="128" r="24" fill="#1d2025" stroke="#f2c230" stroke-width="2"/><circle cx="255" cy="128" r="13" fill="#3a3f48"/>
+    <path d="M247 128 H228 M224 128 l7 -5 v10 z M263 128 H282 M286 128 l-7 -5 v10 z" stroke="#f2c230" stroke-width="2" fill="#f2c230"/>
+    <circle cx="405" cy="184" r="24" fill="#1d2025" stroke="#f2c230" stroke-width="2"/><circle cx="405" cy="184" r="13" fill="#3a3f48"/>
+    <path d="M286 172 h18 v12 h12 v18 h-12 v12 h-18 v-12 h-12 v-18 h12 z" fill="#1d2025" stroke="#6b727c" stroke-width="1.5"/>
+    <path d="M276 193 l8 -6 v12 z M314 193 l-8 -6 v12 z" fill="#f2c230"/>
+    ${face(445, 106, '#e8c33a', 'Y')}${face(423, 128, '#4f9dff', 'X')}${face(467, 128, '#ff5a4f', 'B')}${face(445, 150, '#49c774', 'A')}
+    <rect x="311" y="122" width="18" height="11" rx="5" fill="#1d2025" stroke="#6b727c"/><rect x="371" y="122" width="18" height="11" rx="5" fill="#1d2025" stroke="#6b727c"/>
+    <g font-size="13.5" fill="#e9ebee">
+      ${L(40, 'LT', '刹车（线性）')}${L(74, 'LB', '挡位往 P')}${L(128, '左摇杆', '方向盘')}${L(196, '十字键 ← →', '慢转并停住')}${L(266, 'Back', '切换视角')}
+      ${R(40, 'RT', '油门')}${R(74, 'RB', '挡位往 D')}${R(120, 'X / B', '看左镜 / 右镜')}${R(142, 'Y / A', '回头 / 关弹窗')}${R(196, '右摇杆', '转头')}${R(266, 'Start', '重来')}
+    </g>
+  </svg>
+  <ul>
+    <li><b>左摇杆</b>的位置就是方向盘的位置：推到底是打死，松开自动回正。想让方向盘停在某个角度，用十字键。</li>
+    <li><b>换挡</b>要先踩住 LT。挡位顺序 P ⇄ R ⇄ N ⇄ D：起步倒车是踩 LT、按一下 RB 到 R、松开 LT。</li>
+    <li><b>LT 轻踩</b>可以把车速压在怠速以下，踩到三成左右停住。出线或不合格时手柄会震动。</li>
+  </ul>`;
+}
+function showPadGuide() {
+  showModal(`<h2>手柄操作</h2><p>已识别到手柄，键盘和触屏仍然可以同时用。</p>${padDiagram()}
+    <div class="actions"><button class="btn" data-act="help">全部说明</button><button class="btn primary" data-act="close">开始（A）</button></div>`);
+}
+
 function showHelp() {
   showModal(`
     <h2>倒车入库模拟</h2>
@@ -1198,13 +1237,7 @@ function showHelp() {
       <li><kbd>Q</kbd> 左打死，<kbd>E</kbd> 右打死，<kbd>X</kbd> 回正</li>
     </ul>
     <h3>手柄</h3>
-    <ul>
-      <li>左摇杆转方向盘（推到底就是打死，松开回正）；十字键左右是慢慢转、转完停在那里</li>
-      <li><kbd>LT</kbd> 刹车、<kbd>RT</kbd> 油门，都是线性的，轻踩刹车可以压住车速</li>
-      <li><kbd>LB</kbd> / <kbd>RB</kbd> 换挡（P ⇄ R ⇄ N ⇄ D），要踩住刹车</li>
-      <li>右摇杆转头；按住 <kbd>X</kbd> 看左镜、<kbd>B</kbd> 看右镜、<kbd>Y</kbd> 回头</li>
-      <li><kbd>Back</kbd> 切视角，<kbd>Start</kbd> 重来；出线时手柄会震动</li>
-    </ul>
+    ${padDiagram()}
     <h3>看哪里</h3>
     <ul>
       <li>在画面上拖动可以转头，<kbd>F</kbd> 或双击回到正前方</li>
@@ -1223,6 +1256,7 @@ function showHelp() {
 $('modal').addEventListener('click', (e) => {
   const act = e.target.dataset && e.target.dataset.act;
   if (e.target === $('modal') || act === 'close') return hideModal();
+  if (act === 'help') return showHelp();
   if (act === 'again') reset();
   else if (act === 'practice' || act === 'exam') setMode(act);
 });
@@ -1394,7 +1428,11 @@ function pollPad() {
   if (edge[9]) reset();
   syncPedals();
 }
-window.addEventListener('gamepadconnected', () => toast('手柄已连接：左摇杆转向 · LT 刹车 · RT 油门 · LB/RB 换挡', 'good'));
+window.addEventListener('gamepadconnected', () => {
+  // show the diagram the first time, unless that would interrupt a run
+  if (!S.started && !$('modal').classList.contains('show')) showPadGuide();
+  else toast('手柄已连接：左摇杆转向 · LT 刹车 · RT 油门 · LB/RB 换挡', 'good');
+});
 
 // drag on the scene to turn the head (cabin view)
 cv.addEventListener('pointerdown', (e) => {

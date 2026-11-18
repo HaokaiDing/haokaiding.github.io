@@ -185,7 +185,7 @@
     }
     #modal.show { display: grid; }
     .card {
-      width: min(520px, 100%);
+      width: min(640px, 100%);
       max-height: 90vh; overflow: auto;
       background: var(--panel);
       border: 1px solid var(--line);
@@ -208,6 +208,9 @@
     .card ul { margin: 6px 0 14px; padding-left: 20px; color: var(--muted); }
     .card li { margin: 4px 0; }
     .card h3 { font-size: 14px; margin: 14px 0 4px; }
+    .card svg.pad { display: block; width: 100%; height: auto; margin: 8px 0 4px; }
+    .card svg.pad .k { fill: #f2c230; font-weight: 700; }
+    .card b { color: var(--text); }
     .actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
     .actions .btn { padding: 9px 16px; }
     .actions .primary { background: var(--accent); color: #1a1500; border-color: transparent; font-weight: 700; }
