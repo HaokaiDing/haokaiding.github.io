@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="科目二倒车入库 3D 模拟练习：第一视角、真实场地尺寸、后视镜、方向盘一圈半、考试评判。" />
+  <meta name="theme-color" content="#14171b" />
+  <title>倒车入库模拟</title>
+  <style>
+    :root {
+      --bg: #0f1114;
+      --panel: #171a1f;
+      --panel2: #20242a;
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #e9ebee;
+      --muted: #9aa1ab;
+      --accent: #f2c230;
+      --good: #35c26b;
+      --bad: #ff4d42;
+      --warn: #ffb020;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.4 -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+
+    .bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .bar h1 { font-size: 16px; margin: 0 4px 0 0; font-weight: 650; white-space: nowrap; }
+    .home { color: var(--muted); text-decoration: none; font-size: 18px; padding: 0 4px; }
+    .seg { display: inline-flex; background: var(--panel2); border-radius: 9px; padding: 2px; }
+    .seg button { white-space: nowrap; border: 0; background: transparent; padding: 5px 12px; border-radius: 7px; color: var(--muted); }
+    .seg button.on { background: var(--accent); color: #1a1500; font-weight: 650; }
+    .stat { background: var(--panel2); border-radius: 9px; padding: 5px 10px; white-space: nowrap; }
+    .stat.mono { font-variant-numeric: tabular-nums; }
+    .stat.over { color: var(--bad); }
+    #phase { color: var(--accent); font-weight: 600; }
+    .spacer { flex: 1; }
+    .btn { border: 1px solid var(--line); background: var(--panel2); border-radius: 9px; padding: 5px 10px; white-space: nowrap; }
+    .btn:hover { border-color: rgba(255, 255, 255, 0.25); }
+    .btn.off { color: var(--muted); }
+    .btn[disabled] { opacity: 0.4; cursor: default; }
+
+    #stage { position: relative; flex: 1; min-height: 0; touch-action: none; }
+    #cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+    #hint {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      padding: 0 6px;
+    }
+    #hint span {
+      background: rgba(12, 14, 17, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #hint span:empty { display: none; }
+
+    #toast {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      transform: translate(-50%, -50%) scale(0.96);
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      background: rgba(12, 14, 17, 0.9);
+      border: 1px solid var(--line);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      text-align: center;
+      max-width: 90%;
+    }
+    #toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    #toast.bad { color: #fff; background: rgba(200, 40, 32, 0.92); }
+    #toast.warn { color: #1a1200; background: rgba(255, 176, 32, 0.95); }
+    #toast.good { color: #04210f; background: rgba(53, 194, 107, 0.95); }
+
+    .hud { position: absolute; bottom: max(12px, env(safe-area-inset-bottom)); }
+    #wheelBox { left: 14px; width: 170px; text-align: center; }
+    #steerText {
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    #steerText.full { color: var(--accent); }
+    #wheel { width: 150px; height: 150px; display: block; margin: 0 auto; cursor: grab; touch-action: none; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55)); }
+    #wheel:active { cursor: grabbing; }
+    .quick { display: flex; gap: 6px; margin-top: 8px; }
+    .quick button {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: rgba(23, 26, 31, 0.88);
+      border-radius: 9px;
+      padding: 7px 0;
+      font-size: 12px;
+      touch-action: none;
+    }
+    .quick button:active { background: var(--accent); color: #1a1500; }
+
+    #right { right: 14px; width: 200px; }
+    #lookBox { margin: 0 0 8px; }
+    .quick button.on { background: var(--accent); color: #1a1500; }
+    #mini { position: absolute; display: none; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 4px; pointer-events: none; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5); }
+    #cv { cursor: grab; }
+    #gauges {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 10px;
+      align-items: center;
+      background: rgba(23, 26, 31, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+    }
+    #gear {
+      width: 40px; height: 40px; border-radius: 9px;
+      display: grid; place-items: center;
+      font-size: 22px; font-weight: 800;
+      background: #0c0d10; border: 1px solid var(--line);
+    }
+    #gear.r { color: var(--bad); }
+    #gear.d { color: var(--good); }
+    #speed { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    #speed small { font-size: 11px; color: var(--muted); font-weight: 500; }
+    #gauges label { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+    #gauges input { flex: 1; accent-color: var(--accent); min-width: 0; }
+    #pedals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pedal {
+      border: 1px solid var(--line);
+      background: rgba(23, 26, 31, 0.9);
+      border-radius: 12px;
+      padding: 13px 0;
+      font-size: 16px;
+      font-weight: 700;
+      touch-action: none;
+    }
+    .pedal small { display: block; font-size: 11px; font-weight: 500; color: var(--muted); }
+    .pedal.on { background: var(--accent); color: #1a1500; border-color: transparent; }
+    .pedal.on small { color: #4a3d00; }
+    #gearBox { margin: 0 0 8px; }
+    #gearBox button { font-weight: 700; font-size: 13px; }
+    #pedals { grid-template-columns: 1.5fr 1fr; }
+    #pBrake, #pGas { padding: 18px 0; }
+    #pBrake.on { background: var(--bad); color: #fff; }
+    #pBrake.on small { color: #ffd9d6; }
+
+    #modal {
+      position: fixed; inset: 0; display: none; place-items: center;
+      background: rgba(0, 0, 0, 0.6); z-index: 10; padding: 16px;
+    }
+    #modal.show { display: grid; }
+    .card {
+      width: min(520px, 100%);
+      max-height: 90vh; overflow: auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 22px 18px;
+      -webkit-user-select: text; user-select: text;
+    }
+    .card h2 { margin: 0 0 4px; font-size: 22px; }
+    .card h2.pass { color: var(--good); }
+    .card h2.fail { color: var(--bad); }
+    .card p { color: var(--muted); margin: 6px 0 12px; }
+    .card table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; }
+    .card td { padding: 7px 0; border-bottom: 1px solid var(--line); }
+    .card td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .card kbd {
+      display: inline-block; min-width: 22px; text-align: center;
+      background: var(--panel2); border: 1px solid var(--line); border-bottom-width: 2px;
+      border-radius: 6px; padding: 1px 6px; font: 12px ui-monospace, Menlo, monospace; color: var(--text);
+    }
+    .card ul { margin: 6px 0 14px; padding-left: 20px; color: var(--muted); }
+    .card li { margin: 4px 0; }
+    .card h3 { font-size: 14px; margin: 14px 0 4px; }
+    .actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+    .actions .btn { padding: 9px 16px; }
+    .actions .primary { background: var(--accent); color: #1a1500; border-color: transparent; font-weight: 700; }
+
+    @media (max-width: 720px) {
+      .bar { gap: 6px; padding: 6px 8px; }
+      .bar h1 { font-size: 15px; }
+      .btn, .stat, .seg button { padding: 4px 8px; font-size: 13px; }
+      .spacer { display: none; }
+      #wheelBox { left: 8px; width: 150px; }
+      #wheel { width: 132px; height: 132px; }
+      #right { right: 8px; width: 168px; }
+      #hint span { font-size: 14px; padding: 7px 12px; }
+    }
+    @media (max-height: 520px) {
+      .bar { flex-wrap: nowrap; overflow-x: auto; }
+      #lookBox { display: none !important; }
+      .bar h1, .home { display: none; }
+      #wheelBox { width: 132px; }
+      #wheel { width: 108px; height: 108px; }
+      .quick { margin-top: 4px; }
+      .quick button { padding: 4px 0; }
+      #gauges label { display: none; }
+      .pedal { padding: 8px 0; }
+      #pBrake, #pGas { padding: 8px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="/" title="回主页" aria-label="回主页">←</a>
+    <h1>倒车入库</h1>
+    <div class="seg" id="modeSeg">
+      <button data-mode="practice" class="on">练习</button>
+      <button data-mode="exam">考试</button>
+    </div>
+    <div class="stat" id="phase"></div>
+    <div class="stat mono" id="timer">0:00</div>
+    <div class="stat mono" id="score">100 分</div>
+    <div class="spacer"></div>
+    <button class="btn" id="viewBtn" title="V">视角：车内</button>
+    <button class="btn" id="aidBtn" title="H">辅助：开</button>
+    <button class="btn" id="voiceBtn">语音：开</button>
+    <button class="btn" id="resetBtn" title="退格键">重来</button>
+    <button class="btn" id="helpBtn">说明</button>
+  </header>
+
+  <main id="stage">
+    <canvas id="cv"></canvas>
+    <div id="hint"><span></span></div>
+    <div id="toast"></div>
+
+    <div class="hud" id="wheelBox">
+      <div id="steerText">回正</div>
+      <svg id="wheel" viewBox="-100 -100 200 200" aria-label="方向盘，可拖动旋转">
+        <g id="wheelG">
+          <circle r="84" fill="none" stroke="#17191d" stroke-width="18" />
+          <circle r="84" fill="none" stroke="#3a3e45" stroke-width="2" />
+          <circle r="93" fill="none" stroke="#000" stroke-opacity=".5" stroke-width="1" />
+          <path d="M-76 -6 L-30 -12 L-30 12 L-76 14 Z M76 -6 L30 -12 L30 12 L76 14 Z M-13 28 L13 28 L10 76 L-10 76 Z" fill="#1f2227" stroke="#33373d" stroke-width="1.5" />
+          <circle r="32" fill="#22252b" stroke="#3a3e45" stroke-width="2" />
+          <circle r="13" fill="#2f333a" />
+          <rect x="-6" y="-94" width="12" height="20" rx="3" fill="#f2c230" />
+        </g>
+      </svg>
+      <div class="quick">
+        <button id="qL">左打死<br />Q</button>
+        <button id="qC">回正<br />X</button>
+        <button id="qR">右打死<br />E</button>
+      </div>
+    </div>
+
+    <div id="mini"></div>
+
+    <div class="hud" id="right">
+      <div class="quick" id="lookBox">
+        <button id="lookL">看左镜<br />Z</button>
+        <button id="lookB">回头<br />B</button>
+        <button id="lookR">看右镜<br />C</button>
+      </div>
+      <div id="gauges">
+        <div id="gear">N</div>
+        <div id="speed">0.0 <small>km/h</small></div>
+        <label>怠速 <input id="vmax" type="range" min="0.3" max="1.5" step="0.1" value="0.8" /> <span id="vmaxText">2.9</span></label>
+      </div>
+      <div class="quick" id="gearBox">
+        <button data-gear="P">P<br />1</button>
+        <button data-gear="R">R<br />2</button>
+        <button data-gear="N">N<br />3</button>
+        <button data-gear="D">D<br />4</button>
+      </div>
+      <div id="pedals">
+        <button class="pedal" id="pBrake">刹车<small>S / 空格</small></button>
+        <button class="pedal" id="pGas">油门<small>W / ↑</small></button>
+      </div>
+    </div>
+  </main>
+
+  <div id="modal"><div class="card" id="card"></div></div>
+
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
