@@ -209,6 +209,7 @@ export function statsHtml(data) {
 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>visitor log · haokaiding.com</title>
+<link rel="icon" type="image/png" href="https://haokaiding.com/assets/images/favicon-haokai-line.png">
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>
 :root{--ink:#0f1c2e;--muted:#5a6b7b;--soft:#8595a4;--faint:#93a1b0;--accent:#12a07a;--up:#12a07a;--down:#e0564f;--surface:#fff;--line:#eef1f5;--hair:#f4f6f9;--land:#dde3ea}
 *{box-sizing:border-box}
