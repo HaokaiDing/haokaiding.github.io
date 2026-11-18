@@ -69,7 +69,7 @@ const S = {};
 const K = { gas: false, brake: false, left: false, right: false };
 const look = { yaw: 0, pitch: 0, glance: null, drag: null };
 // gamepad state, refreshed every frame by pollPad()
-const PAD = { on: false, gp: null, left: false, right: false, brake: 0, gas: 0, steer: false, look: false, glance: null, prev: {} };
+const PAD = { on: false, gp: null, left: false, right: false, brake: 0, gas: 0, steer: false, stickAng: null, look: false, glance: null, prev: {} };
 let lastInput = 'kb';
 const GEARS = ['P', 'R', 'N', 'D'];
 let mode = 'practice';
@@ -283,8 +283,9 @@ function coach() {
   const st = mir ? -S.steer : S.steer;
   const sideR = mir ? '左' : '右', sideL = mir ? '右' : '左';
   const pad = lastInput === 'pad';
-  const keyR = pad ? '摇杆推到底' : mir ? 'Q' : 'E', keyL = pad ? '摇杆推到底' : mir ? 'E' : 'Q';
-  const ctr = pad ? '松开摇杆' : 'X';
+  const keyR = pad ? (mir ? '摇杆逆时针转一圈半' : '摇杆顺时针转一圈半') : mir ? 'Q' : 'E';
+  const keyL = pad ? (mir ? '摇杆顺时针转一圈半' : '摇杆逆时针转一圈半') : mir ? 'E' : 'Q';
+  const ctr = pad ? '摇杆转回来，或按下左摇杆' : 'X';
   const a = th / DEG;
   const cs = corners(S);
   const allIn = cs.every((p) => p.y < 0) && !S.out;
@@ -1202,12 +1203,12 @@ function padDiagram() {
     ${face(445, 106, '#e8c33a', 'Y')}${face(423, 128, '#4f9dff', 'X')}${face(467, 128, '#ff5a4f', 'B')}${face(445, 150, '#49c774', 'A')}
     <rect x="311" y="122" width="18" height="11" rx="5" fill="#1d2025" stroke="#6b727c"/><rect x="371" y="122" width="18" height="11" rx="5" fill="#1d2025" stroke="#6b727c"/>
     <g font-size="13.5" fill="#e9ebee">
-      ${L(40, 'LT', '刹车（线性）')}${L(74, 'LB', '挡位往 P')}${L(128, '左摇杆', '方向盘')}${L(196, '十字键 ← →', '慢转并停住')}${L(266, 'Back', '切换视角')}
+      ${L(40, 'LT', '刹车（线性）')}${L(74, 'LB', '挡位往 P')}${L(128, '左摇杆 转圈', '方向盘 · 按下回正')}${L(196, '十字键 ← →', '慢转并停住')}${L(266, 'Back', '切换视角')}
       ${R(40, 'RT', '油门')}${R(74, 'RB', '挡位往 D')}${R(120, 'X / B', '看左镜 / 右镜')}${R(142, 'Y / A', '回头 / 关弹窗')}${R(196, '右摇杆', '转头')}${R(266, 'Start', '重来')}
     </g>
   </svg>
   <ul>
-    <li><b>左摇杆</b>的位置就是方向盘的位置：推到底是打死，松开自动回正。想让方向盘停在某个角度，用十字键。</li>
+    <li><b>左摇杆</b>推到边上绕圈，就是在转方向盘：摇杆转一圈，方向盘转一圈，顺时针向右，一圈半打死。松开摇杆方向盘停在原处，往回转或按下左摇杆（L3）回正。十字键也能慢慢转。</li>
     <li><b>换挡</b>要先踩住 LT。挡位顺序 P ⇄ R ⇄ N ⇄ D：起步倒车是踩 LT、按一下 RB 到 R、松开 LT。</li>
     <li><b>LT 轻踩</b>可以把车速压在怠速以下，踩到三成左右停住。出线或不合格时手柄会震动。</li>
   </ul>`;
@@ -1377,7 +1378,7 @@ snap($('qR'), CAR.lock);
 })();
 
 // ───────────────────────── gamepad ─────────────────────────
-// Standard mapping: left stick steers (springs back like a real wheel being unwound), LT brake and
+// Standard mapping: circling the left stick turns the wheel 1:1, LT brake and
 // RT throttle are analog, LB/RB walk the gear lever P-R-N-D, right stick or X/B/Y turn the head.
 function rumble(ms, strength) {
   try {
@@ -1391,29 +1392,37 @@ function pollPad() {
   for (const p of pads) if (p && p.connected && (!gp || p.mapping === 'standard')) { gp = p; if (p.mapping === 'standard') break; }
   PAD.gp = gp;
   if (!gp) {
-    if (PAD.on) Object.assign(PAD, { on: false, left: false, right: false, brake: 0, gas: 0, steer: false, look: false, glance: null, prev: {} });
+    if (PAD.on) Object.assign(PAD, { on: false, left: false, right: false, brake: 0, gas: 0, steer: false, stickAng: null, look: false, glance: null, prev: {} });
     return;
   }
   PAD.on = true;
   const dz = (v) => { const a = Math.abs(v || 0); return a < 0.14 ? 0 : (Math.sign(v) * (a - 0.14)) / 0.86; };
   const val = (i) => { const b = gp.buttons[i]; return b ? Math.max(b.value || 0, b.pressed ? 1 : 0) : 0; };
   const edge = {};
-  for (const i of [0, 1, 2, 3, 4, 5, 8, 9, 11]) { const now = val(i) > 0.5; edge[i] = now && !PAD.prev[i]; PAD.prev[i] = now; }
-  const sx = dz(gp.axes[0]), lx = dz(gp.axes[2]), ly = dz(gp.axes[3]);
+  for (const i of [0, 1, 2, 3, 4, 5, 8, 9, 10, 11]) { const now = val(i) > 0.5; edge[i] = now && !PAD.prev[i]; PAD.prev[i] = now; }
+  const rx = gp.axes[0] || 0, ry = gp.axes[1] || 0, sr = Math.hypot(rx, ry), lx = dz(gp.axes[2]), ly = dz(gp.axes[3]);
   PAD.brake = val(6);
   PAD.gas = val(7);
   PAD.left = val(14) > 0.5;
   PAD.right = val(15) > 0.5;
-  if (sx || lx || ly || PAD.brake > 0.1 || PAD.gas > 0.1 || PAD.left || PAD.right || Object.values(edge).some(Boolean)) lastInput = 'pad';
+  if (sr > 0.5 || lx || ly || PAD.brake > 0.1 || PAD.gas > 0.1 || PAD.left || PAD.right || Object.values(edge).some(Boolean)) lastInput = 'pad';
 
   if ($('modal').classList.contains('show')) {
     if (edge[0] || edge[9]) { if (S.over) reset(); else hideModal(); }
     return;
   }
-  // steering: stick position is wheel position; the D-pad nudges and leaves it there
-  if (PAD.left || PAD.right) PAD.steer = false;
-  else if (sx) { PAD.steer = true; S.steerTarget = Math.sign(sx) * Math.pow(Math.abs(sx), 1.4) * CAR.lock; }
-  else if (PAD.steer) { S.steerTarget = 0; if (Math.abs(S.steer) < 1) PAD.steer = false; }
+  // steering: the stick is a crank. Swing it around its rim and the wheel turns by the same angle,
+  // one lap of the stick for one turn of the wheel; let go and the wheel stays where it is.
+  if (sr > (PAD.stickAng === null ? 0.6 : 0.4)) {
+    const ang = Math.atan2(rx, -ry) / DEG; // 0 = up, clockwise positive
+    if (PAD.stickAng !== null) {
+      let d = ang - PAD.stickAng;
+      d -= Math.round(d / 360) * 360;
+      if (d) { S.steerTarget = null; S.steer = clamp(S.steer + d, -CAR.lock, CAR.lock); }
+    }
+    PAD.stickAng = ang;
+  } else PAD.stickAng = null;
+  if (edge[10]) S.steerTarget = 0; // L3 centres the wheel
   // gear lever
   const gi = GEARS.indexOf(S.gear);
   if (edge[4] && gi > 0) setGear(GEARS[gi - 1]);
@@ -1431,7 +1440,7 @@ function pollPad() {
 window.addEventListener('gamepadconnected', () => {
   // show the diagram the first time, unless that would interrupt a run
   if (!S.started && !$('modal').classList.contains('show')) showPadGuide();
-  else toast('手柄已连接：左摇杆转向 · LT 刹车 · RT 油门 · LB/RB 换挡', 'good');
+  else toast('手柄已连接：左摇杆绕圈转方向盘 · LT 刹车 · RT 油门 · LB/RB 换挡', 'good');
 });
 
 // drag on the scene to turn the head (cabin view)
