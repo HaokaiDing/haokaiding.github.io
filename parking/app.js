@@ -407,15 +407,24 @@ const SUN_DIR = new THREE.Vector3(0.683, 0.536, 0.496).normalize();
 function buildWorld() {
   const tl = new THREE.TextureLoader();
   // photographed sky and surroundings (a real driving-school lot), projected so its ground meets ours
-  tl.load('assets/driving_school_sky.jpg', (t) => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    t.minFilter = THREE.LinearFilter;
-    t.generateMipmaps = false;
-    const sky = new GroundProjectedSkybox(t, { height: 1.7, radius: 140 });
-    sky.scale.setScalar(320);
-    scene.add(sky);
-  });
-  new RGBELoader().load('assets/driving_school_1k.hdr', (hdr) => {
+  // The small panorama (35 KB) shows at once; the full one replaces it when it has arrived.
+  const skyTex = (t) => { t.colorSpace = THREE.SRGBColorSpace; t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; return t; };
+  let sky = null, skyFull = false;
+  const setSky = (t, full) => {
+    if (skyFull) return t.dispose();
+    skyFull = full;
+    if (!sky) {
+      sky = new GroundProjectedSkybox(skyTex(t), { height: 1.7, radius: 140 });
+      sky.scale.setScalar(320);
+      scene.add(sky);
+    } else {
+      sky.material.uniforms.map.value.dispose();
+      sky.material.uniforms.map.value = skyTex(t);
+    }
+  };
+  tl.load('assets/driving_school_sky_lo.jpg', (t) => setSky(t, false));
+  tl.load('assets/driving_school_sky.jpg', (t) => setSky(t, true));
+  new RGBELoader().load('assets/driving_school_512.hdr', (hdr) => {
     const pm = new THREE.PMREMGenerator(renderer);
     scene.environment = pm.fromEquirectangular(hdr).texture;
     hdr.dispose();
