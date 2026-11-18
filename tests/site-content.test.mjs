@@ -67,7 +67,7 @@ assert.match(
 assert.match(heroAcknowledgment[0], /guidance|mentorship/);
 assert.match(heroAcknowledgment[0], /research/);
 assert.match(heroAcknowledgment[0], /graduate application/);
-assert.match(consoleHero[0], /I am advised by <a href="https:\/\/mbzuai\.ac\.ae\/study\/faculty\/gregory-chirikjian\/"[^>]*>Prof\. Gregory Chirikjian<\/a>/);
+assert.match(consoleHero[0], /I am advised by <a href="https:\/\/scholar\.google\.com\/citations\?user=qoIuyMoAAAAJ&amp;hl=en"[^>]*>Prof\. Gregory Chirikjian<\/a>/);
 assert.match(consoleHero[0], /I was an X Scholar/);
 assert.match(consoleHero[0], /X Scholar[\s\S]*from 2023 to 2026, advised by[\s\S]*Prof\. Wenzeng Zhang/);
 assert.doesNotMatch(consoleHero[0], /through September 2026/);
