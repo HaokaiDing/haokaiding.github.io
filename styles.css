@@ -387,7 +387,12 @@ h1 {
 }
 
 .news-text {
-  color: color-mix(in srgb, var(--text-soft) 90%, var(--line));
+  color: var(--text);
+}
+
+.news-item .news-date {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .page-note,
