@@ -133,9 +133,9 @@ function step(dt) {
   S.steer = clamp(S.steer, -CAR.lock, CAR.lock);
 
   // automatic gearbox: in D or R the car creeps at idle; the brake pedal is what holds it
-  // Trigger travel is spread out: the first 80% covers the light braking that trims creep speed
-  // (the car stops at about 80%), the last 20% is the firm stop. The key ramps in gently.
-  const padBrake = PAD.brake <= 0.8 ? 0.3 * Math.pow(PAD.brake / 0.8, 1.3) : 0.3 + (PAD.brake - 0.8) * 3.5;
+  // The whole trigger travel modulates speed: fully pulled holds the car, easing off a little lets
+  // it start to creep, and it gets faster the more the trigger is released. The key ramps in gently.
+  const padBrake = PAD.brake <= 0.92 ? 0.3 * Math.pow(PAD.brake / 0.92, 1.3) : 0.3 + (PAD.brake - 0.92) * 8.75;
   const wantBrake = S.over ? 1 : Math.max(K.brake ? 1 : 0, padBrake);
   S.brake += clamp(wantBrake - S.brake, -5 * dt, (K.brake ? 1.6 : 4) * dt);
   S.braking = S.brake > 0.05;
@@ -152,8 +152,8 @@ function step(dt) {
   // Easing off the brake: the car picks up its creep speed within about half a second. Only the
   // surplus over the brake is boosted, so the speed each brake position settles at is unchanged.
   if (dir && S.v * dir >= 0 && drive * dir > resist && !(K.gas || PAD.gas > 0.05)) drive = dir * (resist + 3 * (drive * dir - resist));
-  if (Math.abs(S.v) < 0.004) {
-    S.v = Math.abs(drive) > resist ? (drive - Math.sign(drive) * resist) * dt : 0;
+  if (Math.abs(S.v) < 0.004 && Math.abs(drive) <= resist) {
+    S.v = 0; // held by the brake
   } else {
     S.v += drive * dt;
     const dec = resist * dt;
@@ -1233,7 +1233,7 @@ function padDiagram() {
   <ul>
     <li><b>左摇杆</b>推到边上绕圈，就是在转方向盘：摇杆转一圈，方向盘转一圈，顺时针向右，一圈半打死。松开摇杆方向盘停在原处，往回转或按下左摇杆（L3）回正。十字键也能慢慢转。</li>
     <li><b>换挡</b>要先踩住 LT。挡位顺序 P ⇄ R ⇄ N ⇄ D：起步倒车是踩 LT、按一下 RB 到 R、松开 LT。</li>
-    <li><b>LT 轻踩</b>可以把车速压在怠速以下，越踩越慢，踩到八成左右停住。出线或不合格时手柄会震动。</li>
+    <li><b>LT 轻踩</b>可以把车速压在怠速以下，越踩越慢，拉满停住；从拉满松开一点车就开始走，松得越多越快。出线或不合格时手柄会震动。</li>
   </ul>`;
 }
 function showPadGuide() {
