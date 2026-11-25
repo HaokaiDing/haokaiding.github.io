@@ -128,6 +128,8 @@ assert.deepEqual(
   ['paper-dexduet-2026', 'paper-forkcast-2026', 'paper-iros-2025'],
   'expected the three newest featured papers, newest first',
 );
+assert.doesNotMatch(selectedPublications[0], /· New</);
+assert.match(indexHtml, /<details class="news-more">/);
 assert.ok(irosPaper, 'expected the IROS featured paper');
 assert.match(irosPaper, /<span class="paper-venue-tag">IROS 2025 · Oral<\/span>/);
 assert.match(irosPaper, /<figure class="paper-media">[\s\S]*?<div class="paper-frame">/);
@@ -226,8 +228,8 @@ assert.match(
 );
 assert.match(stylesCss, /\.selected-list > \.publication-item > \.paper-showcase\s*\{[^}]*display:\s*grid/);
 assert.match(stylesCss, /\.paper-media\s*\{[^}]*position:\s*relative/);
-assert.match(stylesCss, /\.paper-frame\s*\{[^}]*aspect-ratio:\s*5\s*\/\s*3/);
-assert.match(stylesCss, /\.paper-preview\s*\{[^}]*height:\s*100%[^}]*object-fit:\s*contain/);
+assert.doesNotMatch(stylesCss, /\.paper-frame\s*\{[^}]*aspect-ratio/, 'featured figures keep their natural ratio');
+assert.match(stylesCss, /\.paper-preview\s*\{[^}]*height:\s*auto/);
 assert.match(stylesCss, /\.paper-venue-tag\s*\{[^}]*background:\s*var\(--accent\)/);
 assert.match(stylesCss, /\.hero-intro \.hero-status\s*\{[^}]*font-weight:\s*600/);
 assert.doesNotMatch(stylesCss, /\.intro-kicker(?:\s|:|\{)/);
