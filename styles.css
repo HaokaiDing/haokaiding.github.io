@@ -736,6 +736,13 @@ p {
   line-height: 1.5;
 }
 
+.paper-summary {
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
 .paper-links {
   display: flex;
   flex-wrap: wrap;
@@ -1470,7 +1477,6 @@ body.dark-mode .entry-logo-sjtu {
   }
 
   .detail-item,
-  .award-list li,
   .news-item {
     grid-template-columns: 1fr;
   }
@@ -1487,17 +1493,33 @@ body.dark-mode .entry-logo-sjtu {
     hyphens: none;
   }
 
+  .detail-item {
+    gap: 4px;
+  }
+
+  .detail-side {
+    padding-left: 54px;
+    font-size: 0.9rem;
+  }
+
   .logo-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
   }
 
   .entry-logo,
   .entry-logo-sjtu {
-    width: 60px;
-    height: 60px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .award-list li {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2px 12px;
+  }
+
+  .award-tag {
+    grid-column: 2;
   }
 
   .contact-block li {

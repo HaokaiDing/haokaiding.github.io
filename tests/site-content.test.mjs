@@ -118,9 +118,12 @@ assert.match(
   'expected structured data to preserve the current degree status',
 );
 assert.ok(selectedPublications, 'expected a selected publications section');
-assert.equal(featuredPapers.length, 3, 'expected exactly three featured homepage papers');
+assert.equal(featuredPapers.length, 4, 'expected exactly four featured homepage papers');
 assert.match(selectedPublications[0], /href="https:\/\/rcl-robotics\.github\.io\/Dexduet\.io\/"/);
 assert.match(selectedPublications[0], /href="https:\/\/arxiv\.org\/abs\/2611\.30495"/);
+assert.match(selectedPublications[0], /href="https:\/\/arxiv\.org\/abs\/2610\.18650"/);
+assert.equal(selectedPublications[0].match(/class="paper-summary"/g)?.length, 4, 'expected a one-line summary for every featured paper');
+assert.doesNotMatch(indexHtml, /id="projects"/);
 assert.ok(irosPaper, 'expected the IROS featured paper');
 assert.ok(casePaper, 'expected the CASE featured paper');
 assert.match(irosPaper, /<span class="paper-venue-tag">IROS 2025 · Oral<\/span>/);

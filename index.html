@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" href="assets/images/favicon-haokai-line.png" />
   <link rel="canonical" href="https://haokaiding.com/" />
   <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-  <link rel="stylesheet" href="styles.css?v=award-wrap-20261125" />
+  <link rel="stylesheet" href="styles.css?v=research-20261125" />
   <link rel="stylesheet" href="availability.css?v=clock-20260920" />
   <script type="application/ld+json">
   {
@@ -132,11 +132,31 @@
               <div class="paper-copy">
               <h3 class="paper-title" id="paper-dexduet-2026-title">DexDuet: Learning Contact-Preserving Bimanual Dexterity from Human Demonstrations</h3>
               <p class="paper-authors">Haoran Zhang, <strong>Haokai Ding</strong>, Han Zhou, Zuxing Lu, Heng Zhang, Xingxing Zuo</p>
+              <p class="paper-summary">Learns two-handed skills from a single human demonstration while preserving how the hands contact the object.</p>
               <div class="paper-links">
                 <a href="https://rcl-robotics.github.io/Dexduet.io/" target="_blank" rel="noopener noreferrer" aria-label="Project page: DexDuet">[website]</a>
                 <a href="https://arxiv.org/abs/2611.30495" target="_blank" rel="noopener noreferrer" aria-label="arXiv: DexDuet">[arxiv]</a>
                 <a href="https://arxiv.org/pdf/2611.30495" target="_blank" rel="noopener noreferrer" aria-label="PDF: DexDuet">[pdf]</a>
                 <a href="https://github.com/HaoranZhangumich/DexDuet" target="_blank" rel="noopener noreferrer" aria-label="Code: DexDuet">[code]</a>
+              </div>
+              </div>
+            </article>
+          </li>
+          <li class="publication-item">
+            <article class="paper-showcase" id="paper-forkcast-2026" aria-labelledby="paper-forkcast-2026-title">
+              <figure class="paper-media">
+              <span class="paper-venue-tag">arXiv 2026</span>
+              <div class="paper-frame">
+                <img class="paper-preview" src="assets/images/pubs/fig-forkcast-teaser.webp" alt="ForkCast compares predicted futures for committing, reobserving, and replanning, then executes the best one" width="960" height="576" loading="lazy" decoding="async">
+              </div>
+              </figure>
+              <div class="paper-copy">
+              <h3 class="paper-title" id="paper-forkcast-2026-title">ForkCast: Predictive Recovery for Vision-Language-Action Policies via Counterfactual Futures</h3>
+              <p class="paper-authors">Chenru Wen<sup>†</sup>, Huajian Zeng<sup>†</sup>, <strong>Haokai Ding</strong>, Jian Kang, Anqing Duan, Dawei Zhou, Dezhen Song, Xingxing Zuo</p>
+              <p class="paper-summary">Predicts the outcomes of continuing, looking again, or replanning to decide whether and how to intervene in a frozen VLA policy.</p>
+              <div class="paper-links">
+                <a href="https://arxiv.org/abs/2610.18650" target="_blank" rel="noopener noreferrer" aria-label="arXiv: ForkCast">[arxiv]</a>
+                <a href="https://arxiv.org/pdf/2610.18650" target="_blank" rel="noopener noreferrer" aria-label="PDF: ForkCast">[pdf]</a>
               </div>
               </div>
             </article>
@@ -152,6 +172,7 @@
               <div class="paper-copy">
               <h3 class="paper-title" id="paper-iros-2025-title">A Novel Gripper with Semi-Peaucellier Linkage and Idle-Stroke Mechanism for Linear Pinching and Self-Adaptive Grasping</h3>
               <p class="paper-authors"><strong>Haokai Ding</strong>, Wenzeng Zhang*</p>
+              <p class="paper-summary">A dual-finger gripper with Semi-Peaucellier linkages and idle-stroke transmission for linear pinching and self-adaptive grasping.</p>
               <div class="paper-links">
                 <a class="inline-link pdf-link" href="assets/pdfs/iros-2025-semi-peaucellier-gripper.pdf" data-pdf="assets/pdfs/iros-2025-semi-peaucellier-gripper.pdf" target="_blank" rel="noopener noreferrer" aria-label="PDF: IROS 2025 Semi-Peaucellier gripper">[pdf]</a>
                 <a href="https://doi.org/10.1109/IROS60139.2025.11246057" target="_blank" rel="noopener noreferrer" aria-label="DOI: IROS 2025 Semi-Peaucellier gripper">[doi]</a>
@@ -171,6 +192,7 @@
               <div class="paper-copy">
               <h3 class="paper-title" id="paper-case-2025-title">Semi-Peaucellier Linkage and Differential Mechanism for Linear Pinching and Self-Adaptive Grasping</h3>
               <p class="paper-authors"><strong>Haokai Ding</strong>, Zhaohan Chen, Tao Yang*, Wenzeng Zhang*</p>
+              <p class="paper-summary">A differential linkage with planetary transmission for linear-parallel grasping and independent finger poses.</p>
               <div class="paper-links">
                 <a class="inline-link pdf-link" href="assets/pdfs/case-2025-semi-peaucellier-linkage.pdf" data-pdf="assets/pdfs/case-2025-semi-peaucellier-linkage.pdf" target="_blank" rel="noopener noreferrer" aria-label="PDF: CASE 2025 SP-Diff gripper">[pdf]</a>
                 <a href="https://doi.org/10.1109/CASE58245.2025.11163785" target="_blank" rel="noopener noreferrer" aria-label="DOI: CASE 2025 SP-Diff gripper">[doi]</a>
@@ -201,44 +223,24 @@
         <div class="stack-list">
           <article class="stack-item">
             <div>
-              <h3>01 · underactuated grippers</h3>
-              <p>Peaucellier linkages, idle-stroke mechanisms, and adaptive grasping strategies for dexterous manipulation with minimal actuators.</p>
+              <h3>01 · dexterous manipulation from human demonstrations</h3>
+              <p>Transferring bimanual skills from human demonstrations to robot hands, with attention to where and how the hands touch the object. See <a href="#paper-dexduet-2026">DexDuet</a> and our award-winning entry in the <a href="https://nvidia-isaac.github.io/video_to_data/v2d_challenge/" target="_blank" rel="noopener noreferrer">V2D Challenge</a> (2nd place, Track 2: Robotic Grounding).</p>
             </div>
-            <p class="stack-tags">Peaucellier linkage · idle-stroke · adaptive grasping</p>
+            <p class="stack-tags">bimanual dexterity · contact preservation · reinforcement learning</p>
           </article>
           <article class="stack-item">
             <div>
-              <h3>02 · aerial manipulation</h3>
-              <p>UAV perching mechanisms with electromagnetic adhesion systems for stable attachment and manipulation on varied surfaces.</p>
+              <h3>02 · recovery for robot policies</h3>
+              <p>Using predicted futures to decide when a vision-language-action policy should continue, look again, or replan after object slip or occlusion. See <a href="#paper-forkcast-2026">ForkCast</a>.</p>
             </div>
-            <p class="stack-tags">UAV perching · electromagnetic adhesion · aerial robotics</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section" id="projects">
-        <h2>projects</h2>
-        <div class="stack-list">
-          <article class="stack-item">
-            <div>
-              <h3>01 · semi-peaucellier gripper</h3>
-              <p>An underactuated gripper that integrates an optimized Peaucellier linkage with idle-stroke transmission, achieving linear parallel pinching and shape-adaptive enveloping under a single motor.</p>
-            </div>
-            <p class="stack-tags">Peaucellier linkage · idle-stroke · single-actuator · adaptive grasping</p>
+            <p class="stack-tags">vision-language-action · world models · failure recovery</p>
           </article>
           <article class="stack-item">
             <div>
-              <h3>02 · GLINT in-hand manipulation</h3>
-              <p>A grasp-and-lift hand that embeds phase switching directly into a lost-motion transmission, separating force-free alignment from force-transmitting lifting and offloading control burden onto the mechanism.</p>
+              <h3>03 · mechanism design for grasping and aerial manipulation</h3>
+              <p>Underactuated grippers that build pinching, adaptive grasping, and in-hand lifting into the mechanism, including <a href="#paper-iros-2025">Semi-Peaucellier grippers</a> and <a href="publications.html">GLINT</a>. At SJTU, I worked with Prof. Wei Dong on UAV perching with electromagnetic adhesion and contact-rich aerial manipulation.</p>
             </div>
-            <p class="stack-tags">lost-motion · grasp-to-lift · in-hand manipulation · mechanical intelligence</p>
-          </article>
-          <article class="stack-item">
-            <div>
-              <h3>03 · aerial manipulation @ SJTU</h3>
-              <p>During my SJTU visit, I worked with Prof. Wei Dong on UAV perching and contact-rich aerial manipulation, exploring how mechanism-level designs translate to flying platforms.</p>
-            </div>
-            <p class="stack-tags">UAV perching · aerial manipulation · contact-rich · mechanism design</p>
+            <p class="stack-tags">linkage design · idle-stroke · underactuation · UAV perching</p>
           </article>
         </div>
       </section>
