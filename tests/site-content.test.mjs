@@ -24,7 +24,6 @@ const featuredPapers = selectedPublications?.[0].match(
   /<article class="paper-showcase"[\s\S]*?<\/article>/g,
 ) ?? [];
 const irosPaper = featuredPapers.find(item => item.includes('id="paper-iros-2025"'));
-const casePaper = featuredPapers.find(item => item.includes('id="paper-case-2025"'));
 const xScholarItem = indexHtml.match(
   /<article class="detail-item">[\s\S]*?Tsinghua University Tsien Excellence in Engineering Program[\s\S]*?<\/article>/,
 );
@@ -118,23 +117,23 @@ assert.match(
   'expected structured data to preserve the current degree status',
 );
 assert.ok(selectedPublications, 'expected a selected publications section');
-assert.equal(featuredPapers.length, 4, 'expected exactly four featured homepage papers');
+assert.equal(featuredPapers.length, 3, 'expected exactly three featured homepage papers');
 assert.match(selectedPublications[0], /href="https:\/\/rcl-robotics\.github\.io\/Dexduet\.io\/"/);
 assert.match(selectedPublications[0], /href="https:\/\/arxiv\.org\/abs\/2611\.30495"/);
 assert.match(selectedPublications[0], /href="https:\/\/arxiv\.org\/abs\/2610\.18650"/);
-assert.equal(selectedPublications[0].match(/class="paper-summary"/g)?.length, 4, 'expected a one-line summary for every featured paper');
+assert.equal(selectedPublications[0].match(/class="paper-summary"/g)?.length, 3, 'expected a one-line summary for every featured paper');
 assert.doesNotMatch(indexHtml, /id="projects"/);
+assert.deepEqual(
+  featuredPapers.map(item => item.match(/id="(paper-[^"]+?)"/)[1]),
+  ['paper-dexduet-2026', 'paper-forkcast-2026', 'paper-iros-2025'],
+  'expected the three newest featured papers, newest first',
+);
 assert.ok(irosPaper, 'expected the IROS featured paper');
-assert.ok(casePaper, 'expected the CASE featured paper');
 assert.match(irosPaper, /<span class="paper-venue-tag">IROS 2025 · Oral<\/span>/);
 assert.match(irosPaper, /<figure class="paper-media">[\s\S]*?<div class="paper-frame">/);
 assert.match(irosPaper, /<img class="paper-preview" src="assets\/images\/pubs\/fig-iros-grasps\.webp" alt="Semi-Peaucellier gripper grasping six objects of different shapes and sizes" width="640" height="410" loading="lazy" decoding="async">/);
 assert.match(irosPaper, /<a class="inline-link pdf-link" href="assets\/pdfs\/iros-2025-semi-peaucellier-gripper\.pdf" data-pdf="assets\/pdfs\/iros-2025-semi-peaucellier-gripper\.pdf"[^>]*aria-label="PDF: IROS 2025 Semi-Peaucellier gripper">/);
 assert.match(irosPaper, /<a class="inline-link video-link" href="assets\/videos\/semi-peaucellier-gripper-demo-compressed\.mp4" data-video="assets\/videos\/semi-peaucellier-gripper-demo-compressed\.mp4"[^>]*aria-label="Demo video: IROS 2025 Semi-Peaucellier gripper">/);
-assert.match(casePaper, /<span class="paper-venue-tag">CASE 2025 · Oral<\/span>/);
-assert.match(casePaper, /<figure class="paper-media">[\s\S]*?<div class="paper-frame">/);
-assert.match(casePaper, /<img class="paper-preview" src="assets\/images\/pubs\/fig-case-grasps\.webp" alt="SP-Diff gripper demonstrating six grasp configurations" width="640" height="346" loading="lazy" decoding="async">/);
-assert.match(casePaper, /<a class="inline-link pdf-link" href="assets\/pdfs\/case-2025-semi-peaucellier-linkage\.pdf" data-pdf="assets\/pdfs\/case-2025-semi-peaucellier-linkage\.pdf"[^>]*aria-label="PDF: CASE 2025 SP-Diff gripper">/);
 assert.doesNotMatch(selectedPublications[0], /<button[^>]*class="[^"]*(?:pdf-link|video-link)/);
 assert.doesNotMatch(selectedPublications[0], /paper-venue-tag[^>]*aria-hidden="true"/);
 assert.doesNotMatch(selectedPublications[0], /<figcaption|paper-takeaway/);
