@@ -157,22 +157,42 @@ code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); 
 .fleet-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
 .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
 .kpi-label { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
-.kpi-val { font-size: 20px; font-weight: 700; font-family: var(--mono); }
-.fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
-.host-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.kpi-val { font-size: 20px; font-weight: 700; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+.fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 14px; align-items: start; }
+.host-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 15px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; overflow: hidden;
+}
 .host-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .host-title { font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 8px; }
-.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-.dot-ok { background: var(--green); }
+.host-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot-ok { background: var(--green); box-shadow: 0 0 8px rgba(62,207,142,.45); }
 .dot-down { background: var(--red); }
 .dot-standby { background: var(--amber); }
 
-.gpu-row { display: grid; grid-template-columns: 36px 1fr 86px 46px; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px; }
+.table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+.jobs-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.jobs-table th, .jobs-table td { padding: 7px 9px; border-bottom: 1px solid var(--border); white-space: nowrap; text-align: left; }
+.jobs-table tr:last-child td { border-bottom: 0; }
+.jobs-table th { color: var(--muted); font-weight: 600; font-size: 11px; background: var(--surface-2); }
+.jobs-table td.mono { font-family: var(--mono); font-size: 11.5px; }
+
+.gpu-list { display: flex; flex-direction: column; gap: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.gpu-row {
+  display: grid; grid-template-columns: 44px 1fr 94px 48px 44px;
+  align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px; font-variant-numeric: tabular-nums;
+}
 .bar { height: 7px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
-.bar-fill { height: 100%; background: var(--accent); border-radius: 99px; }
+.bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .25s ease; }
 .bar-fill.high { background: var(--amber); }
 .bar-fill.full { background: var(--red); }
-.rules-list { margin: 0; padding-left: 16px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.rules-details { border-top: 1px solid var(--border); padding-top: 8px; }
+.rules-details summary { cursor: pointer; font-size: 12px; color: var(--muted); user-select: none; }
+.rules-details summary:hover { color: var(--text); }
+.rules-list { margin: 6px 0 0; padding-left: 16px; font-size: 12px; color: var(--muted); line-height: 1.55; }
 
 .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 40; }
 .drawer {
@@ -229,4 +249,5 @@ code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); 
   .app { grid-template-columns: 1fr; }
   .sidebar { display: none; }
   .kanban { grid-template-columns: 1fr; }
+  .fleet-grid { grid-template-columns: 1fr; }
 }

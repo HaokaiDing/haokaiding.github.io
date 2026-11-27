@@ -222,7 +222,11 @@ function renderRuns() {
 function renderFleet() {
   const el = $("#fleet-container");
   const sumEl = $("#fleet-summary");
-  const machines = state.fleet?.machines || state.config?.machines || [];
+  const rawMachines = state.fleet?.machines || state.config?.machines || [];
+  // Sort: online first -> offline -> standby
+  const rank = (m) => (m.reachable === true ? 0 : m.reachable === false ? 1 : 2);
+  const machines = [...rawMachines].sort((a, b) => rank(a) - rank(b));
+
   const online = machines.filter((m) => m.reachable === true).length;
   const allGpus = machines.flatMap((m) => m.gpus || []);
   const busyGpus = allGpus.filter((g) => g.util >= 20 || g.mem_used > 2000).length;
@@ -244,37 +248,67 @@ function renderFleet() {
   }
   el.innerHTML = machines.map((m) => {
     const dotCls = m.reachable === true ? "dot-ok" : m.reachable === false ? "dot-down" : "dot-standby";
-    const statusText = m.reachable === true ? "在线" : m.reachable === false ? (m.error || "离线") : (m.error || "待命");
+    const badgeHtml = m.reachable === true
+      ? `<span class="pill pill-supported">在线</span>`
+      : m.reachable === false
+      ? `<span class="pill pill-failed">离线</span>`
+      : `<span class="pill pill-inconclusive">待命</span>`;
+
+    const jobsSorted = [...(m.jobs || [])].sort((a, b) => (a.state === "RUNNING" ? 0 : 1) - (b.state === "RUNNING" ? 0 : 1));
     return `
       <div class="host-card">
         <div class="host-head">
           <div class="host-title"><span class="dot ${dotCls}"></span>${esc(m.name)}</div>
-          <span class="muted" style="font-size:11.5px">${esc(m.network || "")}</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="muted" style="font-size:11.5px">${esc(m.network || "")}</span>
+            ${badgeHtml}
+          </div>
         </div>
-        <div class="muted" style="font-size:12px">${esc(m.gpu || "")}</div>
-        <div style="font-size:12px;color:${m.reachable === false ? "var(--red)" : "var(--muted)"}">${esc(statusText)}${m.threads ? ` · 线程数: <strong>${m.threads}</strong> / 16384` : ""}</div>
+        <div class="host-meta">
+          <span>${esc(m.gpu || "")}</span>
+          ${m.threads ? `<span>线程 <strong>${m.threads}</strong> / 16384</span>` : ""}
+        </div>
+        ${m.reachable === false && m.error ? `<div style="font-size:12px;color:var(--red);word-break:break-word">${esc(m.error)}</div>` : ""}
         ${m.gpus?.length ? `
-          <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="gpu-list">
             ${m.gpus.map((g) => {
               const pct = g.mem_total ? Math.round((g.mem_used / g.mem_total) * 100) : 0;
               const cls = pct > 85 ? "full" : pct > 50 ? "high" : "";
-              const tempStr = g.temp ? ` ${g.temp}°C` : "";
-              return `<div class="gpu-row" style="grid-template-columns:42px 1fr 96px 76px">
-                <span>GPU${esc(g.index)}</span>
+              const utilColor = g.util >= 70 ? "var(--green)" : g.util >= 10 ? "var(--amber)" : "var(--muted)";
+              return `<div class="gpu-row">
+                <span>GPU ${esc(g.index)}</span>
                 <div class="bar"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
-                <span>${(g.mem_used / 1024).toFixed(1)}/${Math.round(g.mem_total / 1024)}G</span>
-                <span style="text-align:right">${g.util}%${esc(tempStr)}</span>
+                <span style="text-align:right">${(g.mem_used / 1024).toFixed(1)}/${Math.round(g.mem_total / 1024)}G</span>
+                <span style="text-align:right;color:${utilColor};font-weight:600">${g.util}%</span>
+                <span class="muted" style="text-align:right">${g.temp ? g.temp + "°C" : ""}</span>
               </div>`;
             }).join("")}
           </div>` : ""}
-        ${m.jobs?.length ? `
-          <table class="data-table" style="font-size:11.5px">
-            <thead><tr><th>Job</th><th>名称</th><th>状态</th><th>卡数</th><th>时长</th><th>节点</th></tr></thead>
-            <tbody>
-              ${m.jobs.map((j) => `<tr><td>${esc(j.id)}</td><td>${esc(j.name)}</td><td><span class="pill ${j.state === "RUNNING" ? "pill-supported" : "pill-inconclusive"}">${esc(j.state)}</span></td><td>${esc((j.gres || "").replace("gres/", ""))}</td><td>${esc(j.elapsed)}</td><td>${esc(j.node || "—")}</td></tr>`).join("")}
-            </tbody>
-          </table>` : (m.type === "slurm" && m.reachable ? `<div class="muted" style="font-size:12px">当前无运行/排队任务</div>` : "")}
-        ${m.rules?.length ? `<ul class="rules-list">${m.rules.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+        ${jobsSorted.length ? `
+          <div class="table-wrap">
+            <table class="jobs-table">
+              <thead><tr><th>Job</th><th>名称</th><th>状态</th><th>卡</th><th>时长</th><th>节点</th></tr></thead>
+              <tbody>
+                ${jobsSorted.map((j) => {
+                  const gpuNum = (j.gres || "").replace(/^.*gpu:/, "") || "—";
+                  const isRun = j.state === "RUNNING";
+                  return `<tr>
+                    <td class="mono">${esc(j.id)}</td>
+                    <td><strong>${esc(j.name)}</strong></td>
+                    <td><span class="pill ${isRun ? "pill-supported" : "pill-inconclusive"}">${isRun ? "RUN" : "PEND"}</span></td>
+                    <td class="mono">${esc(gpuNum)}</td>
+                    <td class="mono">${esc(j.elapsed)}</td>
+                    <td class="mono">${esc(j.node || "—")}</td>
+                  </tr>`;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>` : (m.type === "slurm" && m.reachable ? `<div class="muted" style="font-size:12px">当前无运行/排队任务</div>` : "")}
+        ${m.rules?.length ? `
+          <details class="rules-details">
+            <summary>使用规范 (${m.rules.length})</summary>
+            <ul class="rules-list">${m.rules.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+          </details>` : ""}
       </div>`;
   }).join("");
 }
