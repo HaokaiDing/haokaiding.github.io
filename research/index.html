@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Research Hub</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Password Gate -->
+  <div id="auth-gate" class="auth-gate">
+    <form id="login-form" class="auth-card">
+      <div class="brand" style="padding:0;margin-bottom:8px">
+        <div class="brand-dot"></div>
+        <div>
+          <div class="brand-title">Research Hub</div>
+          <div class="brand-sub">haokaiding.com/research</div>
+        </div>
+      </div>
+      <p class="muted" style="margin-bottom:14px">私人研究管理面板，请输入密码解锁。</p>
+      <input id="login-password" type="password" autocomplete="current-password" placeholder="输入密码..." required autofocus />
+      <div id="login-error" class="auth-error hidden"></div>
+      <button id="login-btn" type="submit" class="primary-btn" style="width:100%;margin-top:10px;padding:10px">解锁进入</button>
+    </form>
+  </div>
+
+  <!-- Main App (hidden until unlocked) -->
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div>
+          <div class="brand-title">Research Hub</div>
+          <div class="brand-sub" id="sync-status">Cloud · Online</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-btn active" data-view="board">
+          <span>📋</span><span>实验看板</span>
+          <span class="badge" id="nav-board-count">0</span>
+        </button>
+        <button class="nav-btn" data-view="runs">
+          <span>📊</span><span>运行 &amp; 日志</span>
+          <span class="badge" id="nav-runs-count">0</span>
+        </button>
+        <button class="nav-btn" data-view="fleet">
+          <span>🖥️</span><span>GPU 集群</span>
+          <span class="badge" id="nav-fleet-count">—</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-section">
+        <div class="section-label">Projects</div>
+        <div id="project-filters" class="project-list"></div>
+      </div>
+
+      <div class="sidebar-footer" style="display:flex;flex-direction:column;gap:6px">
+        <button id="theme-toggle" class="ghost-btn">切换亮/暗色</button>
+        <button id="logout-btn" class="ghost-btn" style="color:var(--muted)">锁定 / 退出登录</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search-wrap">
+          <input id="search-input" type="search" placeholder="搜索实验、假设、目录、机器..." />
+        </div>
+        <div class="topbar-actions">
+          <button id="refresh-btn" class="ghost-btn">↻ 同步</button>
+          <button id="new-item-btn" class="primary-btn">+ 新建记录</button>
+        </div>
+      </header>
+
+      <section id="view-board" class="view active">
+        <div class="view-head">
+          <div>
+            <h1>实验 &amp; Idea 看板</h1>
+            <p class="muted" id="board-meta">云端实时同步，手机/电脑均可直接编辑</p>
+          </div>
+          <div class="segmented" id="board-layout-toggle">
+            <button class="active" data-layout="kanban">看板</button>
+            <button data-layout="table">列表</button>
+          </div>
+        </div>
+        <div id="board-container"></div>
+      </section>
+
+      <section id="view-runs" class="view">
+        <div class="view-head">
+          <div>
+            <h1>Runs &amp; 日志图表快照</h1>
+            <p class="muted" id="runs-meta">由 Mac 端 <code>hub/cli.py sync</code> 自动同步</p>
+          </div>
+        </div>
+        <div id="runs-container" class="runs-grid"></div>
+      </section>
+
+      <section id="view-fleet" class="view">
+        <div class="view-head">
+          <div>
+            <h1>GPU 集群 &amp; 队列快照</h1>
+            <p class="muted" id="fleet-meta">由 Mac 端同步的最新集群状态</p>
+          </div>
+        </div>
+        <div id="fleet-container" class="fleet-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Slide-over Detail Drawer -->
+  <div id="drawer-backdrop" class="backdrop hidden"></div>
+  <aside id="drawer" class="drawer hidden">
+    <div class="drawer-head">
+      <h2 id="drawer-title">详情</h2>
+      <button id="drawer-close" class="icon-btn">✕</button>
+    </div>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+
+  <!-- Create/Edit Item Modal -->
+  <div id="modal-backdrop" class="backdrop hidden"></div>
+  <div id="item-modal" class="modal hidden">
+    <div class="drawer-head">
+      <h2 id="modal-title">新建研究记录</h2>
+      <button id="modal-close" class="icon-btn">✕</button>
+    </div>
+    <form id="item-form" class="form-body">
+      <div class="form-row">
+        <label>ID (slug)
+          <input name="id" required placeholder="uoa-cab-zoom-v3" />
+        </label>
+        <label>项目
+          <select name="project" id="form-project"></select>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>类型
+          <select name="kind">
+            <option value="experiment">Experiment</option>
+            <option value="idea">Idea</option>
+            <option value="finding">Finding</option>
+          </select>
+        </label>
+        <label>状态
+          <select name="status">
+            <option value="planned">Planned</option>
+            <option value="running">Running</option>
+            <option value="review">Review</option>
+            <option value="done">Done</option>
+            <option value="parked">Parked</option>
+          </select>
+        </label>
+        <label>结果
+          <select name="outcome">
+            <option value="">—</option>
+            <option value="supported">Supported</option>
+            <option value="rejected">Rejected</option>
+            <option value="inconclusive">Inconclusive</option>
+            <option value="failed">Failed</option>
+          </select>
+        </label>
+      </div>
+      <label>标题
+        <input name="title" required placeholder="一句话描述实验或结论" />
+      </label>
+      <label>假设 / 目标
+        <textarea name="hypothesis" rows="2" placeholder="可选：一句话假设"></textarea>
+      </label>
+      <label>摘要 / 进展 / 结论
+        <textarea name="summary" rows="3" placeholder="关键现象、数值、下一步"></textarea>
+      </label>
+      <div class="form-row">
+        <label>机器
+          <input name="machine" placeholder="h200-pei / student / ciai" />
+        </label>
+        <label>关联本地 run 目录 (逗号分隔)
+          <input name="run_dirs" placeholder="2026-11-27-uoa-cab-zoom-v2" />
+        </label>
+      </div>
+      <label>关键指标 (每行 key=value)
+        <textarea name="metrics" rows="2" placeholder="ADD-AUC=97.2&#10;hours=2.75h"></textarea>
+      </label>
+      <div class="form-actions">
+        <button type="button" id="modal-cancel" class="ghost-btn">取消</button>
+        <button type="submit" class="primary-btn">保存到云端</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lightbox for figures -->
+  <div id="lightbox" class="lightbox hidden">
+    <img id="lightbox-img" alt="" />
+    <div id="lightbox-cap" class="lightbox-cap"></div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

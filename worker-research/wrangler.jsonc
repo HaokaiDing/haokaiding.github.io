@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/wrangler.json",
+  "name": "haokaiding-research",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-01",
+  "kv_namespaces": [
+    { "binding": "RESEARCH", "id": "709f59f75bb94973919e62faf22c1285" }
+  ],
+  "routes": [
+    { "pattern": "research-sync.haokaiding.com", "custom_domain": true }
+  ]
+}
