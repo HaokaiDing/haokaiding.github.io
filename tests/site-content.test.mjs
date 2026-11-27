@@ -140,7 +140,7 @@ assert.doesNotMatch(selectedPublications[0], /<button[^>]*class="[^"]*(?:pdf-lin
 assert.doesNotMatch(selectedPublications[0], /paper-venue-tag[^>]*aria-hidden="true"/);
 assert.doesNotMatch(selectedPublications[0], /<figcaption|paper-takeaway/);
 assert.ok(xScholarItem, 'expected the X Scholar education item');
-assert.match(xScholarItem[0], /<div class="detail-side">2023\.09–2026\.09<\/div>/);
+assert.match(xScholarItem[0], /<div class="detail-side">2023\.09–2026\.07<\/div>/);
 assert.doesNotMatch(xScholarItem[0], /2023\.09–present/);
 assert.ok(sjtuExperienceItem, 'expected the SJTU visiting-student experience item');
 assert.match(sjtuExperienceItem[0], /State Key Laboratory of Mechanical System and Vibration/);

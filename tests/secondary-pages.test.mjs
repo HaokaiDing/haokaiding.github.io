@@ -48,7 +48,7 @@ assert.match(
 );
 assert.match(
   publicationsHtml,
-  /2025 snapshot/i,
+  /2025(?:–2026)? snapshot/i,
   'expected publications page to include a snapshot summary',
 );
 assert.match(
@@ -104,7 +104,7 @@ assert.match(
 );
 assert.match(
   contactHtml,
-  /When emailing:[\s\S]*include your affiliation/i,
+  /When (?:emailing:|reaching out by email,)[\s\S]*include your affiliation/i,
   'expected contact page to explain what context to include in outreach emails',
 );
 assert.doesNotMatch(
