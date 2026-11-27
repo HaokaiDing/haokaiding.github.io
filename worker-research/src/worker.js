@@ -131,9 +131,10 @@ export default {
     }
 
     if (path === '/v1/data' && request.method === 'GET') {
-      const [stateRaw, snapRaw] = await Promise.all([
+      const [stateRaw, snapRaw, fleetRaw] = await Promise.all([
         env.RESEARCH.get('state', 'json'),
         env.RESEARCH.get('snapshot', 'json'),
+        env.RESEARCH.get('fleet', 'json'),
       ]);
       return json(
         {
@@ -141,12 +142,31 @@ export default {
           updatedAt: stateRaw?.updatedAt || null,
           config: snapRaw?.config || { projects: [], machines: [] },
           runs: snapRaw?.runs || [],
-          fleet: snapRaw?.fleet || null,
+          fleet: fleetRaw || snapRaw?.fleet || null,
           syncedAt: snapRaw?.syncedAt || null,
         },
         200,
         origin
       );
+    }
+
+    if (path === '/v1/fleet' && request.method === 'GET') {
+      const fleetRaw = await env.RESEARCH.get('fleet', 'json');
+      return json({ fleet: fleetRaw || null }, 200, origin);
+    }
+
+    if (path === '/v1/fleet' && request.method === 'PUT') {
+      const raw = await request.text();
+      if (raw.length > 512 * 1024) return json({ error: 'payload too large' }, 413, origin);
+      let body;
+      try {
+        body = JSON.parse(raw);
+      } catch {
+        return json({ error: 'invalid json' }, 400, origin);
+      }
+      body.pushed_at = new Date().toISOString();
+      await env.RESEARCH.put('fleet', JSON.stringify(body));
+      return json({ ok: true, pushed_at: body.pushed_at }, 200, origin);
     }
 
     if (path === '/v1/state' && request.method === 'PUT') {

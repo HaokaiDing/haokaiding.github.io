@@ -221,11 +221,26 @@ function renderRuns() {
 
 function renderFleet() {
   const el = $("#fleet-container");
+  const sumEl = $("#fleet-summary");
   const machines = state.fleet?.machines || state.config?.machines || [];
+  const online = machines.filter((m) => m.reachable === true).length;
+  const allGpus = machines.flatMap((m) => m.gpus || []);
+  const busyGpus = allGpus.filter((g) => g.util >= 20 || g.mem_used > 2000).length;
+  const allJobs = machines.flatMap((m) => m.jobs || []);
+  const runningJobs = allJobs.filter((j) => j.state === "RUNNING").length;
+  const pendingJobs = allJobs.filter((j) => j.state === "PENDING").length;
+
   if (state.fleet?.checked_at) {
-    $("#fleet-meta").textContent = `集群快照时间：${state.fleet.checked_at}（由 Mac 端 hub/cli.py sync --fleet 更新）`;
-    const online = machines.filter((m) => m.reachable === true).length;
+    $("#fleet-meta").textContent = `● LIVE · 采集于 ${state.fleet.checked_at}（页面每 30s 自动刷新）`;
     $("#nav-fleet-count").textContent = `${online}/${machines.length}`;
+  }
+  if (sumEl) {
+    sumEl.innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">在线主机</div><div class="kpi-val" style="color:var(--green)">${online} / ${machines.length}</div></div>
+      <div class="kpi-card"><div class="kpi-label">直连 GPU 占用</div><div class="kpi-val">${busyGpus} / ${allGpus.length}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Slurm 运行中</div><div class="kpi-val" style="color:var(--accent)">${runningJobs}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Slurm 排队中</div><div class="kpi-val" style="color:var(--amber)">${pendingJobs}</div></div>
+    `;
   }
   el.innerHTML = machines.map((m) => {
     const dotCls = m.reachable === true ? "dot-ok" : m.reachable === false ? "dot-down" : "dot-standby";
@@ -239,28 +254,40 @@ function renderFleet() {
         <div class="muted" style="font-size:12px">${esc(m.gpu || "")}</div>
         <div style="font-size:12px;color:${m.reachable === false ? "var(--red)" : "var(--muted)"}">${esc(statusText)}${m.threads ? ` · 线程数: <strong>${m.threads}</strong> / 16384` : ""}</div>
         ${m.gpus?.length ? `
-          <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;flex-direction:column;gap:6px">
             ${m.gpus.map((g) => {
               const pct = g.mem_total ? Math.round((g.mem_used / g.mem_total) * 100) : 0;
               const cls = pct > 85 ? "full" : pct > 50 ? "high" : "";
-              return `<div class="gpu-row">
+              const tempStr = g.temp ? ` ${g.temp}°C` : "";
+              return `<div class="gpu-row" style="grid-template-columns:42px 1fr 96px 76px">
                 <span>GPU${esc(g.index)}</span>
                 <div class="bar"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
-                <span>${Math.round(g.mem_used / 1024)}/${Math.round(g.mem_total / 1024)}G</span>
-                <span>${g.util}%</span>
+                <span>${(g.mem_used / 1024).toFixed(1)}/${Math.round(g.mem_total / 1024)}G</span>
+                <span style="text-align:right">${g.util}%${esc(tempStr)}</span>
               </div>`;
             }).join("")}
           </div>` : ""}
         ${m.jobs?.length ? `
           <table class="data-table" style="font-size:11.5px">
-            <thead><tr><th>Job</th><th>名称</th><th>状态</th><th>时长</th><th>节点</th></tr></thead>
+            <thead><tr><th>Job</th><th>名称</th><th>状态</th><th>卡数</th><th>时长</th><th>节点</th></tr></thead>
             <tbody>
-              ${m.jobs.map((j) => `<tr><td>${esc(j.id)}</td><td>${esc(j.name)}</td><td>${esc(j.state)}</td><td>${esc(j.elapsed)}</td><td>${esc(j.node)}</td></tr>`).join("")}
+              ${m.jobs.map((j) => `<tr><td>${esc(j.id)}</td><td>${esc(j.name)}</td><td><span class="pill ${j.state === "RUNNING" ? "pill-supported" : "pill-inconclusive"}">${esc(j.state)}</span></td><td>${esc((j.gres || "").replace("gres/", ""))}</td><td>${esc(j.elapsed)}</td><td>${esc(j.node || "—")}</td></tr>`).join("")}
             </tbody>
           </table>` : (m.type === "slurm" && m.reachable ? `<div class="muted" style="font-size:12px">当前无运行/排队任务</div>` : "")}
         ${m.rules?.length ? `<ul class="rules-list">${m.rules.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
       </div>`;
   }).join("");
+}
+
+async function pollFleet() {
+  if (!state.token) return;
+  try {
+    const res = await api("/v1/fleet");
+    if (res.fleet) {
+      state.fleet = res.fleet;
+      renderFleet();
+    }
+  } catch {}
 }
 
 function openDrawer(title, html) {
@@ -464,6 +491,7 @@ function init() {
 
   $("#search-input").oninput = (e) => { state.search = e.target.value; renderBoard(); renderRuns(); };
   $("#refresh-btn").onclick = () => loadCloud().then(() => toast("已从云端同步")).catch((e) => toast(e.message));
+  $("#fleet-refresh-btn").onclick = () => pollFleet().then(() => toast("已刷新集群状态"));
   $("#new-item-btn").onclick = () => openModal(null);
   $("#logout-btn").onclick = () => logout(false);
   $("#drawer-close").onclick = closeDrawer;
@@ -520,6 +548,9 @@ function init() {
   } else {
     showApp(false);
   }
+  setInterval(() => {
+    if (document.visibilityState === "visible") pollFleet();
+  }, 30000);
 }
 
 init();

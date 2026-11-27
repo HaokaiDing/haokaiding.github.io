@@ -154,6 +154,10 @@ code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); 
 .run-thumbs { display: flex; gap: 6px; margin-top: 10px; overflow: hidden; }
 .run-thumbs img { width: 72px; height: 48px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border); background: #fff; }
 
+.fleet-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.kpi-label { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
+.kpi-val { font-size: 20px; font-weight: 700; font-family: var(--mono); }
 .fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
 .host-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
 .host-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
