@@ -268,7 +268,7 @@ function renderFleet() {
           <span>${esc(m.gpu || "")}</span>
           ${m.threads ? `<span>线程 <strong>${m.threads}</strong> / 16384</span>` : ""}
         </div>
-        ${m.reachable === false && m.error ? `<div style="font-size:12px;color:var(--red);word-break:break-word">${esc(m.error)}</div>` : ""}
+        ${m.error ? `<div style="font-size:12px;color:${m.reachable === false ? "var(--red)" : "var(--amber)"};word-break:break-word">${esc(m.error)}</div>` : ""}
         ${m.gpus?.length ? `
           <div class="gpu-list">
             ${m.gpus.map((g) => {
