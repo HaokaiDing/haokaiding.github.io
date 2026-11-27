@@ -287,18 +287,18 @@ function renderFleet() {
         ${jobsSorted.length ? `
           <div class="table-wrap">
             <table class="jobs-table">
-              <thead><tr><th>Job</th><th>名称</th><th>状态</th><th>卡</th><th>时长</th><th>节点</th></tr></thead>
+              <thead><tr><th>Job</th><th>任务</th><th>状态</th><th>时长</th><th>节点 / 卡</th></tr></thead>
               <tbody>
                 ${jobsSorted.map((j) => {
-                  const gpuNum = (j.gres || "").replace(/^.*gpu:/, "") || "—";
+                  const gpuNum = (j.gres || "").replace(/^.*gpu:/, "");
                   const isRun = j.state === "RUNNING";
+                  const nodeGpu = (j.node || "排队中") + (gpuNum ? ` · ${gpuNum}卡` : "");
                   return `<tr>
                     <td class="mono">${esc(j.id)}</td>
                     <td><strong>${esc(j.name)}</strong></td>
                     <td><span class="pill ${isRun ? "pill-supported" : "pill-inconclusive"}">${isRun ? "RUN" : "PEND"}</span></td>
-                    <td class="mono">${esc(gpuNum)}</td>
                     <td class="mono">${esc(j.elapsed)}</td>
-                    <td class="mono">${esc(j.node || "—")}</td>
+                    <td class="mono">${esc(nodeGpu)}</td>
                   </tr>`;
                 }).join("")}
               </tbody>

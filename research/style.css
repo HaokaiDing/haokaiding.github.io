@@ -159,7 +159,7 @@ code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); 
 .kpi-label { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
 .kpi-val { font-size: 20px; font-weight: 700; font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-.fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 14px; align-items: start; }
+.fleet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(500px, 100%), 1fr)); gap: 14px; align-items: start; }
 .host-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 15px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; overflow: hidden;
@@ -174,7 +174,7 @@ code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); 
 
 .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
 .jobs-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
-.jobs-table th, .jobs-table td { padding: 7px 9px; border-bottom: 1px solid var(--border); white-space: nowrap; text-align: left; }
+.jobs-table th, .jobs-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; text-align: left; }
 .jobs-table tr:last-child td { border-bottom: 0; }
 .jobs-table th { color: var(--muted); font-weight: 600; font-size: 11px; background: var(--surface-2); }
 .jobs-table td.mono { font-family: var(--mono); font-size: 11.5px; }
